@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+ <div class="container-md">
+   <h5 class="text-primary">Add task successfully !</h5><br>
+   <h4>Task title: {{ title }}</h4>
+   <h4>Task content: {{ content }}</h4>
+   <h4>Task deadline: {{ deadline | date("d-m-Y") }}</h4>
+ </div>
+{% endblock %}
+
