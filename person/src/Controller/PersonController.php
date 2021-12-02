@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Person;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,10 +26,14 @@ class PersonController extends AbstractController
      */
     public function personDetail ($id) {
         $person = $this->getDoctrine()->getRepository(Person::class)->find($id);
-        return $this->render("person/detail.html.twig",
-        [
-            'person' => $person
-        ]);
+        if ($person != null) {
+            return $this->render("person/detail.html.twig",
+            [
+                'person' => $person
+            ]);
+        } else {
+            return $this->redirectToRoute("person_index");
+        }  
     }
 
     /**
@@ -36,9 +41,25 @@ class PersonController extends AbstractController
      */
     public function personDelete ($id) {
         $person = $this->getDoctrine()->getRepository(Person::class)->find($id);
-        $manager = $this->getDoctrine()->getManager();
-        $manager->remove($person);
-        $manager->flush();
+        if ($person != null) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->remove($person);
+            $manager->flush();
+        }
         return $this->redirectToRoute("person_index");
+    }
+
+    /**
+     * @Route("/person/add", name = "person_add")
+     */
+    public function personAdd (Request $request) {
+
+    } 
+
+    /**
+     * @Route("/person/edit/{id}", name = "person_edit")
+     */
+    public function personEdit (Request $request, $id) {
+        
     }
 }

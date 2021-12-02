@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Car;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,18 +22,35 @@ class CarController extends AbstractController
     #[Route('/car/detail/{id}', name : 'car_detail')]
     public function carDetail ($id) {
         $car = $this->getDoctrine()->getRepository(Car::class)->find($id);
-        return $this->render("car/detail.html.twig",
-        [
-            'car' => $car
-        ]);
+        if ($car != null) {
+            return $this->render("car/detail.html.twig",
+            [
+                'car' => $car
+            ]);
+        } else {
+            return $this->redirectToRoute("car_index");
+        }
+        
     }
 
     #[Route('/car/delete/{id}', name : 'car_delete')]
     public function carDelete ($id) {
         $car = $this->getDoctrine()->getRepository(Car::class)->find($id);
-        $manager = $this->getDoctrine()->getManager();
-        $manager->remove($car);
-        $manager->flush($car);
+        if ($car != null) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->remove($car);
+            $manager->flush($car);
+        }
         return $this->redirectToRoute("car_index");
+    }
+
+    #[Route('/car/add', name : 'car_add')]
+    public function carAdd (Request $request) {
+
+    }
+
+    #[Route('/car/edit/{id}', name : 'car_edit')]
+    public function carEdit (Request $request, $id) {
+        
     }
 }

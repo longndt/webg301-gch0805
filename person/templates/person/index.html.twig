@@ -2,6 +2,9 @@
 
 {% block body %}
 <div class="container">
+   <h4 class="text text-primary text-capitalize">
+      <a href="{{ path("person_add") }}">Add new Person</a>
+   </h4>
    <table class="table table-primary text-center">
       <thead>
          <tr>
@@ -16,11 +19,17 @@
             <td>{{ p.id }}</td>
             <td>{{ p.name}} </td>
             <td>
-               <a class="btn btn-info" href="http://">Detail</a>
-               <a class="btn btn-primary" href="">Edit</a>
+               <a class="btn btn-info" 
+                  href="{{ path ("person_detail", {'id' : p.id })}}">
+                  Detail
+               </a>
+               <a class="btn btn-primary" 
+                  href="{{ path ("person_edit", {'id' : p. id}) }}">   
+                  Edit
+               </a>
                <a class="btn btn-danger" 
                   href="{{ path ("person_delete", {'id' : p.id })}}">
-               Delete
+                  Delete
                </a>
             </td>
          </tr>

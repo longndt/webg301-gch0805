@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="container">
+    <h4 class="text text-primary text-capitalize">
+         <a href="{{ path("job_add") }}">Add new Job</a>
+    </h4>
+    <table class="table table-bordered text-center">
+        <tr>
+            <th>Job ID</th>
+            <th>Job Name</th>
+            <th>Menu</th>
+        </tr>
+        {% for j in job %}
+            <tr>
+                <td>{{ j.id }}</td>
+                <td>{{ j.name }}</td>
+                <td>
+                    <a class="btn btn-outline-info" href="{{ path ('job_detail', {'id' : j.id })}}">
+                        Detail
+                    </a>
+                    <a class="btn btn-outline-warning" href="{{ path ('job_edit', {'id' : j.id })}}">
+                        Edit
+                    </a>
+                    <a class="btn btn-outline-danger" href="{{ path ('job_delete', {'id' : j.id })}}">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}  
+    </table>
+</div>
+{% endblock %}

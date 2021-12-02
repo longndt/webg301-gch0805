@@ -338,6 +338,13 @@
         <argument type="service" id=".service_locator.W9y3dzm.App\Controller\CarController"/>
       </call>
     </service>
+    <service id="App\Controller\JobController" class="App\Controller\JobController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.W9y3dzm.App\Controller\JobController"/>
+      </call>
+    </service>
     <service id="App\Controller\PersonController" class="App\Controller\PersonController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -363,14 +370,6 @@
       <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Repository\PersonRepository" class="App\Repository\PersonRepository" autowire="true" autoconfigure="true">
-      <tag name="doctrine.repository_service"/>
-      <argument type="service" id="doctrine"/>
-    </service>
-    <service id="App\Repository\StudentRepository" class="App\Repository\StudentRepository" autowire="true" autoconfigure="true">
-      <tag name="doctrine.repository_service"/>
-      <argument type="service" id="doctrine"/>
-    </service>
-    <service id="App\Repository\TaskRepository" class="App\Repository\TaskRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -4423,7 +4422,7 @@
       <factory class="Doctrine\ORM\EntityManager" method="create"/>
     </service>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.KhOdQ0p"/>
+      <argument type="service" id=".service_locator.qkE0rX6"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -5546,6 +5545,9 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\CarController" class="App\Controller\CarController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\CarController" class="App\Controller\CarController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\CarController" class="App\Controller\CarController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\JobController" class="App\Controller\JobController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\JobController" class="App\Controller\JobController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\JobController" class="App\Controller\JobController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\PersonController" class="App\Controller\PersonController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\PersonController" class="App\Controller\PersonController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\PersonController" class="App\Controller\PersonController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -5557,10 +5559,6 @@
     <service id=".abstract.instanceof.App\Repository\PersonDetailRepository" class="App\Repository\PersonDetailRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PersonRepository" class="App\Repository\PersonRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\PersonRepository" class="App\Repository\PersonRepository" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\StudentRepository" class="App\Repository\StudentRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\StudentRepository" class="App\Repository\StudentRepository" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\TaskRepository" class="App\Repository\TaskRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\TaskRepository" class="App\Repository\TaskRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.0GV1BZZ" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -6143,15 +6141,13 @@
       <argument type="service" id="cache.doctrine.orm.default.result"/>
       <factory class="Doctrine\Common\Cache\Psr6\DoctrineProvider" method="wrap"/>
     </service>
-    <service id=".service_locator.KhOdQ0p" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.qkE0rX6" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\CarRepository" type="service_closure" id="App\Repository\CarRepository"/>
         <argument key="App\Repository\JobRepository" type="service_closure" id="App\Repository\JobRepository"/>
         <argument key="App\Repository\PersonDetailRepository" type="service_closure" id="App\Repository\PersonDetailRepository"/>
         <argument key="App\Repository\PersonRepository" type="service_closure" id="App\Repository\PersonRepository"/>
-        <argument key="App\Repository\StudentRepository" type="service_closure" id="App\Repository\StudentRepository"/>
-        <argument key="App\Repository\TaskRepository" type="service_closure" id="App\Repository\TaskRepository"/>
       </argument>
     </service>
     <service id=".service_locator.KLVvNIq" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -6224,6 +6220,12 @@
     <service id=".service_locator.W9y3dzm.App\Controller\CarController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\CarController"/>
       <argument>App\Controller\CarController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.W9y3dzm" method="withContext"/>
+    </service>
+    <service id=".service_locator.W9y3dzm.App\Controller\JobController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\JobController"/>
+      <argument>App\Controller\JobController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.W9y3dzm" method="withContext"/>
     </service>
