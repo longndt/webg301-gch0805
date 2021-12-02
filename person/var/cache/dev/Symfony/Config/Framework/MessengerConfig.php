@@ -13,6 +13,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class MessengerConfig 
 {
@@ -21,7 +23,6 @@ class MessengerConfig
     private $serializer;
     private $transports;
     private $failureTransport;
-    private $resetOnMessage;
     private $defaultBus;
     private $buses;
     
@@ -30,7 +31,7 @@ class MessengerConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -78,22 +79,9 @@ class MessengerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function failureTransport($value): static
+    public function failureTransport($value): self
     {
         $this->failureTransport = $value;
-    
-        return $this;
-    }
-    
-    /**
-     * Reset container services after each message.
-     * @default true
-     * @param ParamConfigurator|bool $value
-     * @return $this
-     */
-    public function resetOnMessage($value): static
-    {
-        $this->resetOnMessage = $value;
     
         return $this;
     }
@@ -103,7 +91,7 @@ class MessengerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function defaultBus($value): static
+    public function defaultBus($value): self
     {
         $this->defaultBus = $value;
     
@@ -150,11 +138,6 @@ class MessengerConfig
             unset($value['failure_transport']);
         }
     
-        if (isset($value['reset_on_message'])) {
-            $this->resetOnMessage = $value['reset_on_message'];
-            unset($value['reset_on_message']);
-        }
-    
         if (isset($value['default_bus'])) {
             $this->defaultBus = $value['default_bus'];
             unset($value['default_bus']);
@@ -169,6 +152,7 @@ class MessengerConfig
             throw new InvalidConfigurationException(sprintf('The following keys are not supported by "%s": ', __CLASS__).implode(', ', array_keys($value)));
         }
     }
+    
     
     public function toArray(): array
     {
@@ -188,9 +172,6 @@ class MessengerConfig
         if (null !== $this->failureTransport) {
             $output['failure_transport'] = $this->failureTransport;
         }
-        if (null !== $this->resetOnMessage) {
-            $output['reset_on_message'] = $this->resetOnMessage;
-        }
         if (null !== $this->defaultBus) {
             $output['default_bus'] = $this->defaultBus;
         }
@@ -200,5 +181,6 @@ class MessengerConfig
     
         return $output;
     }
+    
 
 }

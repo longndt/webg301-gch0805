@@ -22,7 +22,7 @@ class LockedException extends AccountStatusException
     /**
      * {@inheritdoc}
      */
-    public function getMessageKey(): string
+    public function getMessageKey()
     {
         return 'Account is locked.';
     }

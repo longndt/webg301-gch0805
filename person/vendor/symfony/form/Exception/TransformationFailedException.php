@@ -18,8 +18,8 @@ namespace Symfony\Component\Form\Exception;
  */
 class TransformationFailedException extends RuntimeException
 {
-    private ?string $invalidMessage;
-    private array $invalidMessageParameters;
+    private $invalidMessage;
+    private $invalidMessageParameters;
 
     public function __construct(string $message = '', int $code = 0, \Throwable $previous = null, string $invalidMessage = null, array $invalidMessageParameters = [])
     {

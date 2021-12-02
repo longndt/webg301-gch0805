@@ -21,7 +21,7 @@ use Symfony\Component\Form\AbstractExtension;
  */
 class DataCollectorExtension extends AbstractExtension
 {
-    private FormDataCollectorInterface $dataCollector;
+    private $dataCollector;
 
     public function __construct(FormDataCollectorInterface $dataCollector)
     {
@@ -31,7 +31,7 @@ class DataCollectorExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    protected function loadTypeExtensions(): array
+    protected function loadTypeExtensions()
     {
         return [
             new Type\DataCollectorTypeExtension($this->dataCollector),

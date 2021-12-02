@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class CsrfProtectionConfig 
 {
@@ -20,7 +22,7 @@ class CsrfProtectionConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -32,7 +34,7 @@ class CsrfProtectionConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function fieldName($value): static
+    public function fieldName($value): self
     {
         $this->fieldName = $value;
     
@@ -57,6 +59,7 @@ class CsrfProtectionConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -69,5 +72,6 @@ class CsrfProtectionConfig
     
         return $output;
     }
+    
 
 }

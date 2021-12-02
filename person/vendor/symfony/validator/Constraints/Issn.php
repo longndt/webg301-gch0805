@@ -49,7 +49,7 @@ class Issn extends Constraint
         bool $caseSensitive = null,
         bool $requireHyphen = null,
         array $groups = null,
-        mixed $payload = null
+        $payload = null
     ) {
         parent::__construct($options, $groups, $payload);
 

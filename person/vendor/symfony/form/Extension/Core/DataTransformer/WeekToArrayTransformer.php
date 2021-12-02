@@ -26,12 +26,12 @@ class WeekToArrayTransformer implements DataTransformerInterface
      *
      * @param string|null $value A week date string
      *
-     * @return array{year: int|null, week: int|null}
+     * @return array A value containing year and week
      *
      * @throws TransformationFailedException If the given value is not a string,
      *                                       or if the given value does not follow the right format
      */
-    public function transform(mixed $value): array
+    public function transform($value)
     {
         if (null === $value) {
             return ['year' => null, 'week' => null];
@@ -54,14 +54,14 @@ class WeekToArrayTransformer implements DataTransformerInterface
     /**
      * Transforms an array into a week date string.
      *
-     * @param array{year: int|null, week: int|null} $value
+     * @param array $value An array containing a year and a week number
      *
      * @return string|null A week date string following the format Y-\WW
      *
-     * @throws TransformationFailedException If the given value cannot be merged in a valid week date string,
+     * @throws TransformationFailedException If the given value can not be merged in a valid week date string,
      *                                       or if the obtained week date does not exists
      */
-    public function reverseTransform(mixed $value): ?string
+    public function reverseTransform($value)
     {
         if (null === $value || [] === $value) {
             return null;

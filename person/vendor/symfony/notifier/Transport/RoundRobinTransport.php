@@ -24,13 +24,10 @@ use Symfony\Component\Notifier\Message\SentMessage;
  */
 class RoundRobinTransport implements TransportInterface
 {
-    /**
-     * @var \SplObjectStorage<TransportInterface, float>
-     */
-    private \SplObjectStorage $deadTransports;
-    private array $transports = [];
-    private int $retryPeriod;
-    private int $cursor = -1;
+    private $deadTransports;
+    private $transports = [];
+    private $retryPeriod;
+    private $cursor = -1;
 
     /**
      * @param TransportInterface[] $transports

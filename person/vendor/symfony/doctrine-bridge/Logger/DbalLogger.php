@@ -34,8 +34,10 @@ class DbalLogger implements SQLLogger
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
-    public function startQuery($sql, array $params = null, array $types = null): void
+    public function startQuery($sql, array $params = null, array $types = null)
     {
         if (null !== $this->stopwatch) {
             $this->stopwatch->start('doctrine', 'doctrine');
@@ -48,8 +50,10 @@ class DbalLogger implements SQLLogger
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
-    public function stopQuery(): void
+    public function stopQuery()
     {
         if (null !== $this->stopwatch) {
             $this->stopwatch->stop('doctrine');

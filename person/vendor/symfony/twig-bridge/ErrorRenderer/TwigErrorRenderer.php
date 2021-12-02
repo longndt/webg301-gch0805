@@ -25,18 +25,22 @@ use Twig\Environment;
  */
 class TwigErrorRenderer implements ErrorRendererInterface
 {
-    private Environment $twig;
-    private HtmlErrorRenderer $fallbackErrorRenderer;
-    private \Closure|bool $debug;
+    private $twig;
+    private $fallbackErrorRenderer;
+    private $debug;
 
     /**
      * @param bool|callable $debug The debugging mode as a boolean or a callable that should return it
      */
-    public function __construct(Environment $twig, HtmlErrorRenderer $fallbackErrorRenderer = null, bool|callable $debug = false)
+    public function __construct(Environment $twig, HtmlErrorRenderer $fallbackErrorRenderer = null, $debug = false)
     {
+        if (!\is_bool($debug) && !\is_callable($debug)) {
+            throw new \TypeError(sprintf('Argument 3 passed to "%s()" must be a boolean or a callable, "%s" given.', __METHOD__, get_debug_type($debug)));
+        }
+
         $this->twig = $twig;
         $this->fallbackErrorRenderer = $fallbackErrorRenderer ?? new HtmlErrorRenderer();
-        $this->debug = !\is_callable($debug) || $debug instanceof \Closure ? $debug : \Closure::fromCallable($debug);
+        $this->debug = $debug;
     }
 
     /**

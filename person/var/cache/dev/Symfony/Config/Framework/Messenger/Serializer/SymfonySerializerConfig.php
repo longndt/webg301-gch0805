@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class SymfonySerializerConfig 
 {
@@ -21,7 +23,7 @@ class SymfonySerializerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function format($value): static
+    public function format($value): self
     {
         $this->format = $value;
     
@@ -29,9 +31,10 @@ class SymfonySerializerConfig
     }
     
     /**
+     * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function context(string $name, mixed $value): static
+    public function context(string $name, $value): self
     {
         $this->context[$name] = $value;
     
@@ -56,6 +59,7 @@ class SymfonySerializerConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -68,5 +72,6 @@ class SymfonySerializerConfig
     
         return $output;
     }
+    
 
 }

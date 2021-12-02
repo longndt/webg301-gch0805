@@ -4,17 +4,19 @@ namespace Symfony\Config\Security;
 
 require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'LogoutConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'SwitchUserConfig.php';
-require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'LoginThrottlingConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'X509Config.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'RemoteUserConfig.php';
-require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'LoginLinkConfig.php';
+require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'GuardConfig.php';
+require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'LoginThrottlingConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'FormLoginConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'FormLoginLdapConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'JsonLoginConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'JsonLoginLdapConfig.php';
+require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'LoginLinkConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'HttpBasicConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'HttpBasicLdapConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'RememberMeConfig.php';
+require_once __DIR__.\DIRECTORY_SEPARATOR.'FirewallConfig'.\DIRECTORY_SEPARATOR.'AnonymousConfig.php';
 
 use Symfony\Component\Config\Loader\ParamConfigurator;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -22,6 +24,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class FirewallConfig 
 {
@@ -41,25 +45,27 @@ class FirewallConfig
     private $logout;
     private $switchUser;
     private $requiredBadges;
-    private $customAuthenticators;
-    private $loginThrottling;
     private $x509;
     private $remoteUser;
-    private $loginLink;
+    private $guard;
+    private $customAuthenticators;
+    private $loginThrottling;
     private $formLogin;
     private $formLoginLdap;
     private $jsonLogin;
     private $jsonLoginLdap;
+    private $loginLink;
     private $httpBasic;
     private $httpBasicLdap;
     private $rememberMe;
+    private $anonymous;
     
     /**
      * @default null
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function pattern($value): static
+    public function pattern($value): self
     {
         $this->pattern = $value;
     
@@ -71,7 +77,7 @@ class FirewallConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function host($value): static
+    public function host($value): self
     {
         $this->host = $value;
     
@@ -79,11 +85,10 @@ class FirewallConfig
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function methods(ParamConfigurator|array $value): static
+    public function methods($value): self
     {
         $this->methods = $value;
     
@@ -95,7 +100,7 @@ class FirewallConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function security($value): static
+    public function security($value): self
     {
         $this->security = $value;
     
@@ -108,7 +113,7 @@ class FirewallConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function userChecker($value): static
+    public function userChecker($value): self
     {
         $this->userChecker = $value;
     
@@ -120,7 +125,7 @@ class FirewallConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function requestMatcher($value): static
+    public function requestMatcher($value): self
     {
         $this->requestMatcher = $value;
     
@@ -132,7 +137,7 @@ class FirewallConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function accessDeniedUrl($value): static
+    public function accessDeniedUrl($value): self
     {
         $this->accessDeniedUrl = $value;
     
@@ -144,7 +149,7 @@ class FirewallConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function accessDeniedHandler($value): static
+    public function accessDeniedHandler($value): self
     {
         $this->accessDeniedHandler = $value;
     
@@ -157,7 +162,7 @@ class FirewallConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function entryPoint($value): static
+    public function entryPoint($value): self
     {
         $this->entryPoint = $value;
     
@@ -169,7 +174,7 @@ class FirewallConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function provider($value): static
+    public function provider($value): self
     {
         $this->provider = $value;
     
@@ -181,7 +186,7 @@ class FirewallConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function stateless($value): static
+    public function stateless($value): self
     {
         $this->stateless = $value;
     
@@ -193,7 +198,7 @@ class FirewallConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function lazy($value): static
+    public function lazy($value): self
     {
         $this->lazy = $value;
     
@@ -205,7 +210,7 @@ class FirewallConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function context($value): static
+    public function context($value): self
     {
         $this->context = $value;
     
@@ -235,38 +240,14 @@ class FirewallConfig
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function requiredBadges(ParamConfigurator|array $value): static
+    public function requiredBadges($value): self
     {
         $this->requiredBadges = $value;
     
         return $this;
-    }
-    
-    /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
-     * @return $this
-     */
-    public function customAuthenticators(ParamConfigurator|array $value): static
-    {
-        $this->customAuthenticators = $value;
-    
-        return $this;
-    }
-    
-    public function loginThrottling(array $value = []): \Symfony\Config\Security\FirewallConfig\LoginThrottlingConfig
-    {
-        if (null === $this->loginThrottling) {
-            $this->loginThrottling = new \Symfony\Config\Security\FirewallConfig\LoginThrottlingConfig($value);
-        } elseif ([] !== $value) {
-            throw new InvalidConfigurationException('The node created by "loginThrottling()" has already been initialized. You cannot pass values the second time you call loginThrottling().');
-        }
-    
-        return $this->loginThrottling;
     }
     
     public function x509(array $value = []): \Symfony\Config\Security\FirewallConfig\X509Config
@@ -291,15 +272,37 @@ class FirewallConfig
         return $this->remoteUser;
     }
     
-    public function loginLink(array $value = []): \Symfony\Config\Security\FirewallConfig\LoginLinkConfig
+    public function guard(array $value = []): \Symfony\Config\Security\FirewallConfig\GuardConfig
     {
-        if (null === $this->loginLink) {
-            $this->loginLink = new \Symfony\Config\Security\FirewallConfig\LoginLinkConfig($value);
+        if (null === $this->guard) {
+            $this->guard = new \Symfony\Config\Security\FirewallConfig\GuardConfig($value);
         } elseif ([] !== $value) {
-            throw new InvalidConfigurationException('The node created by "loginLink()" has already been initialized. You cannot pass values the second time you call loginLink().');
+            throw new InvalidConfigurationException('The node created by "guard()" has already been initialized. You cannot pass values the second time you call guard().');
         }
     
-        return $this->loginLink;
+        return $this->guard;
+    }
+    
+    /**
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
+     * @return $this
+     */
+    public function customAuthenticators($value): self
+    {
+        $this->customAuthenticators = $value;
+    
+        return $this;
+    }
+    
+    public function loginThrottling(array $value = []): \Symfony\Config\Security\FirewallConfig\LoginThrottlingConfig
+    {
+        if (null === $this->loginThrottling) {
+            $this->loginThrottling = new \Symfony\Config\Security\FirewallConfig\LoginThrottlingConfig($value);
+        } elseif ([] !== $value) {
+            throw new InvalidConfigurationException('The node created by "loginThrottling()" has already been initialized. You cannot pass values the second time you call loginThrottling().');
+        }
+    
+        return $this->loginThrottling;
     }
     
     public function formLogin(array $value = []): \Symfony\Config\Security\FirewallConfig\FormLoginConfig
@@ -346,6 +349,17 @@ class FirewallConfig
         return $this->jsonLoginLdap;
     }
     
+    public function loginLink(array $value = []): \Symfony\Config\Security\FirewallConfig\LoginLinkConfig
+    {
+        if (null === $this->loginLink) {
+            $this->loginLink = new \Symfony\Config\Security\FirewallConfig\LoginLinkConfig($value);
+        } elseif ([] !== $value) {
+            throw new InvalidConfigurationException('The node created by "loginLink()" has already been initialized. You cannot pass values the second time you call loginLink().');
+        }
+    
+        return $this->loginLink;
+    }
+    
     public function httpBasic(array $value = []): \Symfony\Config\Security\FirewallConfig\HttpBasicConfig
     {
         if (null === $this->httpBasic) {
@@ -377,6 +391,17 @@ class FirewallConfig
         }
     
         return $this->rememberMe;
+    }
+    
+    public function anonymous(array $value = []): \Symfony\Config\Security\FirewallConfig\AnonymousConfig
+    {
+        if (null === $this->anonymous) {
+            $this->anonymous = new \Symfony\Config\Security\FirewallConfig\AnonymousConfig($value);
+        } elseif ([] !== $value) {
+            throw new InvalidConfigurationException('The node created by "anonymous()" has already been initialized. You cannot pass values the second time you call anonymous().');
+        }
+    
+        return $this->anonymous;
     }
     
     public function __construct(array $value = [])
@@ -462,16 +487,6 @@ class FirewallConfig
             unset($value['required_badges']);
         }
     
-        if (isset($value['custom_authenticators'])) {
-            $this->customAuthenticators = $value['custom_authenticators'];
-            unset($value['custom_authenticators']);
-        }
-    
-        if (isset($value['login_throttling'])) {
-            $this->loginThrottling = new \Symfony\Config\Security\FirewallConfig\LoginThrottlingConfig($value['login_throttling']);
-            unset($value['login_throttling']);
-        }
-    
         if (isset($value['x509'])) {
             $this->x509 = new \Symfony\Config\Security\FirewallConfig\X509Config($value['x509']);
             unset($value['x509']);
@@ -482,9 +497,19 @@ class FirewallConfig
             unset($value['remote_user']);
         }
     
-        if (isset($value['login_link'])) {
-            $this->loginLink = new \Symfony\Config\Security\FirewallConfig\LoginLinkConfig($value['login_link']);
-            unset($value['login_link']);
+        if (isset($value['guard'])) {
+            $this->guard = new \Symfony\Config\Security\FirewallConfig\GuardConfig($value['guard']);
+            unset($value['guard']);
+        }
+    
+        if (isset($value['custom_authenticators'])) {
+            $this->customAuthenticators = $value['custom_authenticators'];
+            unset($value['custom_authenticators']);
+        }
+    
+        if (isset($value['login_throttling'])) {
+            $this->loginThrottling = new \Symfony\Config\Security\FirewallConfig\LoginThrottlingConfig($value['login_throttling']);
+            unset($value['login_throttling']);
         }
     
         if (isset($value['form_login'])) {
@@ -507,6 +532,11 @@ class FirewallConfig
             unset($value['json_login_ldap']);
         }
     
+        if (isset($value['login_link'])) {
+            $this->loginLink = new \Symfony\Config\Security\FirewallConfig\LoginLinkConfig($value['login_link']);
+            unset($value['login_link']);
+        }
+    
         if (isset($value['http_basic'])) {
             $this->httpBasic = new \Symfony\Config\Security\FirewallConfig\HttpBasicConfig($value['http_basic']);
             unset($value['http_basic']);
@@ -522,10 +552,16 @@ class FirewallConfig
             unset($value['remember_me']);
         }
     
+        if (isset($value['anonymous'])) {
+            $this->anonymous = new \Symfony\Config\Security\FirewallConfig\AnonymousConfig($value['anonymous']);
+            unset($value['anonymous']);
+        }
+    
         if ([] !== $value) {
             throw new InvalidConfigurationException(sprintf('The following keys are not supported by "%s": ', __CLASS__).implode(', ', array_keys($value)));
         }
     }
+    
     
     public function toArray(): array
     {
@@ -578,20 +614,20 @@ class FirewallConfig
         if (null !== $this->requiredBadges) {
             $output['required_badges'] = $this->requiredBadges;
         }
-        if (null !== $this->customAuthenticators) {
-            $output['custom_authenticators'] = $this->customAuthenticators;
-        }
-        if (null !== $this->loginThrottling) {
-            $output['login_throttling'] = $this->loginThrottling->toArray();
-        }
         if (null !== $this->x509) {
             $output['x509'] = $this->x509->toArray();
         }
         if (null !== $this->remoteUser) {
             $output['remote_user'] = $this->remoteUser->toArray();
         }
-        if (null !== $this->loginLink) {
-            $output['login_link'] = $this->loginLink->toArray();
+        if (null !== $this->guard) {
+            $output['guard'] = $this->guard->toArray();
+        }
+        if (null !== $this->customAuthenticators) {
+            $output['custom_authenticators'] = $this->customAuthenticators;
+        }
+        if (null !== $this->loginThrottling) {
+            $output['login_throttling'] = $this->loginThrottling->toArray();
         }
         if (null !== $this->formLogin) {
             $output['form_login'] = $this->formLogin->toArray();
@@ -605,6 +641,9 @@ class FirewallConfig
         if (null !== $this->jsonLoginLdap) {
             $output['json_login_ldap'] = $this->jsonLoginLdap->toArray();
         }
+        if (null !== $this->loginLink) {
+            $output['login_link'] = $this->loginLink->toArray();
+        }
         if (null !== $this->httpBasic) {
             $output['http_basic'] = $this->httpBasic->toArray();
         }
@@ -614,8 +653,12 @@ class FirewallConfig
         if (null !== $this->rememberMe) {
             $output['remember_me'] = $this->rememberMe->toArray();
         }
+        if (null !== $this->anonymous) {
+            $output['anonymous'] = $this->anonymous->toArray();
+        }
     
         return $output;
     }
+    
 
 }

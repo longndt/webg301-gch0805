@@ -9,10 +9,11 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class PackageConfig 
 {
-    private $strictMode;
     private $versionStrategy;
     private $version;
     private $versionFormat;
@@ -21,24 +22,11 @@ class PackageConfig
     private $baseUrls;
     
     /**
-     * Throw an exception if an entry is missing from the manifest.json
-     * @default false
-     * @param ParamConfigurator|bool $value
-     * @return $this
-     */
-    public function strictMode($value): static
-    {
-        $this->strictMode = $value;
-    
-        return $this;
-    }
-    
-    /**
      * @default null
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function versionStrategy($value): static
+    public function versionStrategy($value): self
     {
         $this->versionStrategy = $value;
     
@@ -50,7 +38,7 @@ class PackageConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function version($value): static
+    public function version($value): self
     {
         $this->version = $value;
     
@@ -62,7 +50,7 @@ class PackageConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function versionFormat($value): static
+    public function versionFormat($value): self
     {
         $this->versionFormat = $value;
     
@@ -74,7 +62,7 @@ class PackageConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function jsonManifestPath($value): static
+    public function jsonManifestPath($value): self
     {
         $this->jsonManifestPath = $value;
     
@@ -85,7 +73,7 @@ class PackageConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function basePath($value): static
+    public function basePath($value): self
     {
         $this->basePath = $value;
     
@@ -93,11 +81,10 @@ class PackageConfig
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function baseUrls(ParamConfigurator|array $value): static
+    public function baseUrls($value): self
     {
         $this->baseUrls = $value;
     
@@ -106,11 +93,6 @@ class PackageConfig
     
     public function __construct(array $value = [])
     {
-    
-        if (isset($value['strict_mode'])) {
-            $this->strictMode = $value['strict_mode'];
-            unset($value['strict_mode']);
-        }
     
         if (isset($value['version_strategy'])) {
             $this->versionStrategy = $value['version_strategy'];
@@ -147,12 +129,10 @@ class PackageConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
-        if (null !== $this->strictMode) {
-            $output['strict_mode'] = $this->strictMode;
-        }
         if (null !== $this->versionStrategy) {
             $output['version_strategy'] = $this->versionStrategy;
         }
@@ -174,5 +154,6 @@ class PackageConfig
     
         return $output;
     }
+    
 
 }

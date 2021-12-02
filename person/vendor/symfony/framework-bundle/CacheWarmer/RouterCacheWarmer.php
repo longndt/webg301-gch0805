@@ -26,7 +26,7 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
  */
 class RouterCacheWarmer implements CacheWarmerInterface, ServiceSubscriberInterface
 {
-    private ContainerInterface $container;
+    private $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -36,8 +36,10 @@ class RouterCacheWarmer implements CacheWarmerInterface, ServiceSubscriberInterf
 
     /**
      * {@inheritdoc}
+     *
+     * @return string[]
      */
-    public function warmUp(string $cacheDir): array
+    public function warmUp(string $cacheDir)
     {
         $router = $this->container->get('router');
 
@@ -49,7 +51,9 @@ class RouterCacheWarmer implements CacheWarmerInterface, ServiceSubscriberInterf
     }
 
     /**
-     * {@inheritdoc}
+     * Checks whether this warmer is optional or not.
+     *
+     * @return bool always true
      */
     public function isOptional(): bool
     {

@@ -23,7 +23,7 @@ use Symfony\Component\Notifier\Notifier;
  */
 class SendFailedMessageToNotifierListener implements EventSubscriberInterface
 {
-    private Notifier $notifier;
+    private $notifier;
 
     public function __construct(Notifier $notifier)
     {
@@ -47,7 +47,7 @@ class SendFailedMessageToNotifierListener implements EventSubscriberInterface
         $this->notifier->send($notification, ...$this->notifier->getAdminRecipients());
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
         return [
             WorkerMessageFailedEvent::class => 'onMessageFailed',

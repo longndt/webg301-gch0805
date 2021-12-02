@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class FilterConfig 
 {
@@ -21,7 +23,7 @@ class FilterConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function class($value): static
+    public function class($value): self
     {
         $this->class = $value;
     
@@ -33,7 +35,7 @@ class FilterConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -41,9 +43,10 @@ class FilterConfig
     }
     
     /**
+     * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function parameter(string $name, mixed $value): static
+    public function parameter(string $name, $value): self
     {
         $this->parameters[$name] = $value;
     
@@ -73,6 +76,7 @@ class FilterConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -88,5 +92,6 @@ class FilterConfig
     
         return $output;
     }
+    
 
 }

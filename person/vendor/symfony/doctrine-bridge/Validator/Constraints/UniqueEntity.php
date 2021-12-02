@@ -74,15 +74,17 @@ class UniqueEntity extends Constraint
         $this->ignoreNull = $ignoreNull ?? $this->ignoreNull;
     }
 
-    public function getRequiredOptions(): array
+    public function getRequiredOptions()
     {
         return ['fields'];
     }
 
     /**
      * The validator must be defined as a service with this name.
+     *
+     * @return string
      */
-    public function validatedBy(): string
+    public function validatedBy()
     {
         return $this->service;
     }
@@ -90,12 +92,12 @@ class UniqueEntity extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets(): string|array
+    public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function getDefaultOption(): ?string
+    public function getDefaultOption()
     {
         return 'fields';
     }

@@ -22,10 +22,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  *
  * @internal
  */
-class TraceableVoter implements CacheableVoterInterface
+class TraceableVoter implements VoterInterface
 {
-    private VoterInterface $voter;
-    private EventDispatcherInterface $eventDispatcher;
+    private $voter;
+    private $eventDispatcher;
 
     public function __construct(VoterInterface $voter, EventDispatcherInterface $eventDispatcher)
     {
@@ -33,7 +33,7 @@ class TraceableVoter implements CacheableVoterInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function vote(TokenInterface $token, mixed $subject, array $attributes): int
+    public function vote(TokenInterface $token, $subject, array $attributes)
     {
         $result = $this->voter->vote($token, $subject, $attributes);
 
@@ -45,15 +45,5 @@ class TraceableVoter implements CacheableVoterInterface
     public function getDecoratedVoter(): VoterInterface
     {
         return $this->voter;
-    }
-
-    public function supportsAttribute(string $attribute): bool
-    {
-        return !$this->voter instanceof CacheableVoterInterface || $this->voter->supportsAttribute($attribute);
-    }
-
-    public function supportsType(string $subjectType): bool
-    {
-        return !$this->voter instanceof CacheableVoterInterface || $this->voter->supportsType($subjectType);
     }
 }

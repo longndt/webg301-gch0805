@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\RequestMatcherInterface;
  */
 class AccessMap implements AccessMapInterface
 {
-    private array $map = [];
+    private $map = [];
 
     /**
      * @param array       $attributes An array of attributes to pass to the access decision manager (like roles)
@@ -36,7 +36,7 @@ class AccessMap implements AccessMapInterface
     /**
      * {@inheritdoc}
      */
-    public function getPatterns(Request $request): array
+    public function getPatterns(Request $request)
     {
         foreach ($this->map as $elements) {
             if (null === $elements[0] || $elements[0]->matches($request)) {

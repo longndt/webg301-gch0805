@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class RequestConfig 
 {
@@ -20,7 +22,7 @@ class RequestConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -28,9 +30,10 @@ class RequestConfig
     }
     
     /**
+     * @param ParamConfigurator|array $value
      * @return $this
      */
-    public function format(string $name, ParamConfigurator|array $value): static
+    public function format(string $name, $value): self
     {
         $this->formats[$name] = $value;
     
@@ -55,6 +58,7 @@ class RequestConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -67,5 +71,6 @@ class RequestConfig
     
         return $output;
     }
+    
 
 }

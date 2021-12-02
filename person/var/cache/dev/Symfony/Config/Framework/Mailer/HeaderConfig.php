@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class HeaderConfig 
 {
@@ -17,10 +19,9 @@ class HeaderConfig
     /**
      * @default null
      * @param ParamConfigurator|mixed $value
-     *
      * @return $this
      */
-    public function value(mixed $value): static
+    public function value($value): self
     {
         $this->value = $value;
     
@@ -40,6 +41,7 @@ class HeaderConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -49,5 +51,6 @@ class HeaderConfig
     
         return $output;
     }
+    
 
 }

@@ -29,7 +29,7 @@ class CacheDataCollector extends DataCollector implements LateDataCollectorInter
     /**
      * @var TraceableAdapter[]
      */
-    private array $instances = [];
+    private $instances = [];
 
     public function addInstance(string $name, TraceableAdapter $instance)
     {
@@ -67,31 +67,37 @@ class CacheDataCollector extends DataCollector implements LateDataCollectorInter
     /**
      * {@inheritdoc}
      */
-    public function getName(): string
+    public function getName()
     {
         return 'cache';
     }
 
     /**
      * Method returns amount of logged Cache reads: "get" calls.
+     *
+     * @return array
      */
-    public function getStatistics(): array
+    public function getStatistics()
     {
         return $this->data['instances']['statistics'];
     }
 
     /**
      * Method returns the statistic totals.
+     *
+     * @return array
      */
-    public function getTotals(): array
+    public function getTotals()
     {
         return $this->data['total']['statistics'];
     }
 
     /**
      * Method returns all logged Cache call objects.
+     *
+     * @return mixed
      */
-    public function getCalls(): mixed
+    public function getCalls()
     {
         return $this->data['instances']['calls'];
     }

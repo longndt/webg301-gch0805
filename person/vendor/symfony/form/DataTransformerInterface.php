@@ -55,11 +55,11 @@ interface DataTransformerInterface
      *
      * @param mixed $value The value in the original representation
      *
-     * @return mixed
+     * @return mixed The value in the transformed representation
      *
      * @throws TransformationFailedException when the transformation fails
      */
-    public function transform(mixed $value);
+    public function transform($value);
 
     /**
      * Transforms a value from the transformed representation to its original
@@ -84,9 +84,9 @@ interface DataTransformerInterface
      *
      * @param mixed $value The value in the transformed representation
      *
-     * @return mixed
+     * @return mixed The value in the original representation
      *
      * @throws TransformationFailedException when the transformation fails
      */
-    public function reverseTransform(mixed $value);
+    public function reverseTransform($value);
 }

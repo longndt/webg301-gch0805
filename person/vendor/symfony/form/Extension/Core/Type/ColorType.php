@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -26,7 +27,7 @@ class ColorType extends AbstractType
      */
     private const HTML5_PATTERN = '/^#[0-9a-f]{6}$/i';
 
-    private ?TranslatorInterface $translator;
+    private $translator;
 
     public function __construct(TranslatorInterface $translator = null)
     {
@@ -69,7 +70,11 @@ class ColorType extends AbstractType
     {
         $resolver->setDefaults([
             'html5' => false,
-            'invalid_message' => 'Please select a valid color.',
+            'invalid_message' => function (Options $options, $previousValue) {
+                return ($options['legacy_error_messages'] ?? true)
+                    ? $previousValue
+                    : 'Please select a valid color.';
+            },
         ]);
 
         $resolver->setAllowedTypes('html5', 'bool');
@@ -78,7 +83,7 @@ class ColorType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent(): ?string
+    public function getParent()
     {
         return TextType::class;
     }
@@ -86,7 +91,7 @@ class ColorType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix(): string
+    public function getBlockPrefix()
     {
         return 'color';
     }

@@ -35,14 +35,19 @@ class Regex extends Constraint
     public $match = true;
     public $normalizer;
 
+    /**
+     * {@inheritdoc}
+     *
+     * @param string|array $pattern The pattern to evaluate or an array of options
+     */
     public function __construct(
-        string|array|null $pattern,
+        $pattern,
         string $message = null,
         string $htmlPattern = null,
         bool $match = null,
         callable $normalizer = null,
         array $groups = null,
-        mixed $payload = null,
+        $payload = null,
         array $options = []
     ) {
         if (\is_array($pattern)) {
@@ -66,7 +71,7 @@ class Regex extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOption(): ?string
+    public function getDefaultOption()
     {
         return 'pattern';
     }
@@ -74,7 +79,7 @@ class Regex extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getRequiredOptions(): array
+    public function getRequiredOptions()
     {
         return ['pattern'];
     }
@@ -85,8 +90,10 @@ class Regex extends Constraint
      * However, if options are specified, it cannot be converted.
      *
      * @see http://dev.w3.org/html5/spec/single-page.html#the-pattern-attribute
+     *
+     * @return string|null
      */
-    public function getHtmlPattern(): ?string
+    public function getHtmlPattern()
     {
         // If htmlPattern is specified, use it
         if (null !== $this->htmlPattern) {

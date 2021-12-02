@@ -31,7 +31,7 @@ class HostnameValidator extends ConstraintValidator
         'test',
     ];
 
-    public function validate(mixed $value, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof Hostname) {
             throw new UnexpectedTypeException($constraint, Hostname::class);
@@ -41,7 +41,7 @@ class HostnameValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_scalar($value) && !$value instanceof \Stringable) {
+        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
             throw new UnexpectedValueException($value, 'string');
         }
 

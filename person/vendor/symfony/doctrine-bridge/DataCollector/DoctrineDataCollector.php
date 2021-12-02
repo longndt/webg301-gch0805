@@ -28,14 +28,14 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  */
 class DoctrineDataCollector extends DataCollector
 {
-    private ManagerRegistry $registry;
-    private array $connections;
-    private array $managers;
+    private $registry;
+    private $connections;
+    private $managers;
 
     /**
-     * @var array<string, DebugStack>
+     * @var DebugStack[]
      */
-    private array $loggers = [];
+    private $loggers = [];
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -114,7 +114,7 @@ class DoctrineDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function getName(): string
+    public function getName()
     {
         return 'db';
     }
@@ -122,7 +122,7 @@ class DoctrineDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    protected function getCasters(): array
+    protected function getCasters()
     {
         return parent::getCasters() + [
             ObjectParameter::class => static function (ObjectParameter $o, array $a, Stub $s): array {
@@ -213,7 +213,7 @@ class DoctrineDataCollector extends DataCollector
      * indicating if the original value was kept (allowing to use the sanitized
      * value to explain the query).
      */
-    private function sanitizeParam(mixed $var, ?\Throwable $error): array
+    private function sanitizeParam($var, ?\Throwable $error): array
     {
         if (\is_object($var)) {
             return [$o = new ObjectParameter($var, $error), false, $o->isStringable() && !$error];

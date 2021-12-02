@@ -10,6 +10,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class TransportConfig 
 {
@@ -24,7 +26,7 @@ class TransportConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function dsn($value): static
+    public function dsn($value): self
     {
         $this->dsn = $value;
     
@@ -37,7 +39,7 @@ class TransportConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function serializer($value): static
+    public function serializer($value): self
     {
         $this->serializer = $value;
     
@@ -45,11 +47,10 @@ class TransportConfig
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function options(ParamConfigurator|array $value): static
+    public function options($value): self
     {
         $this->options = $value;
     
@@ -62,7 +63,7 @@ class TransportConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function failureTransport($value): static
+    public function failureTransport($value): self
     {
         $this->failureTransport = $value;
     
@@ -113,6 +114,7 @@ class TransportConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -134,5 +136,6 @@ class TransportConfig
     
         return $output;
     }
+    
 
 }

@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class MongoConfig 
 {
@@ -25,7 +27,7 @@ class MongoConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function id($value): static
+    public function id($value): self
     {
         $this->id = $value;
     
@@ -37,7 +39,7 @@ class MongoConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function host($value): static
+    public function host($value): self
     {
         $this->host = $value;
     
@@ -49,7 +51,7 @@ class MongoConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function port($value): static
+    public function port($value): self
     {
         $this->port = $value;
     
@@ -61,7 +63,7 @@ class MongoConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function user($value): static
+    public function user($value): self
     {
         $this->user = $value;
     
@@ -73,7 +75,7 @@ class MongoConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function pass($value): static
+    public function pass($value): self
     {
         $this->pass = $value;
     
@@ -85,7 +87,7 @@ class MongoConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function database($value): static
+    public function database($value): self
     {
         $this->database = $value;
     
@@ -97,7 +99,7 @@ class MongoConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function collection($value): static
+    public function collection($value): self
     {
         $this->collection = $value;
     
@@ -147,6 +149,7 @@ class MongoConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -174,5 +177,6 @@ class MongoConfig
     
         return $output;
     }
+    
 
 }

@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class TableStorageConfig 
 {
@@ -23,7 +25,7 @@ class TableStorageConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function tableName($value): static
+    public function tableName($value): self
     {
         $this->tableName = $value;
     
@@ -35,7 +37,7 @@ class TableStorageConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function versionColumnName($value): static
+    public function versionColumnName($value): self
     {
         $this->versionColumnName = $value;
     
@@ -47,7 +49,7 @@ class TableStorageConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function versionColumnLength($value): static
+    public function versionColumnLength($value): self
     {
         $this->versionColumnLength = $value;
     
@@ -59,7 +61,7 @@ class TableStorageConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function executedAtColumnName($value): static
+    public function executedAtColumnName($value): self
     {
         $this->executedAtColumnName = $value;
     
@@ -71,7 +73,7 @@ class TableStorageConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function executionTimeColumnName($value): static
+    public function executionTimeColumnName($value): self
     {
         $this->executionTimeColumnName = $value;
     
@@ -111,6 +113,7 @@ class TableStorageConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -132,5 +135,6 @@ class TableStorageConfig
     
         return $output;
     }
+    
 
 }

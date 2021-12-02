@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Exception\LazyResponseException;
  */
 final class LazyResponseEvent extends RequestEvent
 {
-    private parent $event;
+    private $event;
 
     public function __construct(parent $event)
     {
@@ -71,6 +71,16 @@ final class LazyResponseEvent extends RequestEvent
      */
     public function isMainRequest(): bool
     {
+        return $this->event->isMainRequest();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isMasterRequest(): bool
+    {
+        trigger_deprecation('symfony/security-http', '5.3', '"%s()" is deprecated, use "isMainRequest()" instead.', __METHOD__);
+
         return $this->event->isMainRequest();
     }
 }

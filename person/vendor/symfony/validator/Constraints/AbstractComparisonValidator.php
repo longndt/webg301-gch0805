@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 abstract class AbstractComparisonValidator extends ConstraintValidator
 {
-    private ?PropertyAccessorInterface $propertyAccessor;
+    private $propertyAccessor;
 
     public function __construct(PropertyAccessorInterface $propertyAccessor = null)
     {
@@ -37,7 +37,7 @@ abstract class AbstractComparisonValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate(mixed $value, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof AbstractComparison) {
             throw new UnexpectedTypeException($constraint, AbstractComparison::class);
@@ -102,13 +102,20 @@ abstract class AbstractComparisonValidator extends ConstraintValidator
 
     /**
      * Compares the two given values to find if their relationship is valid.
+     *
+     * @param mixed $value1 The first value to compare
+     * @param mixed $value2 The second value to compare
+     *
+     * @return bool true if the relationship is valid, false otherwise
      */
-    abstract protected function compareValues(mixed $value1, mixed $value2): bool;
+    abstract protected function compareValues($value1, $value2);
 
     /**
      * Returns the error code used if the comparison fails.
+     *
+     * @return string|null The error code or `null` if no code should be set
      */
-    protected function getErrorCode(): ?string
+    protected function getErrorCode()
     {
         return null;
     }

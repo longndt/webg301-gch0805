@@ -11,6 +11,8 @@
 
 namespace Symfony\Component\Security\Core\Authentication;
 
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -21,24 +23,39 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 class AuthenticationTrustResolver implements AuthenticationTrustResolverInterface
 {
-    public function isAuthenticated(TokenInterface $token = null): bool
+    /**
+     * {@inheritdoc}
+     */
+    public function isAnonymous(TokenInterface $token = null)
     {
-        return $token && $token->getUser();
+        if (null === $token) {
+            return false;
+        }
+
+        return $token instanceof AnonymousToken || $token instanceof NullToken;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isRememberMe(TokenInterface $token = null): bool
+    public function isRememberMe(TokenInterface $token = null)
     {
-        return $token && $token instanceof RememberMeToken;
+        if (null === $token) {
+            return false;
+        }
+
+        return $token instanceof RememberMeToken;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isFullFledged(TokenInterface $token = null): bool
+    public function isFullFledged(TokenInterface $token = null)
     {
-        return $this->isAuthenticated($token) && !$this->isRememberMe($token);
+        if (null === $token) {
+            return false;
+        }
+
+        return !$this->isAnonymous($token) && !$this->isRememberMe($token);
     }
 }

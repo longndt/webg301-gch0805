@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class HttpCacheConfig 
 {
@@ -28,7 +30,7 @@ class HttpCacheConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -40,7 +42,7 @@ class HttpCacheConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function debug($value): static
+    public function debug($value): self
     {
         $this->debug = $value;
     
@@ -52,7 +54,7 @@ class HttpCacheConfig
      * @param ParamConfigurator|'none'|'short'|'full' $value
      * @return $this
      */
-    public function traceLevel($value): static
+    public function traceLevel($value): self
     {
         $this->traceLevel = $value;
     
@@ -64,7 +66,7 @@ class HttpCacheConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function traceHeader($value): static
+    public function traceHeader($value): self
     {
         $this->traceHeader = $value;
     
@@ -76,7 +78,7 @@ class HttpCacheConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function defaultTtl($value): static
+    public function defaultTtl($value): self
     {
         $this->defaultTtl = $value;
     
@@ -84,11 +86,10 @@ class HttpCacheConfig
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function privateHeaders(ParamConfigurator|array $value): static
+    public function privateHeaders($value): self
     {
         $this->privateHeaders = $value;
     
@@ -100,7 +101,7 @@ class HttpCacheConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function allowReload($value): static
+    public function allowReload($value): self
     {
         $this->allowReload = $value;
     
@@ -112,7 +113,7 @@ class HttpCacheConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function allowRevalidate($value): static
+    public function allowRevalidate($value): self
     {
         $this->allowRevalidate = $value;
     
@@ -124,7 +125,7 @@ class HttpCacheConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function staleWhileRevalidate($value): static
+    public function staleWhileRevalidate($value): self
     {
         $this->staleWhileRevalidate = $value;
     
@@ -136,7 +137,7 @@ class HttpCacheConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function staleIfError($value): static
+    public function staleIfError($value): self
     {
         $this->staleIfError = $value;
     
@@ -201,6 +202,7 @@ class HttpCacheConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -237,5 +239,6 @@ class HttpCacheConfig
     
         return $output;
     }
+    
 
 }

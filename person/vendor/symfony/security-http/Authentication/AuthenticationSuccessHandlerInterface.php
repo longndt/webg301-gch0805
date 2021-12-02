@@ -30,6 +30,8 @@ interface AuthenticationSuccessHandlerInterface
      * This is called when an interactive authentication attempt succeeds. This
      * is called by authentication listeners inheriting from
      * AbstractAuthenticationListener.
+     *
+     * @return Response
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token): Response;
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token);
 }

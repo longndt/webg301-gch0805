@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class FormFactory implements FormFactoryInterface
 {
-    private FormRegistryInterface $registry;
+    private $registry;
 
     public function __construct(FormRegistryInterface $registry)
     {
@@ -26,7 +26,7 @@ class FormFactory implements FormFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(string $type = FormType::class, mixed $data = null, array $options = []): FormInterface
+    public function create(string $type = FormType::class, $data = null, array $options = [])
     {
         return $this->createBuilder($type, $data, $options)->getForm();
     }
@@ -34,7 +34,7 @@ class FormFactory implements FormFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createNamed(string $name, string $type = FormType::class, mixed $data = null, array $options = []): FormInterface
+    public function createNamed(string $name, string $type = FormType::class, $data = null, array $options = [])
     {
         return $this->createNamedBuilder($name, $type, $data, $options)->getForm();
     }
@@ -42,7 +42,7 @@ class FormFactory implements FormFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createForProperty(string $class, string $property, mixed $data = null, array $options = []): FormInterface
+    public function createForProperty(string $class, string $property, $data = null, array $options = [])
     {
         return $this->createBuilderForProperty($class, $property, $data, $options)->getForm();
     }
@@ -50,7 +50,7 @@ class FormFactory implements FormFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createBuilder(string $type = FormType::class, mixed $data = null, array $options = []): FormBuilderInterface
+    public function createBuilder(string $type = FormType::class, $data = null, array $options = [])
     {
         return $this->createNamedBuilder($this->registry->getType($type)->getBlockPrefix(), $type, $data, $options);
     }
@@ -58,7 +58,7 @@ class FormFactory implements FormFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createNamedBuilder(string $name, string $type = FormType::class, mixed $data = null, array $options = []): FormBuilderInterface
+    public function createNamedBuilder(string $name, string $type = FormType::class, $data = null, array $options = [])
     {
         if (null !== $data && !\array_key_exists('data', $options)) {
             $options['data'] = $data;
@@ -66,7 +66,7 @@ class FormFactory implements FormFactoryInterface
 
         $type = $this->registry->getType($type);
 
-        $builder = $type->createBuilder($this, $name, $options);
+        $builder = $type->createBuilder($this, (string) $name, $options);
 
         // Explicitly call buildForm() in order to be able to override either
         // createBuilder() or buildForm() in the resolved form type
@@ -78,7 +78,7 @@ class FormFactory implements FormFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createBuilderForProperty(string $class, string $property, mixed $data = null, array $options = []): FormBuilderInterface
+    public function createBuilderForProperty(string $class, string $property, $data = null, array $options = [])
     {
         if (null === $guesser = $this->registry->getTypeGuesser()) {
             return $this->createNamedBuilder($property, TextType::class, $data, $options);

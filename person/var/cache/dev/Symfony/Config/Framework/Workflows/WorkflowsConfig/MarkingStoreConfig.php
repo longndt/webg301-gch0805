@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class MarkingStoreConfig 
 {
@@ -21,7 +23,7 @@ class MarkingStoreConfig
      * @param ParamConfigurator|'method' $value
      * @return $this
      */
-    public function type($value): static
+    public function type($value): self
     {
         $this->type = $value;
     
@@ -33,7 +35,7 @@ class MarkingStoreConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function property($value): static
+    public function property($value): self
     {
         $this->property = $value;
     
@@ -45,7 +47,7 @@ class MarkingStoreConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function service($value): static
+    public function service($value): self
     {
         $this->service = $value;
     
@@ -75,6 +77,7 @@ class MarkingStoreConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -90,5 +93,6 @@ class MarkingStoreConfig
     
         return $output;
     }
+    
 
 }

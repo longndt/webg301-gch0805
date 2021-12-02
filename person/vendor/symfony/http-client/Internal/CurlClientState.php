@@ -22,14 +22,17 @@ use Psr\Log\LoggerInterface;
  */
 final class CurlClientState extends ClientState
 {
-    public \CurlMultiHandle $handle;
+    /** @var \CurlMultiHandle|resource */
+    public $handle;
     /** @var PushedResponse[] */
-    public array $pushedResponses = [];
-    public DnsCache $dnsCache;
+    public $pushedResponses = [];
+    /** @var DnsCache */
+    public $dnsCache;
     /** @var float[] */
-    public array $pauseExpiries = [];
-    public int $execCounter = \PHP_INT_MIN;
-    public ?LoggerInterface $logger = null;
+    public $pauseExpiries = [];
+    public $execCounter = \PHP_INT_MIN;
+    /** @var LoggerInterface|null */
+    public $logger;
 
     public function __construct()
     {
@@ -49,7 +52,7 @@ final class CurlClientState extends ClientState
         $this->dnsCache->evictions = $this->dnsCache->evictions ?: $this->dnsCache->removals;
         $this->dnsCache->removals = $this->dnsCache->hostnames = [];
 
-        if ($this->handle instanceof \CurlMultiHandle) {
+        if (\is_resource($this->handle) || $this->handle instanceof \CurlMultiHandle) {
             if (\defined('CURLMOPT_PUSHFUNCTION')) {
                 curl_multi_setopt($this->handle, \CURLMOPT_PUSHFUNCTION, null);
             }
@@ -59,7 +62,7 @@ final class CurlClientState extends ClientState
         }
 
         foreach ($this->openHandles as [$ch]) {
-            if ($ch instanceof \CurlHandle) {
+            if (\is_resource($ch) || $ch instanceof \CurlHandle) {
                 curl_setopt($ch, \CURLOPT_VERBOSE, false);
             }
         }

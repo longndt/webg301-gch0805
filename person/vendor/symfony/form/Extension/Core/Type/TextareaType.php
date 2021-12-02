@@ -29,7 +29,7 @@ class TextareaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent(): ?string
+    public function getParent()
     {
         return TextType::class;
     }
@@ -37,7 +37,7 @@ class TextareaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix(): string
+    public function getBlockPrefix()
     {
         return 'textarea';
     }

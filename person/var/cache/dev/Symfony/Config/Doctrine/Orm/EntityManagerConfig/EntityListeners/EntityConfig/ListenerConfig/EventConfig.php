@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class EventConfig 
 {
@@ -20,7 +22,7 @@ class EventConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function type($value): static
+    public function type($value): self
     {
         $this->type = $value;
     
@@ -32,7 +34,7 @@ class EventConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function method($value): static
+    public function method($value): self
     {
         $this->method = $value;
     
@@ -57,6 +59,7 @@ class EventConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -69,5 +72,6 @@ class EventConfig
     
         return $output;
     }
+    
 
 }

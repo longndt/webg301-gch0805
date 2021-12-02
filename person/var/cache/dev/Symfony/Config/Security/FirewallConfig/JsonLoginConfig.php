@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class JsonLoginConfig 
 {
@@ -28,7 +30,7 @@ class JsonLoginConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function provider($value): static
+    public function provider($value): self
     {
         $this->provider = $value;
     
@@ -40,7 +42,7 @@ class JsonLoginConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function rememberMe($value): static
+    public function rememberMe($value): self
     {
         $this->rememberMe = $value;
     
@@ -52,7 +54,7 @@ class JsonLoginConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function successHandler($value): static
+    public function successHandler($value): self
     {
         $this->successHandler = $value;
     
@@ -64,7 +66,7 @@ class JsonLoginConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function failureHandler($value): static
+    public function failureHandler($value): self
     {
         $this->failureHandler = $value;
     
@@ -76,7 +78,7 @@ class JsonLoginConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function checkPath($value): static
+    public function checkPath($value): self
     {
         $this->checkPath = $value;
     
@@ -88,7 +90,7 @@ class JsonLoginConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function useForward($value): static
+    public function useForward($value): self
     {
         $this->useForward = $value;
     
@@ -100,7 +102,7 @@ class JsonLoginConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function requirePreviousSession($value): static
+    public function requirePreviousSession($value): self
     {
         $this->requirePreviousSession = $value;
     
@@ -112,7 +114,7 @@ class JsonLoginConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function loginPath($value): static
+    public function loginPath($value): self
     {
         $this->loginPath = $value;
     
@@ -124,7 +126,7 @@ class JsonLoginConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function usernamePath($value): static
+    public function usernamePath($value): self
     {
         $this->usernamePath = $value;
     
@@ -136,7 +138,7 @@ class JsonLoginConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function passwordPath($value): static
+    public function passwordPath($value): self
     {
         $this->passwordPath = $value;
     
@@ -201,6 +203,7 @@ class JsonLoginConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -237,5 +240,6 @@ class JsonLoginConfig
     
         return $output;
     }
+    
 
 }

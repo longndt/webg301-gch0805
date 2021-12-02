@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class LoggerConfig 
 {
@@ -20,7 +22,7 @@ class LoggerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function name($value): static
+    public function name($value): self
     {
         $this->name = $value;
     
@@ -32,7 +34,7 @@ class LoggerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function service($value): static
+    public function service($value): self
     {
         $this->service = $value;
     
@@ -57,6 +59,7 @@ class LoggerConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -69,5 +72,6 @@ class LoggerConfig
     
         return $output;
     }
+    
 
 }

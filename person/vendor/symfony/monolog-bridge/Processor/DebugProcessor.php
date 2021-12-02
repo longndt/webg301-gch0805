@@ -19,9 +19,9 @@ use Symfony\Contracts\Service\ResetInterface;
 
 class DebugProcessor implements DebugLoggerInterface, ResetInterface
 {
-    private array $records = [];
-    private array $errorCount = [];
-    private ?RequestStack $requestStack;
+    private $records = [];
+    private $errorCount = [];
+    private $requestStack;
 
     public function __construct(RequestStack $requestStack = null)
     {
@@ -32,17 +32,8 @@ class DebugProcessor implements DebugLoggerInterface, ResetInterface
     {
         $hash = $this->requestStack && ($request = $this->requestStack->getCurrentRequest()) ? spl_object_hash($request) : '';
 
-        $timestamp = $timestampRfc3339 = false;
-        if ($record['datetime'] instanceof \DateTimeInterface) {
-            $timestamp = $record['datetime']->getTimestamp();
-            $timestampRfc3339 = $record['datetime']->format(\DateTimeInterface::RFC3339_EXTENDED);
-        } elseif (false !== $timestamp = strtotime($record['datetime'])) {
-            $timestampRfc3339 = (new \DateTimeImmutable($record['datetime']))->format(\DateTimeInterface::RFC3339_EXTENDED);
-        }
-
         $this->records[$hash][] = [
-            'timestamp' => $timestamp,
-            'timestamp_rfc3339' => $timestampRfc3339,
+            'timestamp' => $record['datetime'] instanceof \DateTimeInterface ? $record['datetime']->getTimestamp() : strtotime($record['datetime']),
             'message' => $record['message'],
             'priority' => $record['level'],
             'priorityName' => $record['level_name'],
@@ -68,7 +59,7 @@ class DebugProcessor implements DebugLoggerInterface, ResetInterface
     /**
      * {@inheritdoc}
      */
-    public function getLogs(Request $request = null): array
+    public function getLogs(Request $request = null)
     {
         if (null !== $request) {
             return $this->records[spl_object_hash($request)] ?? [];
@@ -84,7 +75,7 @@ class DebugProcessor implements DebugLoggerInterface, ResetInterface
     /**
      * {@inheritdoc}
      */
-    public function countErrors(Request $request = null): int
+    public function countErrors(Request $request = null)
     {
         if (null !== $request) {
             return $this->errorCount[spl_object_hash($request)] ?? 0;

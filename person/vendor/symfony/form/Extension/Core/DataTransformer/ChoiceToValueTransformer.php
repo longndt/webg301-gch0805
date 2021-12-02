@@ -20,19 +20,19 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  */
 class ChoiceToValueTransformer implements DataTransformerInterface
 {
-    private ChoiceListInterface $choiceList;
+    private $choiceList;
 
     public function __construct(ChoiceListInterface $choiceList)
     {
         $this->choiceList = $choiceList;
     }
 
-    public function transform(mixed $choice): mixed
+    public function transform($choice)
     {
         return (string) current($this->choiceList->getValuesForChoices([$choice]));
     }
 
-    public function reverseTransform(mixed $value): mixed
+    public function reverseTransform($value)
     {
         if (null !== $value && !\is_string($value)) {
             throw new TransformationFailedException('Expected a string or null.');

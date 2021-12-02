@@ -1,11 +1,6 @@
 CHANGELOG
 =========
 
-6.0
----
-
- * The `twig` service is now private
-
 5.3
 ---
 

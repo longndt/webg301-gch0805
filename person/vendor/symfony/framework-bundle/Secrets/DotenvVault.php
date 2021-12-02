@@ -18,7 +18,7 @@ namespace Symfony\Bundle\FrameworkBundle\Secrets;
  */
 class DotenvVault extends AbstractVault
 {
-    private string $dotenvFile;
+    private $dotenvFile;
 
     public function __construct(string $dotenvFile)
     {

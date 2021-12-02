@@ -24,8 +24,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class EntityFactory implements UserProviderFactoryInterface
 {
-    private string $key;
-    private string $providerId;
+    private $key;
+    private $providerId;
 
     public function __construct(string $key, string $providerId)
     {

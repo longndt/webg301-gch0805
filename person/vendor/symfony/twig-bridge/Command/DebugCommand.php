@@ -11,10 +11,7 @@
 
 namespace Symfony\Bridge\Twig\Command;
 
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Completion\CompletionInput;
-use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
@@ -33,20 +30,17 @@ use Twig\Loader\FilesystemLoader;
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-#[AsCommand(name: 'debug:twig', description: 'Show a list of twig functions, filters, globals and tests')]
 class DebugCommand extends Command
 {
-    private Environment $twig;
-    private ?string $projectDir;
-    private array $bundlesMetadata;
-    private ?string $twigDefaultPath;
+    protected static $defaultName = 'debug:twig';
+    protected static $defaultDescription = 'Show a list of twig functions, filters, globals and tests';
 
-    /**
-     * @var FilesystemLoader[]
-     */
-    private array $filesystemLoaders;
-
-    private ?FileLinkFormatter $fileLinkFormatter;
+    private $twig;
+    private $projectDir;
+    private $bundlesMetadata;
+    private $twigDefaultPath;
+    private $filesystemLoaders;
+    private $fileLinkFormatter;
 
     public function __construct(Environment $twig, string $projectDir = null, array $bundlesMetadata = [], string $twigDefaultPath = null, FileLinkFormatter $fileLinkFormatter = null)
     {
@@ -67,6 +61,7 @@ class DebugCommand extends Command
                 new InputOption('filter', null, InputOption::VALUE_REQUIRED, 'Show details for all entries matching this filter'),
                 new InputOption('format', null, InputOption::VALUE_REQUIRED, 'The output format (text or json)', 'text'),
             ])
+            ->setDescription(self::$defaultDescription)
             ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command outputs a list of twig functions,
 filters, globals and tests.
@@ -91,7 +86,7 @@ EOF
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
         $name = $input->getArgument('name');
@@ -113,17 +108,6 @@ EOF
         }
 
         return 0;
-    }
-
-    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
-    {
-        if ($input->mustSuggestArgumentValuesFor('name')) {
-            $suggestions->suggestValues(array_keys($this->getLoaderPaths()));
-        }
-
-        if ($input->mustSuggestOptionValuesFor('format')) {
-            $suggestions->suggestValues(['text', 'json']);
-        }
     }
 
     private function displayPathsText(SymfonyStyle $io, string $name)
@@ -309,7 +293,7 @@ EOF
         return $loaderPaths;
     }
 
-    private function getMetadata(string $type, mixed $entity)
+    private function getMetadata(string $type, $entity)
     {
         if ('globals' === $type) {
             return $entity;
@@ -367,7 +351,7 @@ EOF
         return null;
     }
 
-    private function getPrettyMetadata(string $type, mixed $entity, bool $decorated): ?string
+    private function getPrettyMetadata(string $type, $entity, bool $decorated): ?string
     {
         if ('tests' === $type) {
             return '';
@@ -573,7 +557,7 @@ EOF
      */
     private function getFilesystemLoaders(): array
     {
-        if (isset($this->filesystemLoaders)) {
+        if (null !== $this->filesystemLoaders) {
             return $this->filesystemLoaders;
         }
         $this->filesystemLoaders = [];

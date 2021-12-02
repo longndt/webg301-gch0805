@@ -65,24 +65,16 @@ class __TwigTemplate_1850d17853e378f5b5fb9bf9a277f71ec267ee2c49935acfa69a92e13db
         echo "    </head>
     <body>
         <script>
-            if (null === localStorage.getItem('symfony/profiler/theme') || 'theme-auto' === localStorage.getItem('symfony/profiler/theme')) {
-                document.body.classList.add((matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light'));
-                // needed to respond dynamically to OS changes without having to refresh the page
-                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-                    document.body.classList.remove('theme-light', 'theme-dark');
-                    document.body.classList.add(e.matches ? 'theme-dark' : 'theme-light');
-                });
-            } else {
-                document.body.classList.add(localStorage.getItem('symfony/profiler/theme'));
-            }
-
-            document.body.classList.add(localStorage.getItem('symfony/profiler/width') || 'width-normal');
+            document.body.classList.add(
+                localStorage.getItem('symfony/profiler/theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light'),
+                localStorage.getItem('symfony/profiler/width') || 'width-normal'
+            );
         </script>
 
         ";
-        // line 32
+        // line 24
         $this->displayBlock('body', $context, $blocks);
-        // line 33
+        // line 25
         echo "    </body>
 </html>
 ";
@@ -139,7 +131,7 @@ class __TwigTemplate_1850d17853e378f5b5fb9bf9a277f71ec267ee2c49935acfa69a92e13db
 
     }
 
-    // line 32
+    // line 24
     public function block_body($context, array $blocks = [])
     {
         $macros = $this->macros;
@@ -170,7 +162,7 @@ class __TwigTemplate_1850d17853e378f5b5fb9bf9a277f71ec267ee2c49935acfa69a92e13db
 
     public function getDebugInfo()
     {
-        return array (  143 => 32,  130 => 12,  127 => 11,  117 => 10,  98 => 7,  86 => 33,  84 => 32,  65 => 15,  63 => 10,  57 => 7,  51 => 4,  46 => 1,);
+        return array (  135 => 24,  122 => 12,  119 => 11,  109 => 10,  90 => 7,  78 => 25,  76 => 24,  65 => 15,  63 => 10,  57 => 7,  51 => 4,  46 => 1,);
     }
 
     public function getSourceContext()
@@ -192,23 +184,15 @@ class __TwigTemplate_1850d17853e378f5b5fb9bf9a277f71ec267ee2c49935acfa69a92e13db
     </head>
     <body>
         <script>
-            if (null === localStorage.getItem('symfony/profiler/theme') || 'theme-auto' === localStorage.getItem('symfony/profiler/theme')) {
-                document.body.classList.add((matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light'));
-                // needed to respond dynamically to OS changes without having to refresh the page
-                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-                    document.body.classList.remove('theme-light', 'theme-dark');
-                    document.body.classList.add(e.matches ? 'theme-dark' : 'theme-light');
-                });
-            } else {
-                document.body.classList.add(localStorage.getItem('symfony/profiler/theme'));
-            }
-
-            document.body.classList.add(localStorage.getItem('symfony/profiler/width') || 'width-normal');
+            document.body.classList.add(
+                localStorage.getItem('symfony/profiler/theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light'),
+                localStorage.getItem('symfony/profiler/width') || 'width-normal'
+            );
         </script>
 
         {% block body '' %}
     </body>
 </html>
-", "@WebProfiler/Profiler/base.html.twig", "C:\\workspace\\htdocs\\webg301-gch0805\\person\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Profiler\\base.html.twig");
+", "@WebProfiler/Profiler/base.html.twig", "C:\\htdocs\\GCH0805\\form\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Profiler\\base.html.twig");
     }
 }

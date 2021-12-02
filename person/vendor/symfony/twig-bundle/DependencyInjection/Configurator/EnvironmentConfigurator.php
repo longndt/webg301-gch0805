@@ -24,12 +24,12 @@ class_exists(Environment::class);
  */
 class EnvironmentConfigurator
 {
-    private string $dateFormat;
-    private string $intervalFormat;
-    private ?string $timezone;
-    private int $decimals;
-    private string $decimalPoint;
-    private string $thousandsSeparator;
+    private $dateFormat;
+    private $intervalFormat;
+    private $timezone;
+    private $decimals;
+    private $decimalPoint;
+    private $thousandsSeparator;
 
     public function __construct(string $dateFormat, string $intervalFormat, ?string $timezone, int $decimals, string $decimalPoint, string $thousandsSeparator)
     {

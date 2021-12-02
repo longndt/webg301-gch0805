@@ -11,7 +11,6 @@
 
 namespace Symfony\Component\Serializer\Normalizer;
 
-use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 
@@ -26,8 +25,10 @@ class DateTimeZoneNormalizer implements NormalizerInterface, DenormalizerInterfa
      * {@inheritdoc}
      *
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
-    public function normalize(mixed $object, string $format = null, array $context = []): string
+    public function normalize($object, string $format = null, array $context = [])
     {
         if (!$object instanceof \DateTimeZone) {
             throw new InvalidArgumentException('The object must be an instance of "\DateTimeZone".');
@@ -39,7 +40,7 @@ class DateTimeZoneNormalizer implements NormalizerInterface, DenormalizerInterfa
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization(mixed $data, string $format = null): bool
+    public function supportsNormalization($data, string $format = null)
     {
         return $data instanceof \DateTimeZone;
     }
@@ -48,24 +49,26 @@ class DateTimeZoneNormalizer implements NormalizerInterface, DenormalizerInterfa
      * {@inheritdoc}
      *
      * @throws NotNormalizableValueException
+     *
+     * @return \DateTimeZone
      */
-    public function denormalize(mixed $data, string $type, string $format = null, array $context = []): \DateTimeZone
+    public function denormalize($data, string $type, string $format = null, array $context = [])
     {
         if ('' === $data || null === $data) {
-            throw NotNormalizableValueException::createForUnexpectedDataType('The data is either an empty string or null, you should pass a string that can be parsed as a DateTimeZone.', $data, [Type::BUILTIN_TYPE_STRING], $context['deserialization_path'] ?? null, true);
+            throw new NotNormalizableValueException('The data is either an empty string or null, you should pass a string that can be parsed as a DateTimeZone.');
         }
 
         try {
             return new \DateTimeZone($data);
         } catch (\Exception $e) {
-            throw NotNormalizableValueException::createForUnexpectedDataType($e->getMessage(), $data, [Type::BUILTIN_TYPE_STRING], $context['deserialization_path'] ?? null, true, $e->getCode(), $e);
+            throw new NotNormalizableValueException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization(mixed $data, string $type, string $format = null): bool
+    public function supportsDenormalization($data, string $type, string $format = null)
     {
         return \DateTimeZone::class === $type;
     }

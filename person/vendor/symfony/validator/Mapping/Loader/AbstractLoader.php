@@ -60,12 +60,14 @@ abstract class AbstractLoader implements LoaderInterface
      *                        {@link addNamespaceAlias()}.
      * @param mixed  $options The constraint options
      *
+     * @return Constraint
+     *
      * @throws MappingException If the namespace prefix is undefined
      */
-    protected function newConstraint(string $name, mixed $options = null): Constraint
+    protected function newConstraint(string $name, $options = null)
     {
         if (str_contains($name, '\\') && class_exists($name)) {
-            $className = $name;
+            $className = (string) $name;
         } elseif (str_contains($name, ':')) {
             [$prefix, $className] = explode(':', $name, 2);
 

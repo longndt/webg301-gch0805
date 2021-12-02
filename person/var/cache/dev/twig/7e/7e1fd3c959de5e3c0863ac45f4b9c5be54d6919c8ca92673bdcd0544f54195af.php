@@ -277,6 +277,6 @@ class __TwigTemplate_fbf4a810d3cd55a76d2788e1fc291dc12368b9dfd21e36b4c3b1d11b31e
     {% set attr = attr|merge({class: (attr.class|default('') ~ ' button')|trim}) %}
     {{- parent() -}}
 {%- endblock button_widget %}
-", "foundation_6_layout.html.twig", "C:\\workspace\\htdocs\\webg301-gch0805\\person\\vendor\\symfony\\twig-bridge\\Resources\\views\\Form\\foundation_6_layout.html.twig");
+", "foundation_6_layout.html.twig", "C:\\htdocs\\GCH0805\\form\\vendor\\symfony\\twig-bridge\\Resources\\views\\Form\\foundation_6_layout.html.twig");
     }
 }

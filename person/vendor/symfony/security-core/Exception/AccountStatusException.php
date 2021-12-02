@@ -22,12 +22,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 abstract class AccountStatusException extends AuthenticationException
 {
-    private UserInterface $user;
+    private $user;
 
     /**
      * Get the user.
+     *
+     * @return UserInterface
      */
-    public function getUser(): UserInterface
+    public function getUser()
     {
         return $this->user;
     }

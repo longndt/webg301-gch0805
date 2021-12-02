@@ -11,7 +11,6 @@
 
 namespace Symfony\Component\Mailer\Transport\Smtp;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Exception\LogicException;
@@ -22,6 +21,7 @@ use Symfony\Component\Mailer\Transport\AbstractTransport;
 use Symfony\Component\Mailer\Transport\Smtp\Stream\AbstractStream;
 use Symfony\Component\Mailer\Transport\Smtp\Stream\SocketStream;
 use Symfony\Component\Mime\RawMessage;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Sends emails over SMTP.
@@ -31,14 +31,14 @@ use Symfony\Component\Mime\RawMessage;
  */
 class SmtpTransport extends AbstractTransport
 {
-    private bool $started = false;
-    private int $restartThreshold = 100;
-    private int $restartThresholdSleep = 0;
-    private int $restartCounter = 0;
-    private int $pingThreshold = 100;
-    private float $lastMessageTime = 0;
-    private AbstractStream $stream;
-    private string $domain = '[127.0.0.1]';
+    private $started = false;
+    private $restartThreshold = 100;
+    private $restartThresholdSleep = 0;
+    private $restartCounter;
+    private $pingThreshold = 100;
+    private $lastMessageTime = 0;
+    private $stream;
+    private $domain = '[127.0.0.1]';
 
     public function __construct(AbstractStream $stream = null, EventDispatcherInterface $dispatcher = null, LoggerInterface $logger = null)
     {
@@ -59,10 +59,8 @@ class SmtpTransport extends AbstractTransport
      *
      * @param int $threshold The maximum number of messages (0 to disable)
      * @param int $sleep     The number of seconds to sleep between stopping and re-starting the transport
-     *
-     * @return $this
      */
-    public function setRestartThreshold(int $threshold, int $sleep = 0): static
+    public function setRestartThreshold(int $threshold, int $sleep = 0): self
     {
         $this->restartThreshold = $threshold;
         $this->restartThresholdSleep = $sleep;
@@ -85,7 +83,7 @@ class SmtpTransport extends AbstractTransport
      *
      * @return $this
      */
-    public function setPingThreshold(int $seconds): static
+    public function setPingThreshold(int $seconds): self
     {
         $this->pingThreshold = $seconds;
 
@@ -101,10 +99,8 @@ class SmtpTransport extends AbstractTransport
      * If your server does not have a domain name, use the IP address. This will
      * automatically be wrapped in square brackets as described in RFC 5321,
      * section 4.1.3.
-     *
-     * @return $this
      */
-    public function setLocalDomain(string $domain): static
+    public function setLocalDomain(string $domain): self
     {
         if ('' !== $domain && '[' !== $domain[0]) {
             if (filter_var($domain, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
@@ -170,6 +166,8 @@ class SmtpTransport extends AbstractTransport
      * Runs a command against the stream, expecting the given response codes.
      *
      * @param int[] $codes
+     *
+     * @return string The server response
      *
      * @throws TransportException when an invalid response if received
      *
@@ -342,7 +340,10 @@ class SmtpTransport extends AbstractTransport
         $this->restartCounter = 0;
     }
 
-    public function __sleep(): array
+    /**
+     * @return array
+     */
+    public function __sleep()
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }

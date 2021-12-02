@@ -22,13 +22,13 @@ use Symfony\Component\Intl\Data\Bundle\Writer\BundleWriterInterface;
  */
 class GeneratorConfig
 {
-    private string $sourceDir;
-    private string $icuVersion;
+    private $sourceDir;
+    private $icuVersion;
 
     /**
      * @var BundleWriterInterface[]
      */
-    private array $bundleWriters = [];
+    private $bundleWriters = [];
 
     public function __construct(string $sourceDir, string $icuVersion)
     {
@@ -57,6 +57,8 @@ class GeneratorConfig
     /**
      * Returns the directory where the source versions of the resource bundles
      * are stored.
+     *
+     * @return string An absolute path to a directory
      */
     public function getSourceDir(): string
     {
@@ -65,6 +67,8 @@ class GeneratorConfig
 
     /**
      * Returns the ICU version of the bundles being converted.
+     *
+     * @return string The ICU version string
      */
     public function getIcuVersion(): string
     {

@@ -11,6 +11,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class DbalConfig 
 {
@@ -23,7 +25,7 @@ class DbalConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function defaultConnection($value): static
+    public function defaultConnection($value): self
     {
         $this->defaultConnection = $value;
     
@@ -77,6 +79,7 @@ class DbalConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -92,5 +95,6 @@ class DbalConfig
     
         return $output;
     }
+    
 
 }

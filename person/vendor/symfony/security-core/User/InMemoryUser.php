@@ -19,104 +19,58 @@ namespace Symfony\Component\Security\Core\User;
  * @author Robin Chalas <robin.chalas@gmail.com>
  * @author Fabien Potencier <fabien@symfony.com>
  */
-final class InMemoryUser implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
+final class InMemoryUser extends User
 {
-    private string $username;
-    private ?string $password;
-    private bool $enabled;
-    private array $roles;
-
-    public function __construct(?string $username, ?string $password, array $roles = [], bool $enabled = true)
-    {
-        if ('' === $username || null === $username) {
-            throw new \InvalidArgumentException('The username cannot be empty.');
-        }
-
-        $this->username = $username;
-        $this->password = $password;
-        $this->enabled = $enabled;
-        $this->roles = $roles;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getUserIdentifier();
-    }
-
     /**
      * {@inheritdoc}
-     */
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    /**
-     * Returns the identifier for this user (e.g. its username or email address).
-     */
-    public function getUserIdentifier(): string
-    {
-        return $this->username;
-    }
-
-    /**
-     * Checks whether the user is enabled.
      *
-     * Internally, if this method returns false, the authentication system
-     * will throw a DisabledException and prevent login.
-     *
-     * @return bool true if the user is enabled, false otherwise
-     *
-     * @see DisabledException
+     * @deprecated since Symfony 5.3
      */
-    public function isEnabled(): bool
+    public function isAccountNonExpired(): bool
     {
-        return $this->enabled;
+        trigger_deprecation('symfony/security-core', '5.3', 'Method "%s()" is deprecated, you should stop using it.', __METHOD__);
+
+        return parent::isAccountNonExpired();
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated since Symfony 5.3
      */
-    public function eraseCredentials()
+    public function isAccountNonLocked(): bool
     {
+        trigger_deprecation('symfony/security-core', '5.3', 'Method "%s()" is deprecated, you should stop using it.', __METHOD__);
+
+        return parent::isAccountNonLocked();
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated since Symfony 5.3
      */
-    public function isEqualTo(UserInterface $user): bool
+    public function isCredentialsNonExpired(): bool
     {
-        if (!$user instanceof self) {
-            return false;
-        }
+        trigger_deprecation('symfony/security-core', '5.3', 'Method "%s()" is deprecated, you should stop using it.', __METHOD__);
 
-        if ($this->getPassword() !== $user->getPassword()) {
-            return false;
-        }
+        return parent::isCredentialsNonExpired();
+    }
 
-        $currentRoles = array_map('strval', (array) $this->getRoles());
-        $newRoles = array_map('strval', (array) $user->getRoles());
-        $rolesChanged = \count($currentRoles) !== \count($newRoles) || \count($currentRoles) !== \count(array_intersect($currentRoles, $newRoles));
-        if ($rolesChanged) {
-            return false;
-        }
+    /**
+     * @deprecated since Symfony 5.3
+     */
+    public function getExtraFields(): array
+    {
+        trigger_deprecation('symfony/security-core', '5.3', 'Method "%s()" is deprecated, you should stop using it.', __METHOD__);
 
-        if ($this->getUserIdentifier() !== $user->getUserIdentifier()) {
-            return false;
-        }
+        return parent::getExtraFields();
+    }
 
-        if ($this->isEnabled() !== $user->isEnabled()) {
-            return false;
-        }
+    public function setPassword(string $password)
+    {
+        trigger_deprecation('symfony/security-core', '5.3', 'Method "%s()" is deprecated, you should stop using it.', __METHOD__);
 
-        return true;
+        parent::setPassword($password);
     }
 }

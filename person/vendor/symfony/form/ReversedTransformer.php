@@ -31,7 +31,7 @@ class ReversedTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform(mixed $value): mixed
+    public function transform($value)
     {
         return $this->reversedTransformer->reverseTransform($value);
     }
@@ -39,7 +39,7 @@ class ReversedTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform(mixed $value): mixed
+    public function reverseTransform($value)
     {
         return $this->reversedTransformer->transform($value);
     }

@@ -13,6 +13,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class ProviderConfig 
 {
@@ -27,7 +29,7 @@ class ProviderConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function id($value): static
+    public function id($value): self
     {
         $this->id = $value;
     
@@ -111,6 +113,7 @@ class ProviderConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -132,5 +135,6 @@ class ProviderConfig
     
         return $output;
     }
+    
 
 }

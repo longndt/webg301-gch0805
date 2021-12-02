@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormEvents;
  */
 class DataCollectorListener implements EventSubscriberInterface
 {
-    private FormDataCollectorInterface $dataCollector;
+    private $dataCollector;
 
     public function __construct(FormDataCollectorInterface $dataCollector)
     {
@@ -34,7 +34,7 @@ class DataCollectorListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
         return [
             // High priority in order to be called as soon as possible

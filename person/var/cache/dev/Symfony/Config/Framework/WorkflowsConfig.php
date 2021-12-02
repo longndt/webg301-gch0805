@@ -10,6 +10,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class WorkflowsConfig 
 {
@@ -21,7 +23,7 @@ class WorkflowsConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -58,6 +60,7 @@ class WorkflowsConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -70,5 +73,6 @@ class WorkflowsConfig
     
         return $output;
     }
+    
 
 }

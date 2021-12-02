@@ -22,7 +22,7 @@ class CredentialsExpiredException extends AccountStatusException
     /**
      * {@inheritdoc}
      */
-    public function getMessageKey(): string
+    public function getMessageKey()
     {
         return 'Credentials have expired.';
     }

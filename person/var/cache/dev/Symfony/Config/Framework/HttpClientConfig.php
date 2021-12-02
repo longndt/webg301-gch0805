@@ -11,6 +11,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class HttpClientConfig 
 {
@@ -25,7 +27,7 @@ class HttpClientConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -38,7 +40,7 @@ class HttpClientConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function maxHostConnections($value): static
+    public function maxHostConnections($value): self
     {
         $this->maxHostConnections = $value;
     
@@ -62,7 +64,7 @@ class HttpClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function mockResponseFactory($value): static
+    public function mockResponseFactory($value): self
     {
         $this->mockResponseFactory = $value;
     
@@ -114,6 +116,7 @@ class HttpClientConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -135,5 +138,6 @@ class HttpClientConfig
     
         return $output;
     }
+    
 
 }

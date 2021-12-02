@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class WebProfilerConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInterface
 {
@@ -21,7 +23,7 @@ class WebProfilerConfig implements \Symfony\Component\Config\Builder\ConfigBuild
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function toolbar($value): static
+    public function toolbar($value): self
     {
         $this->toolbar = $value;
     
@@ -33,7 +35,7 @@ class WebProfilerConfig implements \Symfony\Component\Config\Builder\ConfigBuild
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function interceptRedirects($value): static
+    public function interceptRedirects($value): self
     {
         $this->interceptRedirects = $value;
     
@@ -45,7 +47,7 @@ class WebProfilerConfig implements \Symfony\Component\Config\Builder\ConfigBuild
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function excludedAjaxPaths($value): static
+    public function excludedAjaxPaths($value): self
     {
         $this->excludedAjaxPaths = $value;
     
@@ -56,6 +58,7 @@ class WebProfilerConfig implements \Symfony\Component\Config\Builder\ConfigBuild
     {
         return 'web_profiler';
     }
+            
     
     public function __construct(array $value = [])
     {
@@ -80,6 +83,7 @@ class WebProfilerConfig implements \Symfony\Component\Config\Builder\ConfigBuild
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -95,5 +99,6 @@ class WebProfilerConfig implements \Symfony\Component\Config\Builder\ConfigBuild
     
         return $output;
     }
+    
 
 }

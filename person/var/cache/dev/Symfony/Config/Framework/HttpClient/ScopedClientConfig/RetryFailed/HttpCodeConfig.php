@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class HttpCodeConfig 
 {
@@ -20,7 +22,7 @@ class HttpCodeConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function code($value): static
+    public function code($value): self
     {
         $this->code = $value;
     
@@ -28,11 +30,10 @@ class HttpCodeConfig
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function methods(ParamConfigurator|array $value): static
+    public function methods($value): self
     {
         $this->methods = $value;
     
@@ -57,6 +58,7 @@ class HttpCodeConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -69,5 +71,6 @@ class HttpCodeConfig
     
         return $output;
     }
+    
 
 }

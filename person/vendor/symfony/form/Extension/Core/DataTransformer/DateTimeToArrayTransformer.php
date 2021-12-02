@@ -21,9 +21,9 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  */
 class DateTimeToArrayTransformer extends BaseDateTimeTransformer
 {
-    private bool $pad;
-    private array $fields;
-    private \DateTimeInterface $referenceDate;
+    private $pad;
+    private $fields;
+    private $referenceDate;
 
     /**
      * @param string|null   $inputTimezone  The input timezone
@@ -45,9 +45,11 @@ class DateTimeToArrayTransformer extends BaseDateTimeTransformer
      *
      * @param \DateTimeInterface $dateTime A DateTimeInterface object
      *
+     * @return array Localized date
+     *
      * @throws TransformationFailedException If the given value is not a \DateTimeInterface
      */
-    public function transform(mixed $dateTime): array
+    public function transform($dateTime)
     {
         if (null === $dateTime) {
             return array_intersect_key([
@@ -98,10 +100,12 @@ class DateTimeToArrayTransformer extends BaseDateTimeTransformer
      *
      * @param array $value Localized date
      *
+     * @return \DateTime|null Normalized date
+     *
      * @throws TransformationFailedException If the given value is not an array,
      *                                       if the value could not be transformed
      */
-    public function reverseTransform(mixed $value): ?\DateTime
+    public function reverseTransform($value)
     {
         if (null === $value) {
             return null;

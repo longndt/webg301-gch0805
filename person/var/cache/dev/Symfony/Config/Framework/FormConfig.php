@@ -10,6 +10,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class FormConfig 
 {
@@ -22,7 +24,7 @@ class FormConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -41,11 +43,11 @@ class FormConfig
     }
     
     /**
-     * @default null
+     * @default true
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function legacyErrorMessages($value): static
+    public function legacyErrorMessages($value): self
     {
         $this->legacyErrorMessages = $value;
     
@@ -75,6 +77,7 @@ class FormConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -90,5 +93,6 @@ class FormConfig
     
         return $output;
     }
+    
 
 }

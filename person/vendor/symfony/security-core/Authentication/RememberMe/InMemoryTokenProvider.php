@@ -20,12 +20,12 @@ use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
  */
 class InMemoryTokenProvider implements TokenProviderInterface
 {
-    private array $tokens = [];
+    private $tokens = [];
 
     /**
      * {@inheritdoc}
      */
-    public function loadTokenBySeries(string $series): PersistentTokenInterface
+    public function loadTokenBySeries(string $series)
     {
         if (!isset($this->tokens[$series])) {
             throw new TokenNotFoundException('No token found.');

@@ -12,7 +12,7 @@
 namespace Symfony\Component\Security\Http\Event;
 
 use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
-use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -26,10 +26,10 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class CheckPassportEvent extends Event
 {
-    private AuthenticatorInterface $authenticator;
-    private Passport $passport;
+    private $authenticator;
+    private $passport;
 
-    public function __construct(AuthenticatorInterface $authenticator, Passport $passport)
+    public function __construct(AuthenticatorInterface $authenticator, PassportInterface $passport)
     {
         $this->authenticator = $authenticator;
         $this->passport = $passport;
@@ -40,7 +40,7 @@ class CheckPassportEvent extends Event
         return $this->authenticator;
     }
 
-    public function getPassport(): Passport
+    public function getPassport(): PassportInterface
     {
         return $this->passport;
     }

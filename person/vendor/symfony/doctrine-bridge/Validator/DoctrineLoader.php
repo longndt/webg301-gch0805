@@ -32,8 +32,8 @@ final class DoctrineLoader implements LoaderInterface
 {
     use AutoMappingTrait;
 
-    private EntityManagerInterface $entityManager;
-    private ?string $classValidatorRegexp;
+    private $entityManager;
+    private $classValidatorRegexp;
 
     public function __construct(EntityManagerInterface $entityManager, string $classValidatorRegexp = null)
     {

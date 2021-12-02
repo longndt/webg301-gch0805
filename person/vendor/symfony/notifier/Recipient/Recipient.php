@@ -35,7 +35,7 @@ class Recipient implements EmailRecipientInterface, SmsRecipientInterface
     /**
      * @return $this
      */
-    public function email(string $email): static
+    public function email(string $email): self
     {
         $this->email = $email;
 
@@ -47,7 +47,7 @@ class Recipient implements EmailRecipientInterface, SmsRecipientInterface
      *
      * @return $this
      */
-    public function phone(string $phone): static
+    public function phone(string $phone): self
     {
         $this->phone = $phone;
 

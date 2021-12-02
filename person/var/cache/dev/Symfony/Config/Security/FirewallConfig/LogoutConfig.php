@@ -10,6 +10,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class LogoutConfig 
 {
@@ -18,15 +20,17 @@ class LogoutConfig
     private $csrfTokenId;
     private $path;
     private $target;
+    private $successHandler;
     private $invalidateSession;
     private $deleteCookies;
+    private $handlers;
     
     /**
      * @default '_csrf_token'
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function csrfParameter($value): static
+    public function csrfParameter($value): self
     {
         $this->csrfParameter = $value;
     
@@ -38,7 +42,7 @@ class LogoutConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function csrfTokenGenerator($value): static
+    public function csrfTokenGenerator($value): self
     {
         $this->csrfTokenGenerator = $value;
     
@@ -50,7 +54,7 @@ class LogoutConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function csrfTokenId($value): static
+    public function csrfTokenId($value): self
     {
         $this->csrfTokenId = $value;
     
@@ -62,7 +66,7 @@ class LogoutConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function path($value): static
+    public function path($value): self
     {
         $this->path = $value;
     
@@ -74,9 +78,22 @@ class LogoutConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function target($value): static
+    public function target($value): self
     {
         $this->target = $value;
+    
+        return $this;
+    }
+    
+    /**
+     * @default null
+     * @param ParamConfigurator|mixed $value
+     * @deprecated The "success_handler" at path "logout" is deprecated, register a listener on the "Symfony\Component\Security\Http\Event\LogoutEvent" event instead.
+     * @return $this
+     */
+    public function successHandler($value): self
+    {
+        $this->successHandler = $value;
     
         return $this;
     }
@@ -86,7 +103,7 @@ class LogoutConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function invalidateSession($value): static
+    public function invalidateSession($value): self
     {
         $this->invalidateSession = $value;
     
@@ -103,6 +120,17 @@ class LogoutConfig
         }
     
         throw new InvalidConfigurationException('The node created by "deleteCookie()" has already been initialized. You cannot pass values the second time you call deleteCookie().');
+    }
+    
+    /**
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
+     * @return $this
+     */
+    public function handlers($value): self
+    {
+        $this->handlers = $value;
+    
+        return $this;
     }
     
     public function __construct(array $value = [])
@@ -133,6 +161,11 @@ class LogoutConfig
             unset($value['target']);
         }
     
+        if (isset($value['success_handler'])) {
+            $this->successHandler = $value['success_handler'];
+            unset($value['success_handler']);
+        }
+    
         if (isset($value['invalidate_session'])) {
             $this->invalidateSession = $value['invalidate_session'];
             unset($value['invalidate_session']);
@@ -143,10 +176,16 @@ class LogoutConfig
             unset($value['delete_cookies']);
         }
     
+        if (isset($value['handlers'])) {
+            $this->handlers = $value['handlers'];
+            unset($value['handlers']);
+        }
+    
         if ([] !== $value) {
             throw new InvalidConfigurationException(sprintf('The following keys are not supported by "%s": ', __CLASS__).implode(', ', array_keys($value)));
         }
     }
+    
     
     public function toArray(): array
     {
@@ -166,14 +205,21 @@ class LogoutConfig
         if (null !== $this->target) {
             $output['target'] = $this->target;
         }
+        if (null !== $this->successHandler) {
+            $output['success_handler'] = $this->successHandler;
+        }
         if (null !== $this->invalidateSession) {
             $output['invalidate_session'] = $this->invalidateSession;
         }
         if (null !== $this->deleteCookies) {
             $output['delete_cookies'] = array_map(function ($v) { return $v->toArray(); }, $this->deleteCookies);
         }
+        if (null !== $this->handlers) {
+            $output['handlers'] = $this->handlers;
+        }
     
         return $output;
     }
+    
 
 }

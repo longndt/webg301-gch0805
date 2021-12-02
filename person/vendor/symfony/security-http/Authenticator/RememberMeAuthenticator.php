@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Exception\CookieTheftException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\RememberMe\RememberMeDetails;
 use Symfony\Component\Security\Http\RememberMe\RememberMeHandlerInterface;
@@ -43,11 +43,11 @@ use Symfony\Component\Security\Http\RememberMe\ResponseListener;
  */
 class RememberMeAuthenticator implements InteractiveAuthenticatorInterface
 {
-    private RememberMeHandlerInterface $rememberMeHandler;
-    private string $secret;
-    private TokenStorageInterface $tokenStorage;
-    private string $cookieName;
-    private ?LoggerInterface $logger;
+    private $rememberMeHandler;
+    private $secret;
+    private $tokenStorage;
+    private $cookieName;
+    private $logger;
 
     public function __construct(RememberMeHandlerInterface $rememberMeHandler, string $secret, TokenStorageInterface $tokenStorage, string $cookieName, LoggerInterface $logger = null)
     {
@@ -81,7 +81,7 @@ class RememberMeAuthenticator implements InteractiveAuthenticatorInterface
         return null;
     }
 
-    public function authenticate(Request $request): Passport
+    public function authenticate(Request $request): PassportInterface
     {
         $rawCookie = $request->cookies->get($this->cookieName);
         if (!$rawCookie) {
@@ -95,7 +95,7 @@ class RememberMeAuthenticator implements InteractiveAuthenticatorInterface
         }));
     }
 
-    public function createToken(Passport $passport, string $firewallName): TokenInterface
+    public function createAuthenticatedToken(PassportInterface $passport, string $firewallName): TokenInterface
     {
         return new RememberMeToken($passport->getUser(), $firewallName, $this->secret);
     }

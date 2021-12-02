@@ -15,6 +15,8 @@ use Symfony\Component\Runtime\ResolverInterface;
 
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ *
+ * @experimental in 5.3
  */
 class ClosureResolver implements ResolverInterface
 {

@@ -37,7 +37,7 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
     use HttpClientTrait;
     use LoggerAwareTrait;
 
-    private array $defaultOptions = self::OPTIONS_DEFAULTS + [
+    private $defaultOptions = self::OPTIONS_DEFAULTS + [
         'auth_ntlm' => null, // array|string - an array containing the username as first value, and optionally the
                              //   password as the second one; or string like username:password - enabling NTLM auth
         'extra' => [
@@ -47,10 +47,12 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
 
     /**
      * An internal object to share state between the client and its responses.
+     *
+     * @var CurlClientState
      */
-    private CurlClientState $multi;
+    private $multi;
 
-    private static array $curlVersion;
+    private static $curlVersion;
 
     /**
      * @param array $defaultOptions     Default request's options
@@ -86,7 +88,7 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
         }
 
         // Skip configuring HTTP/2 push when it's unsupported or buggy, see https://bugs.php.net/77535
-        if (0 >= $maxPendingPushes) {
+        if (0 >= $maxPendingPushes || \PHP_VERSION_ID < 70217 || (\PHP_VERSION_ID >= 70300 && \PHP_VERSION_ID < 70304)) {
             return;
         }
 
@@ -321,13 +323,15 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
     /**
      * {@inheritdoc}
      */
-    public function stream(ResponseInterface|iterable $responses, float $timeout = null): ResponseStreamInterface
+    public function stream($responses, float $timeout = null): ResponseStreamInterface
     {
         if ($responses instanceof CurlResponse) {
             $responses = [$responses];
+        } elseif (!is_iterable($responses)) {
+            throw new \TypeError(sprintf('"%s()" expects parameter 1 to be an iterable of CurlResponse objects, "%s" given.', __METHOD__, get_debug_type($responses)));
         }
 
-        if ($this->multi->handle instanceof \CurlMultiHandle) {
+        if (\is_resource($this->multi->handle) || $this->multi->handle instanceof \CurlMultiHandle) {
             $active = 0;
             while (\CURLM_CALL_MULTI_PERFORM === curl_multi_exec($this->multi->handle, $active));
         }
@@ -341,7 +345,10 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
         $this->multi->reset();
     }
 
-    public function __sleep(): array
+    /**
+     * @return array
+     */
+    public function __sleep()
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }

@@ -22,7 +22,7 @@ use Symfony\Component\Config\Resource\ResourceInterface;
  */
 class ContainerParametersResource implements ResourceInterface
 {
-    private array $parameters;
+    private $parameters;
 
     /**
      * @param array $parameters The container parameters to track
@@ -37,6 +37,9 @@ class ContainerParametersResource implements ResourceInterface
         return 'container_parameters_'.md5(serialize($this->parameters));
     }
 
+    /**
+     * @return array Tracked parameters
+     */
     public function getParameters(): array
     {
         return $this->parameters;

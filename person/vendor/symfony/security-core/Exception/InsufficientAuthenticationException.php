@@ -24,7 +24,7 @@ class InsufficientAuthenticationException extends AuthenticationException
     /**
      * {@inheritdoc}
      */
-    public function getMessageKey(): string
+    public function getMessageKey()
     {
         return 'Not privileged to request the resource.';
     }

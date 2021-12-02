@@ -36,15 +36,19 @@ class AnnotatedRouteControllerLoader extends AnnotationClassLoader
 
     /**
      * Makes the default route name more sane by removing common keywords.
+     *
+     * @return string
      */
-    protected function getDefaultRouteName(\ReflectionClass $class, \ReflectionMethod $method): string
+    protected function getDefaultRouteName(\ReflectionClass $class, \ReflectionMethod $method)
     {
-        $name = preg_replace('/(bundle|controller)_/', '_', parent::getDefaultRouteName($class, $method));
-
-        if (str_ends_with($method->name, 'Action') || str_ends_with($method->name, '_action')) {
-            $name = preg_replace('/action(_\d+)?$/', '\\1', $name);
-        }
-
-        return str_replace('__', '_', $name);
+        return preg_replace([
+            '/(bundle|controller)_/',
+            '/action(_\d+)?$/',
+            '/__/',
+        ], [
+            '_',
+            '\\1',
+            '_',
+        ], parent::getDefaultRouteName($class, $method));
     }
 }

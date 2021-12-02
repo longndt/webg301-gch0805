@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class HttpBasicConfig 
 {
@@ -20,7 +22,7 @@ class HttpBasicConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function provider($value): static
+    public function provider($value): self
     {
         $this->provider = $value;
     
@@ -32,7 +34,7 @@ class HttpBasicConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function realm($value): static
+    public function realm($value): self
     {
         $this->realm = $value;
     
@@ -57,6 +59,7 @@ class HttpBasicConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -69,5 +72,6 @@ class HttpBasicConfig
     
         return $output;
     }
+    
 
 }

@@ -19,7 +19,6 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Collection extends Composite
 {
     public const MISSING_FIELD_ERROR = '2fa2158c-2a7f-484b-98aa-975522539ff8';
@@ -39,20 +38,15 @@ class Collection extends Composite
     /**
      * {@inheritdoc}
      */
-    public function __construct(mixed $fields = null, array $groups = null, mixed $payload = null, bool $allowExtraFields = null, bool $allowMissingFields = null, string $extraFieldsMessage = null, string $missingFieldsMessage = null)
+    public function __construct($options = null)
     {
-        // no known options set? $fields is the fields array
-        if (\is_array($fields)
-            && !array_intersect(array_keys($fields), ['groups', 'fields', 'allowExtraFields', 'allowMissingFields', 'extraFieldsMessage', 'missingFieldsMessage'])) {
-            $fields = ['fields' => $fields];
+        // no known options set? $options is the fields array
+        if (\is_array($options)
+            && !array_intersect(array_keys($options), ['groups', 'fields', 'allowExtraFields', 'allowMissingFields', 'extraFieldsMessage', 'missingFieldsMessage'])) {
+            $options = ['fields' => $options];
         }
 
-        parent::__construct($fields, $groups, $payload);
-
-        $this->allowExtraFields = $allowExtraFields ?? $this->allowExtraFields;
-        $this->allowMissingFields = $allowMissingFields ?? $this->allowMissingFields;
-        $this->extraFieldsMessage = $extraFieldsMessage ?? $this->extraFieldsMessage;
-        $this->missingFieldsMessage = $missingFieldsMessage ?? $this->missingFieldsMessage;
+        parent::__construct($options);
     }
 
     /**
@@ -79,12 +73,12 @@ class Collection extends Composite
         }
     }
 
-    public function getRequiredOptions(): array
+    public function getRequiredOptions()
     {
         return ['fields'];
     }
 
-    protected function getCompositeOption(): string
+    protected function getCompositeOption()
     {
         return 'fields';
     }

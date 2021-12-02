@@ -21,12 +21,13 @@ use Symfony\Component\Cache\Traits\RedisProxy;
  */
 class SessionHandlerFactory
 {
-    public static function createHandler(object|string $connection): AbstractSessionHandler
+    /**
+     * @param \Redis|\RedisArray|\RedisCluster|\Predis\ClientInterface|RedisProxy|RedisClusterProxy|\Memcached|\PDO|string $connection Connection or DSN
+     */
+    public static function createHandler($connection): AbstractSessionHandler
     {
-        if (\is_string($connection) && $options = parse_url($connection)) {
-            parse_str($options['query'] ?? '', $options);
-        } else {
-            $options = [];
+        if (!\is_string($connection) && !\is_object($connection)) {
+            throw new \TypeError(sprintf('Argument 1 passed to "%s()" must be a string or a connection object, "%s" given.', __METHOD__, get_debug_type($connection)));
         }
 
         switch (true) {
@@ -60,7 +61,7 @@ class SessionHandlerFactory
                 $handlerClass = str_starts_with($connection, 'memcached:') ? MemcachedSessionHandler::class : RedisSessionHandler::class;
                 $connection = AbstractAdapter::createConnection($connection, ['lazy' => true]);
 
-                return new $handlerClass($connection, array_intersect_key($options, ['prefix' => 1, 'ttl' => 1]));
+                return new $handlerClass($connection);
 
             case str_starts_with($connection, 'pdo_oci://'):
                 if (!class_exists(DriverManager::class)) {
@@ -78,7 +79,7 @@ class SessionHandlerFactory
             case str_starts_with($connection, 'sqlsrv://'):
             case str_starts_with($connection, 'sqlite://'):
             case str_starts_with($connection, 'sqlite3://'):
-                return new PdoSessionHandler($connection, $options ?: []);
+                return new PdoSessionHandler($connection);
         }
 
         throw new \InvalidArgumentException(sprintf('Unsupported Connection: "%s".', $connection));

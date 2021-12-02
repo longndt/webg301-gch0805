@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class PeerFingerprintConfig 
 {
@@ -19,10 +21,9 @@ class PeerFingerprintConfig
     /**
      * @default null
      * @param ParamConfigurator|mixed $value
-     *
      * @return $this
      */
-    public function sha1(mixed $value): static
+    public function sha1($value): self
     {
         $this->sha1 = $value;
     
@@ -32,10 +33,9 @@ class PeerFingerprintConfig
     /**
      * @default null
      * @param ParamConfigurator|mixed $value
-     *
      * @return $this
      */
-    public function pinsha256(mixed $value): static
+    public function pinsha256($value): self
     {
         $this->pinsha256 = $value;
     
@@ -45,10 +45,9 @@ class PeerFingerprintConfig
     /**
      * @default null
      * @param ParamConfigurator|mixed $value
-     *
      * @return $this
      */
-    public function md5(mixed $value): static
+    public function md5($value): self
     {
         $this->md5 = $value;
     
@@ -78,6 +77,7 @@ class PeerFingerprintConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -93,5 +93,6 @@ class PeerFingerprintConfig
     
         return $output;
     }
+    
 
 }

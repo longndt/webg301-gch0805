@@ -27,9 +27,11 @@ class UuidToStringTransformer implements DataTransformerInterface
      *
      * @param Uuid $value A Uuid object
      *
+     * @return string|null A value as produced by Uid component
+     *
      * @throws TransformationFailedException If the given value is not a Uuid object
      */
-    public function transform(mixed $value): ?string
+    public function transform($value)
     {
         if (null === $value) {
             return null;
@@ -47,10 +49,12 @@ class UuidToStringTransformer implements DataTransformerInterface
      *
      * @param string $value A UUID string
      *
+     * @return Uuid|null An instance of Uuid
+     *
      * @throws TransformationFailedException If the given value is not a string,
      *                                       or could not be transformed
      */
-    public function reverseTransform(mixed $value): ?Uuid
+    public function reverseTransform($value)
     {
         if (null === $value || '' === $value) {
             return null;

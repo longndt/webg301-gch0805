@@ -10,6 +10,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class RememberMeConfig 
 {
@@ -35,7 +37,7 @@ class RememberMeConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function secret($value): static
+    public function secret($value): self
     {
         $this->secret = $value;
     
@@ -47,7 +49,7 @@ class RememberMeConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function service($value): static
+    public function service($value): self
     {
         $this->service = $value;
     
@@ -55,11 +57,10 @@ class RememberMeConfig
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function userProviders(ParamConfigurator|array $value): static
+    public function userProviders($value): self
     {
         $this->userProviders = $value;
     
@@ -71,7 +72,7 @@ class RememberMeConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function catchExceptions($value): static
+    public function catchExceptions($value): self
     {
         $this->catchExceptions = $value;
     
@@ -79,11 +80,10 @@ class RememberMeConfig
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function signatureProperties(ParamConfigurator|array $value): static
+    public function signatureProperties($value): self
     {
         $this->signatureProperties = $value;
     
@@ -107,7 +107,7 @@ class RememberMeConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function tokenVerifier($value): static
+    public function tokenVerifier($value): self
     {
         $this->tokenVerifier = $value;
     
@@ -119,7 +119,7 @@ class RememberMeConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function name($value): static
+    public function name($value): self
     {
         $this->name = $value;
     
@@ -131,7 +131,7 @@ class RememberMeConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function lifetime($value): static
+    public function lifetime($value): self
     {
         $this->lifetime = $value;
     
@@ -143,7 +143,7 @@ class RememberMeConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function path($value): static
+    public function path($value): self
     {
         $this->path = $value;
     
@@ -155,7 +155,7 @@ class RememberMeConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function domain($value): static
+    public function domain($value): self
     {
         $this->domain = $value;
     
@@ -167,7 +167,7 @@ class RememberMeConfig
      * @param ParamConfigurator|true|false|'auto' $value
      * @return $this
      */
-    public function secure($value): static
+    public function secure($value): self
     {
         $this->secure = $value;
     
@@ -179,7 +179,7 @@ class RememberMeConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function httponly($value): static
+    public function httponly($value): self
     {
         $this->httponly = $value;
     
@@ -191,7 +191,7 @@ class RememberMeConfig
      * @param ParamConfigurator|NULL|'lax'|'strict'|'none' $value
      * @return $this
      */
-    public function samesite($value): static
+    public function samesite($value): self
     {
         $this->samesite = $value;
     
@@ -203,7 +203,7 @@ class RememberMeConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function alwaysRememberMe($value): static
+    public function alwaysRememberMe($value): self
     {
         $this->alwaysRememberMe = $value;
     
@@ -215,7 +215,7 @@ class RememberMeConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function rememberMeParameter($value): static
+    public function rememberMeParameter($value): self
     {
         $this->rememberMeParameter = $value;
     
@@ -310,6 +310,7 @@ class RememberMeConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -364,5 +365,6 @@ class RememberMeConfig
     
         return $output;
     }
+    
 
 }

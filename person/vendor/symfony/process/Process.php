@@ -27,8 +27,6 @@ use Symfony\Component\Process\Pipes\WindowsPipes;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Romain Neutron <imprec@gmail.com>
- *
- * @implements \IteratorAggregate<string, string>
  */
 class Process implements \IteratorAggregate
 {
@@ -140,7 +138,7 @@ class Process implements \IteratorAggregate
      *
      * @throws LogicException When proc_open is not installed
      */
-    public function __construct(array $command, string $cwd = null, array $env = null, mixed $input = null, ?float $timeout = 60)
+    public function __construct(array $command, string $cwd = null, array $env = null, $input = null, ?float $timeout = 60)
     {
         if (!\function_exists('proc_open')) {
             throw new LogicException('The Process class relies on proc_open, which is not available on your PHP installation.');
@@ -185,9 +183,11 @@ class Process implements \IteratorAggregate
      * @param mixed          $input   The input as stream resource, scalar or \Traversable, or null for no input
      * @param int|float|null $timeout The timeout in seconds or null to disable
      *
+     * @return static
+     *
      * @throws LogicException When proc_open is not installed
      */
-    public static function fromShellCommandline(string $command, string $cwd = null, array $env = null, mixed $input = null, ?float $timeout = 60): static
+    public static function fromShellCommandline(string $command, string $cwd = null, array $env = null, $input = null, ?float $timeout = 60)
     {
         $process = new static([], $cwd, $env, $input, $timeout);
         $process->commandline = $command;
@@ -195,7 +195,10 @@ class Process implements \IteratorAggregate
         return $process;
     }
 
-    public function __sleep(): array
+    /**
+     * @return array
+     */
+    public function __sleep()
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }
@@ -261,7 +264,7 @@ class Process implements \IteratorAggregate
      *
      * @final
      */
-    public function mustRun(callable $callback = null, array $env = []): static
+    public function mustRun(callable $callback = null, array $env = []): self
     {
         if (0 !== $this->run($callback, $env)) {
             throw new ProcessFailedException($this);
@@ -302,10 +305,10 @@ class Process implements \IteratorAggregate
         $descriptors = $this->getDescriptors();
 
         if ($this->env) {
-            $env += '\\' === \DIRECTORY_SEPARATOR ? array_diff_ukey($this->env, $env, 'strcasecmp') : $this->env;
+            $env += $this->env;
         }
 
-        $env += '\\' === \DIRECTORY_SEPARATOR ? array_diff_ukey($this->getDefaultEnv(), $env, 'strcasecmp') : $this->getDefaultEnv();
+        $env += $this->getDefaultEnv();
 
         if (\is_array($commandline = $this->commandline)) {
             $commandline = implode(' ', array_map([$this, 'escapeArgument'], $commandline));
@@ -371,6 +374,8 @@ class Process implements \IteratorAggregate
      * @param callable|null $callback A PHP callback to run whenever there is some
      *                                output available on STDOUT or STDERR
      *
+     * @return static
+     *
      * @throws RuntimeException When process can't be launched
      * @throws RuntimeException When process is already running
      *
@@ -378,7 +383,7 @@ class Process implements \IteratorAggregate
      *
      * @final
      */
-    public function restart(callable $callback = null, array $env = []): static
+    public function restart(callable $callback = null, array $env = []): self
     {
         if ($this->isRunning()) {
             throw new RuntimeException('Process is already running.');
@@ -405,7 +410,7 @@ class Process implements \IteratorAggregate
      * @throws ProcessSignaledException When process stopped after receiving signal
      * @throws LogicException           When process is not yet started
      */
-    public function wait(callable $callback = null): int
+    public function wait(callable $callback = null)
     {
         $this->requireProcessIsStarted(__FUNCTION__);
 
@@ -488,7 +493,7 @@ class Process implements \IteratorAggregate
      *
      * @return int|null The process id if running, null otherwise
      */
-    public function getPid(): ?int
+    public function getPid()
     {
         return $this->isRunning() ? $this->processInformation['pid'] : null;
     }
@@ -504,7 +509,7 @@ class Process implements \IteratorAggregate
      * @throws RuntimeException In case --enable-sigchild is activated and the process can't be killed
      * @throws RuntimeException In case of failure
      */
-    public function signal(int $signal): static
+    public function signal(int $signal)
     {
         $this->doSignal($signal, true);
 
@@ -519,13 +524,13 @@ class Process implements \IteratorAggregate
      * @throws RuntimeException In case the process is already running
      * @throws LogicException   if an idle timeout is set
      */
-    public function disableOutput(): static
+    public function disableOutput()
     {
         if ($this->isRunning()) {
             throw new RuntimeException('Disabling output while the process is running is not possible.');
         }
         if (null !== $this->idleTimeout) {
-            throw new LogicException('Output cannot be disabled while an idle timeout is set.');
+            throw new LogicException('Output can not be disabled while an idle timeout is set.');
         }
 
         $this->outputDisabled = true;
@@ -540,7 +545,7 @@ class Process implements \IteratorAggregate
      *
      * @throws RuntimeException In case the process is already running
      */
-    public function enableOutput(): static
+    public function enableOutput()
     {
         if ($this->isRunning()) {
             throw new RuntimeException('Enabling output while the process is running is not possible.');
@@ -553,8 +558,10 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns true in case the output is disabled, false otherwise.
+     *
+     * @return bool
      */
-    public function isOutputDisabled(): bool
+    public function isOutputDisabled()
     {
         return $this->outputDisabled;
     }
@@ -562,10 +569,12 @@ class Process implements \IteratorAggregate
     /**
      * Returns the current output of the process (STDOUT).
      *
+     * @return string The process output
+     *
      * @throws LogicException in case the output has been disabled
      * @throws LogicException In case the process is not started
      */
-    public function getOutput(): string
+    public function getOutput()
     {
         $this->readPipesForOutput(__FUNCTION__);
 
@@ -582,10 +591,12 @@ class Process implements \IteratorAggregate
      * In comparison with the getOutput method which always return the whole
      * output, this one returns the new output since the last call.
      *
+     * @return string The process output since the last call
+     *
      * @throws LogicException in case the output has been disabled
      * @throws LogicException In case the process is not started
      */
-    public function getIncrementalOutput(): string
+    public function getIncrementalOutput()
     {
         $this->readPipesForOutput(__FUNCTION__);
 
@@ -606,8 +617,11 @@ class Process implements \IteratorAggregate
      *
      * @throws LogicException in case the output has been disabled
      * @throws LogicException In case the process is not started
+     *
+     * @return \Generator
      */
-    public function getIterator(int $flags = 0): \Generator
+    #[\ReturnTypeWillChange]
+    public function getIterator(int $flags = 0)
     {
         $this->readPipesForOutput(__FUNCTION__, false);
 
@@ -659,7 +673,7 @@ class Process implements \IteratorAggregate
      *
      * @return $this
      */
-    public function clearOutput(): static
+    public function clearOutput()
     {
         ftruncate($this->stdout, 0);
         fseek($this->stdout, 0);
@@ -671,10 +685,12 @@ class Process implements \IteratorAggregate
     /**
      * Returns the current error output of the process (STDERR).
      *
+     * @return string The process error output
+     *
      * @throws LogicException in case the output has been disabled
      * @throws LogicException In case the process is not started
      */
-    public function getErrorOutput(): string
+    public function getErrorOutput()
     {
         $this->readPipesForOutput(__FUNCTION__);
 
@@ -692,10 +708,12 @@ class Process implements \IteratorAggregate
      * whole error output, this one returns the new error output since the last
      * call.
      *
+     * @return string The process error output since the last call
+     *
      * @throws LogicException in case the output has been disabled
      * @throws LogicException In case the process is not started
      */
-    public function getIncrementalErrorOutput(): string
+    public function getIncrementalErrorOutput()
     {
         $this->readPipesForOutput(__FUNCTION__);
 
@@ -714,7 +732,7 @@ class Process implements \IteratorAggregate
      *
      * @return $this
      */
-    public function clearErrorOutput(): static
+    public function clearErrorOutput()
     {
         ftruncate($this->stderr, 0);
         fseek($this->stderr, 0);
@@ -728,7 +746,7 @@ class Process implements \IteratorAggregate
      *
      * @return int|null The exit status code, null if the Process is not terminated
      */
-    public function getExitCode(): ?int
+    public function getExitCode()
     {
         $this->updateStatus(false);
 
@@ -746,7 +764,7 @@ class Process implements \IteratorAggregate
      * @see http://tldp.org/LDP/abs/html/exitcodes.html
      * @see http://en.wikipedia.org/wiki/Unix_signal
      */
-    public function getExitCodeText(): ?string
+    public function getExitCodeText()
     {
         if (null === $exitcode = $this->getExitCode()) {
             return null;
@@ -757,8 +775,10 @@ class Process implements \IteratorAggregate
 
     /**
      * Checks if the process ended successfully.
+     *
+     * @return bool true if the process ended successfully, false otherwise
      */
-    public function isSuccessful(): bool
+    public function isSuccessful()
     {
         return 0 === $this->getExitCode();
     }
@@ -768,9 +788,11 @@ class Process implements \IteratorAggregate
      *
      * It always returns false on Windows.
      *
+     * @return bool
+     *
      * @throws LogicException In case the process is not terminated
      */
-    public function hasBeenSignaled(): bool
+    public function hasBeenSignaled()
     {
         $this->requireProcessIsTerminated(__FUNCTION__);
 
@@ -782,15 +804,17 @@ class Process implements \IteratorAggregate
      *
      * It is only meaningful if hasBeenSignaled() returns true.
      *
+     * @return int
+     *
      * @throws RuntimeException In case --enable-sigchild is activated
      * @throws LogicException   In case the process is not terminated
      */
-    public function getTermSignal(): int
+    public function getTermSignal()
     {
         $this->requireProcessIsTerminated(__FUNCTION__);
 
         if ($this->isSigchildEnabled() && -1 === $this->processInformation['termsig']) {
-            throw new RuntimeException('This PHP has been compiled with --enable-sigchild. Term signal cannot be retrieved.');
+            throw new RuntimeException('This PHP has been compiled with --enable-sigchild. Term signal can not be retrieved.');
         }
 
         return $this->processInformation['termsig'];
@@ -801,9 +825,11 @@ class Process implements \IteratorAggregate
      *
      * It always returns false on Windows.
      *
+     * @return bool
+     *
      * @throws LogicException In case the process is not terminated
      */
-    public function hasBeenStopped(): bool
+    public function hasBeenStopped()
     {
         $this->requireProcessIsTerminated(__FUNCTION__);
 
@@ -815,9 +841,11 @@ class Process implements \IteratorAggregate
      *
      * It is only meaningful if hasBeenStopped() returns true.
      *
+     * @return int
+     *
      * @throws LogicException In case the process is not terminated
      */
-    public function getStopSignal(): int
+    public function getStopSignal()
     {
         $this->requireProcessIsTerminated(__FUNCTION__);
 
@@ -826,8 +854,10 @@ class Process implements \IteratorAggregate
 
     /**
      * Checks if the process is currently running.
+     *
+     * @return bool true if the process is currently running, false otherwise
      */
-    public function isRunning(): bool
+    public function isRunning()
     {
         if (self::STATUS_STARTED !== $this->status) {
             return false;
@@ -840,16 +870,20 @@ class Process implements \IteratorAggregate
 
     /**
      * Checks if the process has been started with no regard to the current state.
+     *
+     * @return bool true if status is ready, false otherwise
      */
-    public function isStarted(): bool
+    public function isStarted()
     {
         return self::STATUS_READY != $this->status;
     }
 
     /**
      * Checks if the process is terminated.
+     *
+     * @return bool true if process is terminated, false otherwise
      */
-    public function isTerminated(): bool
+    public function isTerminated()
     {
         $this->updateStatus(false);
 
@@ -860,8 +894,10 @@ class Process implements \IteratorAggregate
      * Gets the process status.
      *
      * The status is one of: ready, started, terminated.
+     *
+     * @return string The current process status
      */
-    public function getStatus(): string
+    public function getStatus()
     {
         $this->updateStatus(false);
 
@@ -876,7 +912,7 @@ class Process implements \IteratorAggregate
      *
      * @return int|null The exit-code of the process or null if it's not running
      */
-    public function stop(float $timeout = 10, int $signal = null): ?int
+    public function stop(float $timeout = 10, int $signal = null)
     {
         $timeoutMicro = microtime(true) + $timeout;
         if ($this->isRunning()) {
@@ -935,6 +971,8 @@ class Process implements \IteratorAggregate
 
     /**
      * Gets the last output time in seconds.
+     *
+     * @return float|null The last output time in seconds or null if it isn't started
      */
     public function getLastOutputTime(): ?float
     {
@@ -943,24 +981,30 @@ class Process implements \IteratorAggregate
 
     /**
      * Gets the command line to be executed.
+     *
+     * @return string The command to execute
      */
-    public function getCommandLine(): string
+    public function getCommandLine()
     {
         return \is_array($this->commandline) ? implode(' ', array_map([$this, 'escapeArgument'], $this->commandline)) : $this->commandline;
     }
 
     /**
-     * Gets the process timeout in seconds (max. runtime).
+     * Gets the process timeout (max. runtime).
+     *
+     * @return float|null The timeout in seconds or null if it's disabled
      */
-    public function getTimeout(): ?float
+    public function getTimeout()
     {
         return $this->timeout;
     }
 
     /**
-     * Gets the process idle timeout in seconds (max. time since last output).
+     * Gets the process idle timeout (max. time since last output).
+     *
+     * @return float|null The timeout in seconds or null if it's disabled
      */
-    public function getIdleTimeout(): ?float
+    public function getIdleTimeout()
     {
         return $this->idleTimeout;
     }
@@ -974,7 +1018,7 @@ class Process implements \IteratorAggregate
      *
      * @throws InvalidArgumentException if the timeout is negative
      */
-    public function setTimeout(?float $timeout): static
+    public function setTimeout(?float $timeout)
     {
         $this->timeout = $this->validateTimeout($timeout);
 
@@ -991,10 +1035,10 @@ class Process implements \IteratorAggregate
      * @throws LogicException           if the output is disabled
      * @throws InvalidArgumentException if the timeout is negative
      */
-    public function setIdleTimeout(?float $timeout): static
+    public function setIdleTimeout(?float $timeout)
     {
         if (null !== $timeout && $this->outputDisabled) {
-            throw new LogicException('Idle timeout cannot be set while the output is disabled.');
+            throw new LogicException('Idle timeout can not be set while the output is disabled.');
         }
 
         $this->idleTimeout = $this->validateTimeout($timeout);
@@ -1009,7 +1053,7 @@ class Process implements \IteratorAggregate
      *
      * @throws RuntimeException In case the TTY mode is not supported
      */
-    public function setTty(bool $tty): static
+    public function setTty(bool $tty)
     {
         if ('\\' === \DIRECTORY_SEPARATOR && $tty) {
             throw new RuntimeException('TTY mode is not supported on Windows platform.');
@@ -1026,8 +1070,10 @@ class Process implements \IteratorAggregate
 
     /**
      * Checks if the TTY mode is enabled.
+     *
+     * @return bool true if the TTY mode is enabled, false otherwise
      */
-    public function isTty(): bool
+    public function isTty()
     {
         return $this->tty;
     }
@@ -1037,7 +1083,7 @@ class Process implements \IteratorAggregate
      *
      * @return $this
      */
-    public function setPty(bool $bool): static
+    public function setPty(bool $bool)
     {
         $this->pty = $bool;
 
@@ -1046,16 +1092,20 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns PTY state.
+     *
+     * @return bool
      */
-    public function isPty(): bool
+    public function isPty()
     {
         return $this->pty;
     }
 
     /**
      * Gets the working directory.
+     *
+     * @return string|null The current working directory or null on failure
      */
-    public function getWorkingDirectory(): ?string
+    public function getWorkingDirectory()
     {
         if (null === $this->cwd) {
             // getcwd() will return false if any one of the parent directories does not have
@@ -1071,7 +1121,7 @@ class Process implements \IteratorAggregate
      *
      * @return $this
      */
-    public function setWorkingDirectory(string $cwd): static
+    public function setWorkingDirectory(string $cwd)
     {
         $this->cwd = $cwd;
 
@@ -1080,8 +1130,10 @@ class Process implements \IteratorAggregate
 
     /**
      * Gets the environment variables.
+     *
+     * @return array The current environment variables
      */
-    public function getEnv(): array
+    public function getEnv()
     {
         return $this->env;
     }
@@ -1093,7 +1145,7 @@ class Process implements \IteratorAggregate
      *
      * @return $this
      */
-    public function setEnv(array $env): static
+    public function setEnv(array $env)
     {
         $this->env = $env;
 
@@ -1103,7 +1155,7 @@ class Process implements \IteratorAggregate
     /**
      * Gets the Process input.
      *
-     * @return resource|string|\Iterator|null
+     * @return resource|string|\Iterator|null The Process input
      */
     public function getInput()
     {
@@ -1121,10 +1173,10 @@ class Process implements \IteratorAggregate
      *
      * @throws LogicException In case the process is running
      */
-    public function setInput(mixed $input): static
+    public function setInput($input)
     {
         if ($this->isRunning()) {
-            throw new LogicException('Input cannot be set while the process is running.');
+            throw new LogicException('Input can not be set while the process is running.');
         }
 
         $this->input = ProcessUtils::validateInput(__METHOD__, $input);
@@ -1213,8 +1265,10 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns whether PTY is supported on the current operating system.
+     *
+     * @return bool
      */
-    public static function isPtySupported(): bool
+    public static function isPtySupported()
     {
         static $result;
 
@@ -1253,8 +1307,10 @@ class Process implements \IteratorAggregate
      * the user callback (if present) with the received output.
      *
      * @param callable|null $callback The user defined PHP callback
+     *
+     * @return \Closure A PHP closure
      */
-    protected function buildCallback(callable $callback = null): \Closure
+    protected function buildCallback(callable $callback = null)
     {
         if ($this->outputDisabled) {
             return function ($type, $data) use ($callback): bool {
@@ -1302,8 +1358,10 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns whether PHP has been compiled with the '--enable-sigchild' option or not.
+     *
+     * @return bool
      */
-    protected function isSigchildEnabled(): bool
+    protected function isSigchildEnabled()
     {
         if (null !== self::$sigchild) {
             return self::$sigchild;
@@ -1433,6 +1491,8 @@ class Process implements \IteratorAggregate
      * @param int  $signal         A valid POSIX signal (see https://php.net/pcntl.constants)
      * @param bool $throwException Whether to throw exception in case signal failed
      *
+     * @return bool True if the signal was sent successfully, false otherwise
+     *
      * @throws LogicException   In case the process is not running
      * @throws RuntimeException In case --enable-sigchild is activated and the process can't be killed
      * @throws RuntimeException In case of failure
@@ -1441,7 +1501,7 @@ class Process implements \IteratorAggregate
     {
         if (null === $pid = $this->getPid()) {
             if ($throwException) {
-                throw new LogicException('Cannot send signal on a non running process.');
+                throw new LogicException('Can not send signal on a non running process.');
             }
 
             return false;
@@ -1587,8 +1647,8 @@ class Process implements \IteratorAggregate
     private function getDefaultEnv(): array
     {
         $env = getenv();
-        $env = ('\\' === \DIRECTORY_SEPARATOR ? array_intersect_ukey($env, $_SERVER, 'strcasecmp') : array_intersect_key($env, $_SERVER)) ?: $env;
+        $env = array_intersect_key($env, $_SERVER) ?: $env;
 
-        return $_ENV + ('\\' === \DIRECTORY_SEPARATOR ? array_diff_ukey($env, $_ENV, 'strcasecmp') : $env);
+        return $_ENV + $env;
     }
 }

@@ -10,6 +10,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class SerializerConfig 
 {
@@ -22,7 +24,7 @@ class SerializerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function defaultSerializer($value): static
+    public function defaultSerializer($value): self
     {
         $this->defaultSerializer = $value;
     
@@ -58,6 +60,7 @@ class SerializerConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -70,5 +73,6 @@ class SerializerConfig
     
         return $output;
     }
+    
 
 }

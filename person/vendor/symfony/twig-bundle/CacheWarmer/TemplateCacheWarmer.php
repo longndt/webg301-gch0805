@@ -24,9 +24,9 @@ use Twig\Error\Error;
  */
 class TemplateCacheWarmer implements CacheWarmerInterface, ServiceSubscriberInterface
 {
-    private ContainerInterface $container;
-    private Environment $twig;
-    private iterable $iterator;
+    private $container;
+    private $twig;
+    private $iterator;
 
     public function __construct(ContainerInterface $container, iterable $iterator)
     {
@@ -40,9 +40,11 @@ class TemplateCacheWarmer implements CacheWarmerInterface, ServiceSubscriberInte
      *
      * @return string[] A list of template files to preload on PHP 7.4+
      */
-    public function warmUp(string $cacheDir): array
+    public function warmUp(string $cacheDir)
     {
-        $this->twig ??= $this->container->get('twig');
+        if (null === $this->twig) {
+            $this->twig = $this->container->get('twig');
+        }
 
         $files = [];
 
@@ -54,14 +56,8 @@ class TemplateCacheWarmer implements CacheWarmerInterface, ServiceSubscriberInte
                     $files[] = (new \ReflectionClass($template->unwrap()))->getFileName();
                 }
             } catch (Error $e) {
-                /*
-                 * Problem during compilation, give up for this template (e.g. syntax errors).
-                 * Failing silently here allows to ignore templates that rely on functions that aren't available in
-                 * the current environment. For example, the WebProfilerBundle shouldn't be available in the prod
-                 * environment, but some templates that are never used in prod might rely on functions the bundle provides.
-                 * As we can't detect which templates are "really" important, we try to load all of them and ignore
-                 * errors. Error checks may be performed by calling the lint:twig command.
-                 */
+                // problem during compilation, give up
+                // might be a syntax error or a non-Twig template
             }
         }
 
@@ -71,7 +67,7 @@ class TemplateCacheWarmer implements CacheWarmerInterface, ServiceSubscriberInte
     /**
      * {@inheritdoc}
      */
-    public function isOptional(): bool
+    public function isOptional()
     {
         return true;
     }
@@ -79,7 +75,7 @@ class TemplateCacheWarmer implements CacheWarmerInterface, ServiceSubscriberInte
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedServices(): array
+    public static function getSubscribedServices()
     {
         return [
             'twig' => Environment::class,

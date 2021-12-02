@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class X509Config 
 {
@@ -21,7 +23,7 @@ class X509Config
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function provider($value): static
+    public function provider($value): self
     {
         $this->provider = $value;
     
@@ -33,7 +35,7 @@ class X509Config
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function user($value): static
+    public function user($value): self
     {
         $this->user = $value;
     
@@ -45,7 +47,7 @@ class X509Config
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function credentials($value): static
+    public function credentials($value): self
     {
         $this->credentials = $value;
     
@@ -75,6 +77,7 @@ class X509Config
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -90,5 +93,6 @@ class X509Config
     
         return $output;
     }
+    
 
 }

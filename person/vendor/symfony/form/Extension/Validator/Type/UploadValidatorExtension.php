@@ -23,8 +23,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class UploadValidatorExtension extends AbstractTypeExtension
 {
-    private TranslatorInterface $translator;
-    private ?string $translationDomain;
+    private $translator;
+    private $translationDomain;
 
     public function __construct(TranslatorInterface $translator, string $translationDomain = null)
     {

@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class DoctrineValidationPass implements CompilerPassInterface
 {
-    private string $managerType;
+    private $managerType;
 
     public function __construct(string $managerType)
     {

@@ -18,39 +18,53 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  * The configuration of a {@link Form} object.
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
+ *
+ * @method callable|null getIsEmptyCallback() Returns a callable that takes the model data as argument and that returns if it is empty or not - not implementing it is deprecated since Symfony 5.1
  */
 interface FormConfigInterface
 {
     /**
      * Returns the event dispatcher used to dispatch form events.
+     *
+     * @return EventDispatcherInterface The dispatcher
      */
-    public function getEventDispatcher(): EventDispatcherInterface;
+    public function getEventDispatcher();
 
     /**
      * Returns the name of the form used as HTTP parameter.
+     *
+     * @return string The form name
      */
-    public function getName(): string;
+    public function getName();
 
     /**
      * Returns the property path that the form should be mapped to.
+     *
+     * @return PropertyPathInterface|null The property path
      */
-    public function getPropertyPath(): ?PropertyPathInterface;
+    public function getPropertyPath();
 
     /**
      * Returns whether the form should be mapped to an element of its
      * parent's data.
+     *
+     * @return bool Whether the form is mapped
      */
-    public function getMapped(): bool;
+    public function getMapped();
 
     /**
      * Returns whether the form's data should be modified by reference.
+     *
+     * @return bool Whether to modify the form's data by reference
      */
-    public function getByReference(): bool;
+    public function getByReference();
 
     /**
      * Returns whether the form should read and write the data of its parent.
+     *
+     * @return bool Whether the form should inherit its parent's data
      */
-    public function getInheritData(): bool;
+    public function getInheritData();
 
     /**
      * Returns whether the form is compound.
@@ -60,47 +74,59 @@ interface FormConfigInterface
      * for example an empty collection form.
      * The contrary is not possible, a form which is not compound
      * cannot have any children.
+     *
+     * @return bool Whether the form is compound
      */
-    public function getCompound(): bool;
+    public function getCompound();
 
     /**
      * Returns the resolved form type used to construct the form.
+     *
+     * @return ResolvedFormTypeInterface The form's resolved type
      */
-    public function getType(): ResolvedFormTypeInterface;
+    public function getType();
 
     /**
      * Returns the view transformers of the form.
      *
-     * @return DataTransformerInterface[]
+     * @return DataTransformerInterface[] An array of {@link DataTransformerInterface} instances
      */
-    public function getViewTransformers(): array;
+    public function getViewTransformers();
 
     /**
      * Returns the model transformers of the form.
      *
-     * @return DataTransformerInterface[]
+     * @return DataTransformerInterface[] An array of {@link DataTransformerInterface} instances
      */
-    public function getModelTransformers(): array;
+    public function getModelTransformers();
 
     /**
      * Returns the data mapper of the compound form or null for a simple form.
+     *
+     * @return DataMapperInterface|null The data mapper
      */
-    public function getDataMapper(): ?DataMapperInterface;
+    public function getDataMapper();
 
     /**
      * Returns whether the form is required.
+     *
+     * @return bool Whether the form is required
      */
-    public function getRequired(): bool;
+    public function getRequired();
 
     /**
      * Returns whether the form is disabled.
+     *
+     * @return bool Whether the form is disabled
      */
-    public function getDisabled(): bool;
+    public function getDisabled();
 
     /**
      * Returns whether errors attached to the form will bubble to its parent.
+     *
+     * @return bool Whether errors will bubble up
      */
-    public function getErrorBubbling(): bool;
+    public function getErrorBubbling();
 
     /**
      * Used when the view data is empty on submission.
@@ -110,33 +136,47 @@ interface FormConfigInterface
      *
      * The empty data must match the view format as it will passed to the first view transformer's
      * "reverseTransform" method.
+     *
+     * @return mixed The data used when the submitted form is initially empty
      */
-    public function getEmptyData(): mixed;
+    public function getEmptyData();
 
     /**
      * Returns additional attributes of the form.
+     *
+     * @return array An array of key-value combinations
      */
-    public function getAttributes(): array;
+    public function getAttributes();
 
     /**
      * Returns whether the attribute with the given name exists.
+     *
+     * @return bool Whether the attribute exists
      */
-    public function hasAttribute(string $name): bool;
+    public function hasAttribute(string $name);
 
     /**
      * Returns the value of the given attribute.
+     *
+     * @param mixed $default The value returned if the attribute does not exist
+     *
+     * @return mixed The attribute value
      */
-    public function getAttribute(string $name, mixed $default = null): mixed;
+    public function getAttribute(string $name, $default = null);
 
     /**
      * Returns the initial data of the form.
+     *
+     * @return mixed The initial form data
      */
-    public function getData(): mixed;
+    public function getData();
 
     /**
      * Returns the class of the view data or null if the data is scalar or an array.
+     *
+     * @return string|null The data class or null
      */
-    public function getDataClass(): ?string;
+    public function getDataClass();
 
     /**
      * Returns whether the form's data is locked.
@@ -144,53 +184,67 @@ interface FormConfigInterface
      * A form with locked data is restricted to the data passed in
      * this configuration. The data can only be modified then by
      * submitting the form.
+     *
+     * @return bool Whether the data is locked
      */
-    public function getDataLocked(): bool;
+    public function getDataLocked();
 
     /**
      * Returns the form factory used for creating new forms.
+     *
+     * @return FormFactoryInterface The form factory
      */
-    public function getFormFactory(): FormFactoryInterface;
+    public function getFormFactory();
 
     /**
      * Returns the target URL of the form.
+     *
+     * @return string The target URL of the form
      */
-    public function getAction(): string;
+    public function getAction();
 
     /**
      * Returns the HTTP method used by the form.
+     *
+     * @return string The HTTP method of the form
      */
-    public function getMethod(): string;
+    public function getMethod();
 
     /**
      * Returns the request handler used by the form.
+     *
+     * @return RequestHandlerInterface The request handler
      */
-    public function getRequestHandler(): RequestHandlerInterface;
+    public function getRequestHandler();
 
     /**
      * Returns whether the form should be initialized upon creation.
+     *
+     * @return bool returns true if the form should be initialized
+     *              when created, false otherwise
      */
-    public function getAutoInitialize(): bool;
+    public function getAutoInitialize();
 
     /**
      * Returns all options passed during the construction of the form.
      *
      * @return array<string, mixed> The passed options
      */
-    public function getOptions(): array;
+    public function getOptions();
 
     /**
      * Returns whether a specific option exists.
+     *
+     * @return bool Whether the option exists
      */
-    public function hasOption(string $name): bool;
+    public function hasOption(string $name);
 
     /**
      * Returns the value of a specific option.
+     *
+     * @param mixed $default The value returned if the option does not exist
+     *
+     * @return mixed The option value
      */
-    public function getOption(string $name, mixed $default = null): mixed;
-
-    /**
-     * Returns a callable that takes the model data as argument and that returns if it is empty or not.
-     */
-    public function getIsEmptyCallback(): ?callable;
+    public function getOption(string $name, $default = null);
 }

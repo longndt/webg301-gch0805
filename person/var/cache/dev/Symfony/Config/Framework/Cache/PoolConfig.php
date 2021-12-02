@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class PoolConfig 
 {
@@ -21,11 +23,10 @@ class PoolConfig
     private $clearer;
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function adapters(ParamConfigurator|array $value): static
+    public function adapters($value): self
     {
         $this->adapters = $value;
     
@@ -37,7 +38,7 @@ class PoolConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function tags($value): static
+    public function tags($value): self
     {
         $this->tags = $value;
     
@@ -49,7 +50,7 @@ class PoolConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function public($value): static
+    public function public($value): self
     {
         $this->public = $value;
     
@@ -63,7 +64,7 @@ class PoolConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function defaultLifetime($value): static
+    public function defaultLifetime($value): self
     {
         $this->defaultLifetime = $value;
     
@@ -76,7 +77,7 @@ class PoolConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function provider($value): static
+    public function provider($value): self
     {
         $this->provider = $value;
     
@@ -89,7 +90,7 @@ class PoolConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function earlyExpirationMessageBus($value): static
+    public function earlyExpirationMessageBus($value): self
     {
         $this->earlyExpirationMessageBus = $value;
     
@@ -101,7 +102,7 @@ class PoolConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function clearer($value): static
+    public function clearer($value): self
     {
         $this->clearer = $value;
     
@@ -151,6 +152,7 @@ class PoolConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -178,5 +180,6 @@ class PoolConfig
     
         return $output;
     }
+    
 
 }

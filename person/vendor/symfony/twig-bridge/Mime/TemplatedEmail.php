@@ -18,14 +18,14 @@ use Symfony\Component\Mime\Email;
  */
 class TemplatedEmail extends Email
 {
-    private ?string $htmlTemplate = null;
-    private ?string $textTemplate = null;
-    private array $context = [];
+    private $htmlTemplate;
+    private $textTemplate;
+    private $context = [];
 
     /**
      * @return $this
      */
-    public function textTemplate(?string $template): static
+    public function textTemplate(?string $template)
     {
         $this->textTemplate = $template;
 
@@ -35,7 +35,7 @@ class TemplatedEmail extends Email
     /**
      * @return $this
      */
-    public function htmlTemplate(?string $template): static
+    public function htmlTemplate(?string $template)
     {
         $this->htmlTemplate = $template;
 
@@ -55,7 +55,7 @@ class TemplatedEmail extends Email
     /**
      * @return $this
      */
-    public function context(array $context): static
+    public function context(array $context)
     {
         $this->context = $context;
 

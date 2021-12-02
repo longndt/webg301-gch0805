@@ -15,9 +15,6 @@ use Symfony\Component\Form\Exception\BadMethodCallException;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
- *
- * @implements \ArrayAccess<string, FormView>
- * @implements \IteratorAggregate<string, FormView>
  */
 class FormView implements \ArrayAccess, \IteratorAggregate, \Countable
 {
@@ -47,10 +44,12 @@ class FormView implements \ArrayAccess, \IteratorAggregate, \Countable
      * Rendering happens when either the widget or the row method was called.
      * Row implicitly includes widget, however certain rendering mechanisms
      * have to skip widget rendering when a row is rendered.
+     *
+     * @var bool
      */
-    private bool $rendered = false;
+    private $rendered = false;
 
-    private bool $methodRendered = false;
+    private $methodRendered = false;
 
     public function __construct(self $parent = null)
     {
@@ -59,8 +58,10 @@ class FormView implements \ArrayAccess, \IteratorAggregate, \Countable
 
     /**
      * Returns whether the view was already rendered.
+     *
+     * @return bool Whether this view's widget is rendered
      */
-    public function isRendered(): bool
+    public function isRendered()
     {
         if (true === $this->rendered || 0 === \count($this->children)) {
             return $this->rendered;
@@ -80,14 +81,17 @@ class FormView implements \ArrayAccess, \IteratorAggregate, \Countable
      *
      * @return $this
      */
-    public function setRendered(): static
+    public function setRendered()
     {
         $this->rendered = true;
 
         return $this;
     }
 
-    public function isMethodRendered(): bool
+    /**
+     * @return bool
+     */
+    public function isMethodRendered()
     {
         return $this->methodRendered;
     }
@@ -101,8 +105,11 @@ class FormView implements \ArrayAccess, \IteratorAggregate, \Countable
      * Returns a child by name (implements \ArrayAccess).
      *
      * @param string $name The child name
+     *
+     * @return self The child view
      */
-    public function offsetGet(mixed $name): self
+    #[\ReturnTypeWillChange]
+    public function offsetGet($name)
     {
         return $this->children[$name];
     }
@@ -111,8 +118,11 @@ class FormView implements \ArrayAccess, \IteratorAggregate, \Countable
      * Returns whether the given child exists (implements \ArrayAccess).
      *
      * @param string $name The child name
+     *
+     * @return bool Whether the child view exists
      */
-    public function offsetExists(mixed $name): bool
+    #[\ReturnTypeWillChange]
+    public function offsetExists($name)
     {
         return isset($this->children[$name]);
     }
@@ -120,9 +130,12 @@ class FormView implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * Implements \ArrayAccess.
      *
+     * @return void
+     *
      * @throws BadMethodCallException always as setting a child by name is not allowed
      */
-    public function offsetSet(mixed $name, mixed $value): void
+    #[\ReturnTypeWillChange]
+    public function offsetSet($name, $value)
     {
         throw new BadMethodCallException('Not supported.');
     }
@@ -131,8 +144,11 @@ class FormView implements \ArrayAccess, \IteratorAggregate, \Countable
      * Removes a child (implements \ArrayAccess).
      *
      * @param string $name The child name
+     *
+     * @return void
      */
-    public function offsetUnset(mixed $name): void
+    #[\ReturnTypeWillChange]
+    public function offsetUnset($name)
     {
         unset($this->children[$name]);
     }
@@ -140,14 +156,21 @@ class FormView implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * Returns an iterator to iterate over children (implements \IteratorAggregate).
      *
-     * @return \ArrayIterator<string, FormView>
+     * @return \ArrayIterator<string, FormView> The iterator
      */
-    public function getIterator(): \ArrayIterator
+    #[\ReturnTypeWillChange]
+    public function getIterator()
     {
         return new \ArrayIterator($this->children);
     }
 
-    public function count(): int
+    /**
+     * Implements \Countable.
+     *
+     * @return int The number of children views
+     */
+    #[\ReturnTypeWillChange]
+    public function count()
     {
         return \count($this->children);
     }

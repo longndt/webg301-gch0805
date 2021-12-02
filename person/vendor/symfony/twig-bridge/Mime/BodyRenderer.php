@@ -22,9 +22,9 @@ use Twig\Environment;
  */
 final class BodyRenderer implements BodyRendererInterface
 {
-    private Environment $twig;
-    private array $context;
-    private HtmlConverter $converter;
+    private $twig;
+    private $context;
+    private $converter;
 
     public function __construct(Environment $twig, array $context = [])
     {
@@ -96,7 +96,7 @@ final class BodyRenderer implements BodyRendererInterface
 
     private function convertHtmlToText(string $html): string
     {
-        if (isset($this->converter)) {
+        if (null !== $this->converter) {
             return $this->converter->convert($html);
         }
 

@@ -40,7 +40,7 @@ class Cookie
     protected $secure;
     protected $httponly;
     protected $rawValue;
-    private ?string $samesite;
+    private $samesite;
 
     /**
      * Sets a cookie.
@@ -83,8 +83,10 @@ class Cookie
 
     /**
      * Returns the HTTP representation of the Cookie.
+     *
+     * @return string
      */
-    public function __toString(): string
+    public function __toString()
     {
         $cookie = sprintf('%s=%s', $this->name, $this->rawValue);
 
@@ -119,9 +121,11 @@ class Cookie
     /**
      * Creates a Cookie instance from a Set-Cookie header value.
      *
+     * @return static
+     *
      * @throws \InvalidArgumentException
      */
-    public static function fromString(string $cookie, string $url = null): static
+    public static function fromString(string $cookie, string $url = null)
     {
         $parts = explode(';', $cookie);
 
@@ -217,78 +221,98 @@ class Cookie
 
     /**
      * Gets the name of the cookie.
+     *
+     * @return string The cookie name
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
 
     /**
      * Gets the value of the cookie.
+     *
+     * @return string The cookie value
      */
-    public function getValue(): string
+    public function getValue()
     {
         return $this->value;
     }
 
     /**
      * Gets the raw value of the cookie.
+     *
+     * @return string The cookie value
      */
-    public function getRawValue(): string
+    public function getRawValue()
     {
         return $this->rawValue;
     }
 
     /**
      * Gets the expires time of the cookie.
+     *
+     * @return string|null The cookie expires time
      */
-    public function getExpiresTime(): ?string
+    public function getExpiresTime()
     {
         return $this->expires;
     }
 
     /**
      * Gets the path of the cookie.
+     *
+     * @return string The cookie path
      */
-    public function getPath(): string
+    public function getPath()
     {
         return $this->path;
     }
 
     /**
      * Gets the domain of the cookie.
+     *
+     * @return string The cookie domain
      */
-    public function getDomain(): string
+    public function getDomain()
     {
         return $this->domain;
     }
 
     /**
      * Returns the secure flag of the cookie.
+     *
+     * @return bool The cookie secure flag
      */
-    public function isSecure(): bool
+    public function isSecure()
     {
         return $this->secure;
     }
 
     /**
      * Returns the httponly flag of the cookie.
+     *
+     * @return bool The cookie httponly flag
      */
-    public function isHttpOnly(): bool
+    public function isHttpOnly()
     {
         return $this->httponly;
     }
 
     /**
      * Returns true if the cookie has expired.
+     *
+     * @return bool true if the cookie has expired, false otherwise
      */
-    public function isExpired(): bool
+    public function isExpired()
     {
         return null !== $this->expires && 0 != $this->expires && $this->expires <= time();
     }
 
     /**
      * Gets the samesite attribute of the cookie.
+     *
+     * @return string|null The cookie samesite attribute
      */
     public function getSameSite(): ?string
     {

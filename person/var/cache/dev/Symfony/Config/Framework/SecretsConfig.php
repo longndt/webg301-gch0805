@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class SecretsConfig 
 {
@@ -22,7 +24,7 @@ class SecretsConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -34,7 +36,7 @@ class SecretsConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function vaultDirectory($value): static
+    public function vaultDirectory($value): self
     {
         $this->vaultDirectory = $value;
     
@@ -46,7 +48,7 @@ class SecretsConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function localDotenvFile($value): static
+    public function localDotenvFile($value): self
     {
         $this->localDotenvFile = $value;
     
@@ -58,7 +60,7 @@ class SecretsConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function decryptionEnvVar($value): static
+    public function decryptionEnvVar($value): self
     {
         $this->decryptionEnvVar = $value;
     
@@ -93,6 +95,7 @@ class SecretsConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -111,5 +114,6 @@ class SecretsConfig
     
         return $output;
     }
+    
 
 }

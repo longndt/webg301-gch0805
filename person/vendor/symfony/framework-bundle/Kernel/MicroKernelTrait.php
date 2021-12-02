@@ -20,85 +20,48 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Routing\Loader\PhpFileLoader as RoutingPhpFileLoader;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\RouteCollectionBuilder;
 
 /**
  * A Kernel that provides configuration hooks.
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @method void configureRoutes(RoutingConfigurator $routes)
+ * @method void configureContainer(ContainerConfigurator $container)
  */
 trait MicroKernelTrait
 {
     /**
-     * Configures the container.
-     *
-     * You can register extensions:
-     *
-     *     $container->extension('framework', [
-     *         'secret' => '%secret%'
-     *     ]);
-     *
-     * Or services:
-     *
-     *     $container->services()->set('halloween', 'FooBundle\HalloweenProvider');
-     *
-     * Or parameters:
-     *
-     *     $container->parameters()->set('halloween', 'lot of fun');
-     */
-    private function configureContainer(ContainerConfigurator $container, LoaderInterface $loader, ContainerBuilder $builder): void
-    {
-        $configDir = $this->getConfigDir();
-
-        $container->import($configDir.'/{packages}/*.yaml');
-        $container->import($configDir.'/{packages}/'.$this->environment.'/*.yaml');
-
-        if (is_file($configDir.'/services.yaml')) {
-            $container->import($configDir.'/services.yaml');
-            $container->import($configDir.'/{services}_'.$this->environment.'.yaml');
-        } else {
-            $container->import($configDir.'/{services}.php');
-        }
-    }
-
-    /**
      * Adds or imports routes into your application.
      *
-     *     $routes->import($this->getConfigDir().'/*.{yaml,php}');
+     *     $routes->import($this->getProjectDir().'/config/*.{yaml,php}');
      *     $routes
      *         ->add('admin_dashboard', '/admin')
      *         ->controller('App\Controller\AdminController::dashboard')
      *     ;
      */
-    private function configureRoutes(RoutingConfigurator $routes): void
-    {
-        $configDir = $this->getConfigDir();
-
-        $routes->import($configDir.'/{routes}/'.$this->environment.'/*.yaml');
-        $routes->import($configDir.'/{routes}/*.yaml');
-
-        if (is_file($configDir.'/routes.yaml')) {
-            $routes->import($configDir.'/routes.yaml');
-        } else {
-            $routes->import($configDir.'/{routes}.php');
-        }
-    }
+    //abstract protected function configureRoutes(RoutingConfigurator $routes): void;
 
     /**
-     * Gets the path to the configuration directory.
+     * Configures the container.
+     *
+     * You can register extensions:
+     *
+     *     $c->extension('framework', [
+     *         'secret' => '%secret%'
+     *     ]);
+     *
+     * Or services:
+     *
+     *     $c->services()->set('halloween', 'FooBundle\HalloweenProvider');
+     *
+     * Or parameters:
+     *
+     *     $c->parameters()->set('halloween', 'lot of fun');
      */
-    private function getConfigDir(): string
-    {
-        return $this->getProjectDir().'/config';
-    }
-
-    /**
-     * Gets the path to the bundles configuration file.
-     */
-    private function getBundlesPath(): string
-    {
-        return $this->getConfigDir().'/bundles.php';
-    }
+    //abstract protected function configureContainer(ContainerConfigurator $container): void;
 
     /**
      * {@inheritdoc}
@@ -125,7 +88,7 @@ trait MicroKernelTrait
      */
     public function registerBundles(): iterable
     {
-        $contents = require $this->getBundlesPath();
+        $contents = require $this->getProjectDir().'/config/bundles.php';
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
                 yield new $class();
@@ -161,20 +124,25 @@ trait MicroKernelTrait
             $kernelDefinition->addTag('routing.route_loader');
 
             $container->addObjectResource($this);
-            $container->fileExists($this->getBundlesPath());
+            $container->fileExists($this->getProjectDir().'/config/bundles.php');
 
-            $configureContainer = new \ReflectionMethod($this, 'configureContainer');
+            try {
+                $configureContainer = new \ReflectionMethod($this, 'configureContainer');
+            } catch (\ReflectionException $e) {
+                throw new \LogicException(sprintf('"%s" uses "%s", but does not implement the required method "protected function configureContainer(ContainerConfigurator $container): void".', get_debug_type($this), MicroKernelTrait::class), 0, $e);
+            }
+
             $configuratorClass = $configureContainer->getNumberOfParameters() > 0 && ($type = $configureContainer->getParameters()[0]->getType()) instanceof \ReflectionNamedType && !$type->isBuiltin() ? $type->getName() : null;
 
             if ($configuratorClass && !is_a(ContainerConfigurator::class, $configuratorClass, true)) {
-                $configureContainer->getClosure($this)($container, $loader);
+                $this->configureContainer($container, $loader);
 
                 return;
             }
 
-            $file = (new \ReflectionObject($this))->getFileName();
+            // the user has opted into using the ContainerConfigurator
             /* @var ContainerPhpFileLoader $kernelLoader */
-            $kernelLoader = $loader->getResolver()->resolve($file);
+            $kernelLoader = $loader->getResolver()->resolve($file = $configureContainer->getFileName());
             $kernelLoader->setCurrentDir(\dirname($file));
             $instanceof = &\Closure::bind(function &() { return $this->instanceof; }, $kernelLoader, $kernelLoader)();
 
@@ -184,7 +152,7 @@ trait MicroKernelTrait
             };
 
             try {
-                $configureContainer->getClosure($this)(new ContainerConfigurator($container, $kernelLoader, $instanceof, $file, $file, $this->getEnvironment()), $loader, $container);
+                $this->configureContainer(new ContainerConfigurator($container, $kernelLoader, $instanceof, $file, $file, $this->getEnvironment()), $loader);
             } finally {
                 $instanceof = [];
                 $kernelLoader->registerAliasesForSinglyImplementedInterfaces();
@@ -197,8 +165,10 @@ trait MicroKernelTrait
 
     /**
      * @internal
+     *
+     * @return RouteCollection
      */
-    public function loadRoutes(LoaderInterface $loader): RouteCollection
+    public function loadRoutes(LoaderInterface $loader)
     {
         $file = (new \ReflectionObject($this))->getFileName();
         /* @var RoutingPhpFileLoader $kernelLoader */
@@ -206,8 +176,24 @@ trait MicroKernelTrait
         $kernelLoader->setCurrentDir(\dirname($file));
         $collection = new RouteCollection();
 
-        $configureRoutes = new \ReflectionMethod($this, 'configureRoutes');
-        $configureRoutes->getClosure($this)(new RoutingConfigurator($collection, $kernelLoader, $file, $file, $this->getEnvironment()));
+        try {
+            $configureRoutes = new \ReflectionMethod($this, 'configureRoutes');
+        } catch (\ReflectionException $e) {
+            throw new \LogicException(sprintf('"%s" uses "%s", but does not implement the required method "protected function configureRoutes(RoutingConfigurator $routes): void".', get_debug_type($this), MicroKernelTrait::class), 0, $e);
+        }
+
+        $configuratorClass = $configureRoutes->getNumberOfParameters() > 0 && ($type = $configureRoutes->getParameters()[0]->getType()) instanceof \ReflectionNamedType && !$type->isBuiltin() ? $type->getName() : null;
+
+        if ($configuratorClass && !is_a(RoutingConfigurator::class, $configuratorClass, true)) {
+            trigger_deprecation('symfony/framework-bundle', '5.1', 'Using type "%s" for argument 1 of method "%s:configureRoutes()" is deprecated, use "%s" instead.', RouteCollectionBuilder::class, self::class, RoutingConfigurator::class);
+
+            $routes = new RouteCollectionBuilder($loader);
+            $this->configureRoutes($routes);
+
+            return $routes->build();
+        }
+
+        $this->configureRoutes(new RoutingConfigurator($collection, $kernelLoader, $file, $file, $this->getEnvironment()));
 
         foreach ($collection as $route) {
             $controller = $route->getDefault('_controller');

@@ -12,10 +12,10 @@
 namespace Symfony\Component\Security\Http\Firewall;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Http\AccessMapInterface;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
 /**
  * ChannelListener switches the HTTP protocol based on the access control
@@ -27,17 +27,15 @@ use Symfony\Component\Security\Http\AccessMapInterface;
  */
 class ChannelListener extends AbstractListener
 {
-    private AccessMapInterface $map;
-    private ?LoggerInterface $logger;
-    private int $httpPort;
-    private int $httpsPort;
+    private $map;
+    private $authenticationEntryPoint;
+    private $logger;
 
-    public function __construct(AccessMapInterface $map, LoggerInterface $logger = null, int $httpPort = 80, int $httpsPort = 443)
+    public function __construct(AccessMapInterface $map, AuthenticationEntryPointInterface $authenticationEntryPoint, LoggerInterface $logger = null)
     {
         $this->map = $map;
+        $this->authenticationEntryPoint = $authenticationEntryPoint;
         $this->logger = $logger;
-        $this->httpPort = $httpPort;
-        $this->httpsPort = $httpsPort;
     }
 
     /**
@@ -76,27 +74,8 @@ class ChannelListener extends AbstractListener
     {
         $request = $event->getRequest();
 
-        $event->setResponse($this->createRedirectResponse($request));
-    }
+        $response = $this->authenticationEntryPoint->start($request);
 
-    private function createRedirectResponse(Request $request): RedirectResponse
-    {
-        $scheme = $request->isSecure() ? 'http' : 'https';
-        if ('http' === $scheme && 80 != $this->httpPort) {
-            $port = ':'.$this->httpPort;
-        } elseif ('https' === $scheme && 443 != $this->httpsPort) {
-            $port = ':'.$this->httpsPort;
-        } else {
-            $port = '';
-        }
-
-        $qs = $request->getQueryString();
-        if (null !== $qs) {
-            $qs = '?'.$qs;
-        }
-
-        $url = $scheme.'://'.$request->getHost().$port.$request->getBaseUrl().$request->getPathInfo().$qs;
-
-        return new RedirectResponse($url, 301);
+        $event->setResponse($response);
     }
 }

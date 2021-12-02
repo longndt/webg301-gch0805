@@ -29,18 +29,23 @@ class ResizeFormListener implements EventSubscriberInterface
     protected $allowAdd;
     protected $allowDelete;
 
-    private \Closure|bool $deleteEmpty;
+    private $deleteEmpty;
 
-    public function __construct(string $type, array $options = [], bool $allowAdd = false, bool $allowDelete = false, bool|callable $deleteEmpty = false)
+    /**
+     * @param bool          $allowAdd    Whether children could be added to the group
+     * @param bool          $allowDelete Whether children could be removed from the group
+     * @param bool|callable $deleteEmpty
+     */
+    public function __construct(string $type, array $options = [], bool $allowAdd = false, bool $allowDelete = false, $deleteEmpty = false)
     {
         $this->type = $type;
         $this->allowAdd = $allowAdd;
         $this->allowDelete = $allowDelete;
         $this->options = $options;
-        $this->deleteEmpty = $deleteEmpty instanceof \Closure || !\is_callable($deleteEmpty) ? $deleteEmpty : \Closure::fromCallable($deleteEmpty);
+        $this->deleteEmpty = $deleteEmpty;
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',

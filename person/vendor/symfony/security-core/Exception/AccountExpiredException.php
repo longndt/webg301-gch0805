@@ -22,7 +22,7 @@ class AccountExpiredException extends AccountStatusException
     /**
      * {@inheritdoc}
      */
-    public function getMessageKey(): string
+    public function getMessageKey()
     {
         return 'Account has expired.';
     }

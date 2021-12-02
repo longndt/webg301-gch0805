@@ -12,6 +12,7 @@
 namespace Symfony\Component\Validator\Constraints;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Exception\LogicException;
@@ -48,6 +49,22 @@ class Range extends Constraint
     public $max;
     public $maxPropertyPath;
 
+    /**
+     * @internal
+     */
+    public $deprecatedMinMessageSet = false;
+
+    /**
+     * @internal
+     */
+    public $deprecatedMaxMessageSet = false;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param string|PropertyPathInterface|null $minPropertyPath
+     * @param string|PropertyPathInterface|null $maxPropertyPath
+     */
     public function __construct(
         array $options = null,
         string $notInRangeMessage = null,
@@ -55,12 +72,12 @@ class Range extends Constraint
         string $maxMessage = null,
         string $invalidMessage = null,
         string $invalidDateTimeMessage = null,
-        mixed $min = null,
-        string $minPropertyPath = null,
-        mixed $max = null,
-        string $maxPropertyPath = null,
+        $min = null,
+        $minPropertyPath = null,
+        $max = null,
+        $maxPropertyPath = null,
         array $groups = null,
-        mixed $payload = null
+        $payload = null
     ) {
         parent::__construct($options, $groups, $payload);
 
@@ -90,8 +107,14 @@ class Range extends Constraint
             throw new LogicException(sprintf('The "%s" constraint requires the Symfony PropertyAccess component to use the "minPropertyPath" or "maxPropertyPath" option.', static::class));
         }
 
-        if (null !== $this->min && null !== $this->max && ($minMessage || $maxMessage)) {
-            throw new ConstraintDefinitionException(sprintf('The "%s" constraint can not use "minMessage" and "maxMessage" when the "min" and "max" options are both set. Use "notInRangeMessage" instead.', static::class));
+        if (null !== $this->min && null !== $this->max) {
+            $this->deprecatedMinMessageSet = isset($options['minMessage']) || null !== $minMessage;
+            $this->deprecatedMaxMessageSet = isset($options['maxMessage']) || null !== $maxMessage;
+
+            // BC layer, should throw a ConstraintDefinitionException in 6.0
+            if ($this->deprecatedMinMessageSet || $this->deprecatedMaxMessageSet) {
+                trigger_deprecation('symfony/validator', '4.4', '"minMessage" and "maxMessage" are deprecated when the "min" and "max" options are both set. Use "notInRangeMessage" instead.');
+            }
         }
     }
 }

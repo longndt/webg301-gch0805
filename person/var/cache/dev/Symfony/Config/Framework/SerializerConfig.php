@@ -10,6 +10,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class SerializerConfig 
 {
@@ -19,14 +21,13 @@ class SerializerConfig
     private $circularReferenceHandler;
     private $maxDepthHandler;
     private $mapping;
-    private $defaultContext;
     
     /**
      * @default true
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -38,7 +39,7 @@ class SerializerConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enableAnnotations($value): static
+    public function enableAnnotations($value): self
     {
         $this->enableAnnotations = $value;
     
@@ -50,7 +51,7 @@ class SerializerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function nameConverter($value): static
+    public function nameConverter($value): self
     {
         $this->nameConverter = $value;
     
@@ -62,7 +63,7 @@ class SerializerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function circularReferenceHandler($value): static
+    public function circularReferenceHandler($value): self
     {
         $this->circularReferenceHandler = $value;
     
@@ -74,7 +75,7 @@ class SerializerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function maxDepthHandler($value): static
+    public function maxDepthHandler($value): self
     {
         $this->maxDepthHandler = $value;
     
@@ -90,16 +91,6 @@ class SerializerConfig
         }
     
         return $this->mapping;
-    }
-    
-    /**
-     * @return $this
-     */
-    public function defaultContext(string $name, mixed $value): static
-    {
-        $this->defaultContext[$name] = $value;
-    
-        return $this;
     }
     
     public function __construct(array $value = [])
@@ -135,15 +126,11 @@ class SerializerConfig
             unset($value['mapping']);
         }
     
-        if (isset($value['default_context'])) {
-            $this->defaultContext = $value['default_context'];
-            unset($value['default_context']);
-        }
-    
         if ([] !== $value) {
             throw new InvalidConfigurationException(sprintf('The following keys are not supported by "%s": ', __CLASS__).implode(', ', array_keys($value)));
         }
     }
+    
     
     public function toArray(): array
     {
@@ -166,11 +153,9 @@ class SerializerConfig
         if (null !== $this->mapping) {
             $output['mapping'] = $this->mapping->toArray();
         }
-        if (null !== $this->defaultContext) {
-            $output['default_context'] = $this->defaultContext;
-        }
     
         return $output;
     }
+    
 
 }

@@ -20,11 +20,16 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @internal
  */
-class CustomAuthenticatorFactory implements AuthenticatorFactoryInterface
+class CustomAuthenticatorFactory implements AuthenticatorFactoryInterface, SecurityFactoryInterface
 {
-    public function getPriority(): int
+    public function create(ContainerBuilder $container, string $id, array $config, string $userProvider, ?string $defaultEntryPoint)
     {
-        return 0;
+        throw new \LogicException('Custom authenticators are not supported when "security.enable_authenticator_manager" is not set to true.');
+    }
+
+    public function getPosition(): string
+    {
+        return 'pre_auth';
     }
 
     public function getKey(): string

@@ -24,7 +24,7 @@ class ResetType extends AbstractType implements ButtonTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getParent(): ?string
+    public function getParent()
     {
         return ButtonType::class;
     }
@@ -32,7 +32,7 @@ class ResetType extends AbstractType implements ButtonTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix(): string
+    public function getBlockPrefix()
     {
         return 'reset';
     }

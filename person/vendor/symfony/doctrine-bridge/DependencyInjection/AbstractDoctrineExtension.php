@@ -73,11 +73,9 @@ abstract class AbstractDoctrineExtension extends Extension
 
             if ($mappingConfig['is_bundle']) {
                 $bundle = null;
-                $bundleMetadata = null;
                 foreach ($container->getParameter('kernel.bundles') as $name => $class) {
                     if ($mappingName === $name) {
                         $bundle = new \ReflectionClass($class);
-                        $bundleMetadata = $container->getParameter('kernel.bundles_metadata')[$name];
 
                         break;
                     }
@@ -87,12 +85,29 @@ abstract class AbstractDoctrineExtension extends Extension
                     throw new \InvalidArgumentException(sprintf('Bundle "%s" does not exist or it is not enabled.', $mappingName));
                 }
 
-                $mappingConfig = $this->getMappingDriverBundleConfigDefaults($mappingConfig, $bundle, $container, $bundleMetadata['path']);
+                $mappingConfig = $this->getMappingDriverBundleConfigDefaults($mappingConfig, $bundle, $container);
                 if (!$mappingConfig) {
                     continue;
                 }
+            } elseif (!$mappingConfig['type'] && \PHP_VERSION_ID < 80000) {
+                $mappingConfig['type'] = 'annotation';
             } elseif (!$mappingConfig['type']) {
-                $mappingConfig['type'] = $this->detectMappingType($mappingConfig['dir'], $container);
+                $mappingConfig['type'] = 'attribute';
+
+                $glob = new GlobResource($mappingConfig['dir'], '*', true);
+                $container->addResource($glob);
+
+                foreach ($glob as $file) {
+                    $content = file_get_contents($file);
+
+                    if (preg_match('/^#\[.*Entity\b/m', $content)) {
+                        break;
+                    }
+                    if (preg_match('/^ \* @.*Entity\b/m', $content)) {
+                        $mappingConfig['type'] = 'annotation';
+                        break;
+                    }
+                }
             }
 
             $this->assertValidMappingConfiguration($mappingConfig, $objectManager['name']);
@@ -137,9 +152,9 @@ abstract class AbstractDoctrineExtension extends Extension
      *
      * @return array|false
      */
-    protected function getMappingDriverBundleConfigDefaults(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, string $bundleDir = null): array|false
+    protected function getMappingDriverBundleConfigDefaults(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container)
     {
-        $bundleDir ??= \dirname($bundle->getFileName());
+        $bundleDir = \dirname($bundle->getFileName());
 
         if (!$bundleConfig['type']) {
             $bundleConfig['type'] = $this->detectMetadataDriver($bundleDir, $container);
@@ -154,7 +169,7 @@ abstract class AbstractDoctrineExtension extends Extension
             if (\in_array($bundleConfig['type'], ['annotation', 'staticphp', 'attribute'])) {
                 $bundleConfig['dir'] = $bundleDir.'/'.$this->getMappingObjectDefaultName();
             } else {
-                $bundleConfig['dir'] = $bundleDir.'/'.$this->getMappingResourceConfigDirectory($bundleDir);
+                $bundleConfig['dir'] = $bundleDir.'/'.$this->getMappingResourceConfigDirectory();
             }
         } else {
             $bundleConfig['dir'] = $bundleDir.'/'.$bundleConfig['dir'];
@@ -243,10 +258,12 @@ abstract class AbstractDoctrineExtension extends Extension
 
     /**
      * Detects what metadata driver to use for the supplied directory.
+     *
+     * @return string|null A metadata driver short name, if one can be detected
      */
-    protected function detectMetadataDriver(string $dir, ContainerBuilder $container): ?string
+    protected function detectMetadataDriver(string $dir, ContainerBuilder $container)
     {
-        $configPath = $this->getMappingResourceConfigDirectory($dir);
+        $configPath = $this->getMappingResourceConfigDirectory();
         $extension = $this->getMappingResourceExtension();
 
         if (glob($dir.'/'.$configPath.'/*.'.$extension.'.xml', \GLOB_NOSORT)) {
@@ -263,44 +280,11 @@ abstract class AbstractDoctrineExtension extends Extension
             }
             $container->fileExists($resource, false);
 
-            if ($container->fileExists($dir.'/'.$this->getMappingObjectDefaultName(), false)) {
-                return $this->detectMappingType($dir, $container);
-            }
-
-            return null;
+            return $container->fileExists($dir.'/'.$this->getMappingObjectDefaultName(), false) ? 'annotation' : null;
         }
         $container->fileExists($dir.'/'.$configPath, false);
 
         return $driver;
-    }
-
-    /**
-     * Detects what mapping type to use for the supplied directory.
-     *
-     * @return string A mapping type 'attribute' or 'annotation'
-     */
-    private function detectMappingType(string $directory, ContainerBuilder $container): string
-    {
-        $type = 'attribute';
-
-        $glob = new GlobResource($directory, '*', true);
-        $container->addResource($glob);
-
-        $quotedMappingObjectName = preg_quote($this->getMappingObjectDefaultName(), '/');
-
-        foreach ($glob as $file) {
-            $content = file_get_contents($file);
-
-            if (preg_match('/^#\[.*'.$quotedMappingObjectName.'\b/m', $content)) {
-                break;
-            }
-            if (preg_match('/^ \* @.*'.$quotedMappingObjectName.'\b/m', $content)) {
-                $type = 'annotation';
-                break;
-            }
-        }
-
-        return $type;
     }
 
     /**
@@ -316,9 +300,11 @@ abstract class AbstractDoctrineExtension extends Extension
     /**
      * Loads a cache driver.
      *
+     * @return string
+     *
      * @throws \InvalidArgumentException
      */
-    protected function loadCacheDriver(string $cacheName, string $objectManagerName, array $cacheDriver, ContainerBuilder $container): string
+    protected function loadCacheDriver(string $cacheName, string $objectManagerName, array $cacheDriver, ContainerBuilder $container)
     {
         $cacheDriverServiceId = $this->getObjectManagerElementName($objectManagerName.'_'.$cacheName);
 
@@ -392,8 +378,10 @@ abstract class AbstractDoctrineExtension extends Extension
      * Returns a modified version of $managerConfigs.
      *
      * The manager called $autoMappedManager will map all bundles that are not mapped by other managers.
+     *
+     * @return array The modified version of $managerConfigs
      */
-    protected function fixManagersAutoMappings(array $managerConfigs, array $bundles): array
+    protected function fixManagersAutoMappings(array $managerConfigs, array $bundles)
     {
         if ($autoMappedManager = $this->validateAutoMapping($managerConfigs)) {
             foreach (array_keys($bundles) as $bundle) {
@@ -417,25 +405,33 @@ abstract class AbstractDoctrineExtension extends Extension
      * Prefixes the relative dependency injection container path with the object manager prefix.
      *
      * @example $name is 'entity_manager' then the result would be 'doctrine.orm.entity_manager'
+     *
+     * @return string
      */
-    abstract protected function getObjectManagerElementName(string $name): string;
+    abstract protected function getObjectManagerElementName(string $name);
 
     /**
      * Noun that describes the mapped objects such as Entity or Document.
      *
      * Will be used for autodetection of persistent objects directory.
+     *
+     * @return string
      */
-    abstract protected function getMappingObjectDefaultName(): string;
+    abstract protected function getMappingObjectDefaultName();
 
     /**
      * Relative path from the bundle root to the directory where mapping files reside.
+     *
+     * @return string
      */
-    abstract protected function getMappingResourceConfigDirectory(string $bundleDir = null): string;
+    abstract protected function getMappingResourceConfigDirectory();
 
     /**
      * Extension used by the mapping files.
+     *
+     * @return string
      */
-    abstract protected function getMappingResourceExtension(): string;
+    abstract protected function getMappingResourceExtension();
 
     /**
      * The class name used by the various mapping drivers.

@@ -38,8 +38,8 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  */
 class PropertyAccessDecorator implements ChoiceListFactoryInterface
 {
-    private ChoiceListFactoryInterface $decoratedFactory;
-    private PropertyAccessorInterface $propertyAccessor;
+    private $decoratedFactory;
+    private $propertyAccessor;
 
     public function __construct(ChoiceListFactoryInterface $decoratedFactory, PropertyAccessorInterface $propertyAccessor = null)
     {
@@ -49,17 +49,26 @@ class PropertyAccessDecorator implements ChoiceListFactoryInterface
 
     /**
      * Returns the decorated factory.
+     *
+     * @return ChoiceListFactoryInterface The decorated factory
      */
-    public function getDecoratedFactory(): ChoiceListFactoryInterface
+    public function getDecoratedFactory()
     {
         return $this->decoratedFactory;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param mixed $value
+     * @param mixed $filter
+     *
+     * @return ChoiceListInterface
      */
-    public function createListFromChoices(iterable $choices, mixed $value = null, mixed $filter = null): ChoiceListInterface
+    public function createListFromChoices(iterable $choices, $value = null/*, $filter = null*/)
     {
+        $filter = \func_num_args() > 2 ? func_get_arg(2) : null;
+
         if (\is_string($value)) {
             $value = new PropertyPath($value);
         }
@@ -91,9 +100,16 @@ class PropertyAccessDecorator implements ChoiceListFactoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param mixed $value
+     * @param mixed $filter
+     *
+     * @return ChoiceListInterface
      */
-    public function createListFromLoader(ChoiceLoaderInterface $loader, mixed $value = null, mixed $filter = null): ChoiceListInterface
+    public function createListFromLoader(ChoiceLoaderInterface $loader, $value = null/*, $filter = null*/)
     {
+        $filter = \func_num_args() > 2 ? func_get_arg(2) : null;
+
         if (\is_string($value)) {
             $value = new PropertyPath($value);
         }
@@ -125,9 +141,19 @@ class PropertyAccessDecorator implements ChoiceListFactoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param mixed $preferredChoices
+     * @param mixed $label
+     * @param mixed $index
+     * @param mixed $groupBy
+     * @param mixed $attr
+     * @param mixed $labelTranslationParameters
+     *
+     * @return ChoiceListView
      */
-    public function createView(ChoiceListInterface $list, mixed $preferredChoices = null, mixed $label = null, mixed $index = null, mixed $groupBy = null, mixed $attr = null, mixed $labelTranslationParameters = []): ChoiceListView
+    public function createView(ChoiceListInterface $list, $preferredChoices = null, $label = null, $index = null, $groupBy = null, $attr = null/*, $labelTranslationParameters = []*/)
     {
+        $labelTranslationParameters = \func_num_args() > 6 ? func_get_arg(6) : [];
         $accessor = $this->propertyAccessor;
 
         if (\is_string($label)) {

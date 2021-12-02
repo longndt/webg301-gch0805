@@ -15,7 +15,6 @@ use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\Loader\LoaderInterface;
-use Symfony\Component\Validator\Mapping\MetadataInterface;
 
 /**
  * Creates new {@link ClassMetadataInterface} instances.
@@ -70,7 +69,7 @@ class LazyLoadingMetadataFactory implements MetadataFactoryInterface
      * {@link LoaderInterface::loadClassMetadata()} method for further
      * configuration. At last, the new object is returned.
      */
-    public function getMetadataFor(mixed $value): MetadataInterface
+    public function getMetadataFor($value)
     {
         if (!\is_object($value) && !\is_string($value)) {
             throw new NoSuchMetadataException(sprintf('Cannot create metadata for non-objects. Got: "%s".', get_debug_type($value)));
@@ -140,7 +139,7 @@ class LazyLoadingMetadataFactory implements MetadataFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function hasMetadataFor(mixed $value): bool
+    public function hasMetadataFor($value)
     {
         if (!\is_object($value) && !\is_string($value)) {
             return false;

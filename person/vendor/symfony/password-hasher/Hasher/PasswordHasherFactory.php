@@ -13,7 +13,9 @@ namespace Symfony\Component\PasswordHasher\Hasher;
 
 use Symfony\Component\PasswordHasher\Exception\LogicException;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\Security\Core\Encoder\PasswordHasherAdapter;
 
 /**
  * A generic hasher factory implementation.
@@ -23,7 +25,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  */
 class PasswordHasherFactory implements PasswordHasherFactoryInterface
 {
-    private array $passwordHashers;
+    private $passwordHashers;
 
     /**
      * @param array<string, PasswordHasherInterface|array> $passwordHashers
@@ -36,11 +38,11 @@ class PasswordHasherFactory implements PasswordHasherFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getPasswordHasher(string|PasswordAuthenticatedUserInterface|PasswordHasherAwareInterface $user): PasswordHasherInterface
+    public function getPasswordHasher($user): PasswordHasherInterface
     {
         $hasherKey = null;
 
-        if (($user instanceof PasswordHasherAwareInterface && null !== $hasherName = $user->getPasswordHasherName())) {
+        if (($user instanceof PasswordHasherAwareInterface && null !== $hasherName = $user->getPasswordHasherName()) || ($user instanceof EncoderAwareInterface && null !== $hasherName = $user->getEncoderName())) {
             if (!\array_key_exists($hasherName, $this->passwordHashers)) {
                 throw new \RuntimeException(sprintf('The password hasher "%s" was not configured.', $hasherName));
             }
@@ -59,11 +61,7 @@ class PasswordHasherFactory implements PasswordHasherFactoryInterface
             throw new \RuntimeException(sprintf('No password hasher has been configured for account "%s".', \is_object($user) ? get_debug_type($user) : $user));
         }
 
-        if (!$this->passwordHashers[$hasherKey] instanceof PasswordHasherInterface) {
-            $this->passwordHashers[$hasherKey] = $this->createHasher($this->passwordHashers[$hasherKey]);
-        }
-
-        return $this->passwordHashers[$hasherKey];
+        return $this->createHasherUsingAdapter($hasherKey);
     }
 
     /**
@@ -85,6 +83,9 @@ class PasswordHasherFactory implements PasswordHasherFactoryInterface
         }
 
         $hasher = new $config['class'](...$config['arguments']);
+        if (!$hasher instanceof PasswordHasherInterface && $hasher instanceof PasswordEncoderInterface) {
+            $hasher = new PasswordHasherAdapter($hasher);
+        }
 
         if ($isExtra || !\in_array($config['class'], [NativePasswordHasher::class, SodiumPasswordHasher::class], true)) {
             return $hasher;
@@ -101,6 +102,18 @@ class PasswordHasherFactory implements PasswordHasherFactoryInterface
         }
 
         return new MigratingPasswordHasher($hasher, ...$extrapasswordHashers);
+    }
+
+    private function createHasherUsingAdapter(string $hasherKey): PasswordHasherInterface
+    {
+        if (!$this->passwordHashers[$hasherKey] instanceof PasswordHasherInterface) {
+            $this->passwordHashers[$hasherKey] = $this->passwordHashers[$hasherKey] instanceof PasswordEncoderInterface
+                ? new PasswordHasherAdapter($this->passwordHashers[$hasherKey])
+                : $this->createHasher($this->passwordHashers[$hasherKey])
+            ;
+        }
+
+        return $this->passwordHashers[$hasherKey];
     }
 
     private function getHasherConfigFromAlgorithm(array $config): array
@@ -134,8 +147,8 @@ class PasswordHasherFactory implements PasswordHasherFactoryInterface
             $hasherChain = [$this->createHasher($config, true)];
 
             foreach ($frompasswordHashers as $name) {
-                if ($hasher = $this->passwordHashers[$name] ?? false) {
-                    $hasher = $hasher instanceof PasswordHasherInterface ? $hasher : $this->createHasher($hasher, true);
+                if (isset($this->passwordHashers[$name])) {
+                    $hasher = $this->createHasherUsingAdapter($name);
                 } else {
                     $hasher = $this->createHasher(['algorithm' => $name], true);
                 }

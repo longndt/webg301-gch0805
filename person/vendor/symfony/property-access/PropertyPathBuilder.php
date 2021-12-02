@@ -21,7 +21,13 @@ class PropertyPathBuilder
     private $elements = [];
     private $isIndex = [];
 
-    public function __construct(PropertyPathInterface|string $path = null)
+    /**
+     * Creates a new property path builder.
+     *
+     * @param PropertyPathInterface|string|null $path The path to initially store
+     *                                                in the builder. Optional.
+     */
+    public function __construct($path = null)
     {
         if (null !== $path) {
             $this->append($path);
@@ -31,10 +37,13 @@ class PropertyPathBuilder
     /**
      * Appends a (sub-) path to the current path.
      *
-     * @param int $offset The offset where the appended piece starts in $path
-     * @param int $length The length of the appended piece; if 0, the full path is appended
+     * @param PropertyPathInterface|string $path   The path to append
+     * @param int                          $offset The offset where the appended
+     *                                             piece starts in $path
+     * @param int                          $length The length of the appended piece
+     *                                             If 0, the full path is appended
      */
-    public function append(PropertyPathInterface|string $path, int $offset = 0, int $length = 0)
+    public function append($path, int $offset = 0, int $length = 0)
     {
         if (\is_string($path)) {
             $path = new PropertyPath($path);
@@ -87,12 +96,17 @@ class PropertyPathBuilder
     /**
      * Replaces a sub-path by a different (sub-) path.
      *
-     * @param int $pathOffset The offset where the inserted piece starts in $path
-     * @param int $pathLength The length of the inserted piece; if 0, the full path is inserted
+     * @param int                          $offset     The offset at which to replace
+     * @param int                          $length     The length of the piece to replace
+     * @param PropertyPathInterface|string $path       The path to insert
+     * @param int                          $pathOffset The offset where the inserted piece
+     *                                                 starts in $path
+     * @param int                          $pathLength The length of the inserted piece
+     *                                                 If 0, the full path is inserted
      *
      * @throws OutOfBoundsException If the offset is invalid
      */
-    public function replace(int $offset, int $length, PropertyPathInterface|string $path, int $pathOffset = 0, int $pathLength = 0)
+    public function replace(int $offset, int $length, $path, int $pathOffset = 0, int $pathLength = 0)
     {
         if (\is_string($path)) {
             $path = new PropertyPath($path);
@@ -155,16 +169,20 @@ class PropertyPathBuilder
 
     /**
      * Returns the length of the current path.
+     *
+     * @return int The path length
      */
-    public function getLength(): int
+    public function getLength()
     {
         return \count($this->elements);
     }
 
     /**
      * Returns the current property path.
+     *
+     * @return PropertyPathInterface|null The constructed property path
      */
-    public function getPropertyPath(): ?PropertyPathInterface
+    public function getPropertyPath()
     {
         $pathAsString = $this->__toString();
 
@@ -173,8 +191,10 @@ class PropertyPathBuilder
 
     /**
      * Returns the current property path as string.
+     *
+     * @return string The property path as string
      */
-    public function __toString(): string
+    public function __toString()
     {
         $string = '';
 

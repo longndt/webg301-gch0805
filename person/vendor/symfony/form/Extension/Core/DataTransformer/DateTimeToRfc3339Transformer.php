@@ -23,9 +23,11 @@ class DateTimeToRfc3339Transformer extends BaseDateTimeTransformer
      *
      * @param \DateTimeInterface $dateTime A DateTimeInterface object
      *
+     * @return string The formatted date
+     *
      * @throws TransformationFailedException If the given value is not a \DateTimeInterface
      */
-    public function transform(mixed $dateTime): string
+    public function transform($dateTime)
     {
         if (null === $dateTime) {
             return '';
@@ -51,10 +53,12 @@ class DateTimeToRfc3339Transformer extends BaseDateTimeTransformer
      *
      * @param string $rfc3339 Formatted string
      *
+     * @return \DateTime|null Normalized date
+     *
      * @throws TransformationFailedException If the given value is not a string,
      *                                       if the value could not be transformed
      */
-    public function reverseTransform(mixed $rfc3339): ?\DateTime
+    public function reverseTransform($rfc3339)
     {
         if (!\is_string($rfc3339)) {
             throw new TransformationFailedException('Expected a string.');

@@ -273,7 +273,11 @@ class DateTimeType extends AbstractType
                 return $options['compound'] ? [] : '';
             },
             'input_format' => 'Y-m-d H:i:s',
-            'invalid_message' => 'Please enter a valid date and time.',
+            'invalid_message' => function (Options $options, $previousValue) {
+                return ($options['legacy_error_messages'] ?? true)
+                    ? $previousValue
+                    : 'Please enter a valid date and time.';
+            },
         ]);
 
         // Don't add some defaults in order to preserve the defaults
@@ -351,7 +355,7 @@ class DateTimeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix(): string
+    public function getBlockPrefix()
     {
         return 'datetime';
     }

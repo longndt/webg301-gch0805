@@ -95,7 +95,7 @@ class Uuid extends Constraint
         bool $strict = null,
         callable $normalizer = null,
         array $groups = null,
-        mixed $payload = null
+        $payload = null
     ) {
         parent::__construct($options, $groups, $payload);
 

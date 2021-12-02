@@ -23,16 +23,25 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ResolvedFormType implements ResolvedFormTypeInterface
 {
-    private FormTypeInterface $innerType;
+    /**
+     * @var FormTypeInterface
+     */
+    private $innerType;
 
     /**
      * @var FormTypeExtensionInterface[]
      */
-    private array $typeExtensions;
+    private $typeExtensions;
 
-    private ?ResolvedFormTypeInterface $parent;
+    /**
+     * @var ResolvedFormTypeInterface|null
+     */
+    private $parent;
 
-    private OptionsResolver $optionsResolver;
+    /**
+     * @var OptionsResolver
+     */
+    private $optionsResolver;
 
     /**
      * @param FormTypeExtensionInterface[] $typeExtensions
@@ -53,7 +62,7 @@ class ResolvedFormType implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix(): string
+    public function getBlockPrefix()
     {
         return $this->innerType->getBlockPrefix();
     }
@@ -61,7 +70,7 @@ class ResolvedFormType implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getParent(): ?ResolvedFormTypeInterface
+    public function getParent()
     {
         return $this->parent;
     }
@@ -69,7 +78,7 @@ class ResolvedFormType implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getInnerType(): FormTypeInterface
+    public function getInnerType()
     {
         return $this->innerType;
     }
@@ -77,7 +86,7 @@ class ResolvedFormType implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTypeExtensions(): array
+    public function getTypeExtensions()
     {
         return $this->typeExtensions;
     }
@@ -85,7 +94,7 @@ class ResolvedFormType implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function createBuilder(FormFactoryInterface $factory, string $name, array $options = []): FormBuilderInterface
+    public function createBuilder(FormFactoryInterface $factory, string $name, array $options = [])
     {
         try {
             $options = $this->getOptionsResolver()->resolve($options);
@@ -105,7 +114,7 @@ class ResolvedFormType implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function createView(FormInterface $form, FormView $parent = null): FormView
+    public function createView(FormInterface $form, FormView $parent = null)
     {
         return $this->newView($parent);
     }
@@ -162,9 +171,9 @@ class ResolvedFormType implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptionsResolver(): OptionsResolver
+    public function getOptionsResolver()
     {
-        if (!isset($this->optionsResolver)) {
+        if (null === $this->optionsResolver) {
             if (null !== $this->parent) {
                 $this->optionsResolver = clone $this->parent->getOptionsResolver();
             } else {
@@ -185,8 +194,10 @@ class ResolvedFormType implements ResolvedFormTypeInterface
      * Creates a new builder instance.
      *
      * Override this method if you want to customize the builder class.
+     *
+     * @return FormBuilderInterface The new builder instance
      */
-    protected function newBuilder(string $name, ?string $dataClass, FormFactoryInterface $factory, array $options): FormBuilderInterface
+    protected function newBuilder(string $name, ?string $dataClass, FormFactoryInterface $factory, array $options)
     {
         if ($this->innerType instanceof ButtonTypeInterface) {
             return new ButtonBuilder($name, $options);
@@ -203,8 +214,10 @@ class ResolvedFormType implements ResolvedFormTypeInterface
      * Creates a new view instance.
      *
      * Override this method if you want to customize the view class.
+     *
+     * @return FormView A new view instance
      */
-    protected function newView(FormView $parent = null): FormView
+    protected function newView(FormView $parent = null)
     {
         return new FormView($parent);
     }

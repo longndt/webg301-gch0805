@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class NotCompromisedPasswordConfig 
 {
@@ -21,7 +23,7 @@ class NotCompromisedPasswordConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -34,7 +36,7 @@ class NotCompromisedPasswordConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function endpoint($value): static
+    public function endpoint($value): self
     {
         $this->endpoint = $value;
     
@@ -59,6 +61,7 @@ class NotCompromisedPasswordConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -71,5 +74,6 @@ class NotCompromisedPasswordConfig
     
         return $output;
     }
+    
 
 }

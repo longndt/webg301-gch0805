@@ -60,12 +60,12 @@ class WebProfilerExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function getXsdValidationBasePath(): string|false
+    public function getXsdValidationBasePath()
     {
         return __DIR__.'/../Resources/config/schema';
     }
 
-    public function getNamespace(): string
+    public function getNamespace()
     {
         return 'http://symfony.com/schema/dic/webprofiler';
     }

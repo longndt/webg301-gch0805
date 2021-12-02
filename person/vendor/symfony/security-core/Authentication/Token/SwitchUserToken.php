@@ -11,8 +11,6 @@
 
 namespace Symfony\Component\Security\Core\Authentication\Token;
 
-use Symfony\Component\Security\Core\User\UserInterface;
-
 /**
  * Token representing a user who temporarily impersonates another one.
  *
@@ -20,18 +18,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class SwitchUserToken extends UsernamePasswordToken
 {
-    private TokenInterface $originalToken;
-    private ?string $originatedFromUri = null;
+    private $originalToken;
+    private $originatedFromUri;
 
     /**
-     * @param $user              The username (like a nickname, email address, etc.), or a UserInterface instance or an object implementing a __toString method
-     * @param $originatedFromUri The URI where was the user at the switch
+     * @param string|object $user              The username (like a nickname, email address, etc.), or a UserInterface instance or an object implementing a __toString method
+     * @param mixed         $credentials       This usually is the password of the user
+     * @param string|null   $originatedFromUri The URI where was the user at the switch
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(UserInterface $user, string $firewallName, array $roles, TokenInterface $originalToken, string $originatedFromUri = null)
+    public function __construct($user, $credentials, string $firewallName, array $roles, TokenInterface $originalToken, string $originatedFromUri = null)
     {
-        parent::__construct($user, $firewallName, $roles);
+        parent::__construct($user, $credentials, $firewallName, $roles);
 
         $this->originalToken = $originalToken;
         $this->originatedFromUri = $originatedFromUri;

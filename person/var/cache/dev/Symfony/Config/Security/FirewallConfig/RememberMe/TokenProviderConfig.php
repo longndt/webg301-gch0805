@@ -10,6 +10,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class TokenProviderConfig 
 {
@@ -22,7 +24,7 @@ class TokenProviderConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function service($value): static
+    public function service($value): self
     {
         $this->service = $value;
     
@@ -58,6 +60,7 @@ class TokenProviderConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -70,5 +73,6 @@ class TokenProviderConfig
     
         return $output;
     }
+    
 
 }

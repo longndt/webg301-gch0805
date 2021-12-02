@@ -12,9 +12,6 @@
 namespace Symfony\Bundle\FrameworkBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Console\Descriptor\Descriptor;
-use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Completion\CompletionInput;
-use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,11 +27,13 @@ use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
  *
  * @internal
  */
-#[AsCommand(name: 'debug:autowiring', description: 'List classes/interfaces you can use for autowiring')]
 class DebugAutowiringCommand extends ContainerDebugCommand
 {
-    private bool $supportsHref;
-    private ?FileLinkFormatter $fileLinkFormatter;
+    protected static $defaultName = 'debug:autowiring';
+    protected static $defaultDescription = 'List classes/interfaces you can use for autowiring';
+
+    private $supportsHref;
+    private $fileLinkFormatter;
 
     public function __construct(string $name = null, FileLinkFormatter $fileLinkFormatter = null)
     {
@@ -53,6 +52,7 @@ class DebugAutowiringCommand extends ContainerDebugCommand
                 new InputArgument('search', InputArgument::OPTIONAL, 'A search filter'),
                 new InputOption('all', null, InputOption::VALUE_NONE, 'Show also services that are not aliased'),
             ])
+            ->setDescription(self::$defaultDescription)
             ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command displays the classes and interfaces that
 you can use as type-hints for autowiring:
@@ -81,8 +81,7 @@ EOF
         $serviceIds = array_filter($serviceIds, [$this, 'filterToServiceTypes']);
 
         if ($search = $input->getArgument('search')) {
-            $searchNormalized = preg_replace('/[^a-zA-Z0-9\x7f-\xff $]++/', '', $search);
-
+            $searchNormalized = preg_replace('/[^a-zA-Z0-9\x7f-\xff]++/', '', $search);
             $serviceIds = array_filter($serviceIds, function ($serviceId) use ($searchNormalized) {
                 return false !== stripos(str_replace('\\', '', $serviceId), $searchNormalized) && !str_starts_with($serviceId, '.');
             });
@@ -162,14 +161,5 @@ EOF
         }
 
         return (string) $this->fileLinkFormatter->format($r->getFileName(), $r->getStartLine());
-    }
-
-    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
-    {
-        if ($input->mustSuggestArgumentValuesFor('search')) {
-            $builder = $this->getContainerBuilder($this->getApplication()->getKernel());
-
-            $suggestions->suggestValues(array_filter($builder->getServiceIds(), [$this, 'filterToServiceTypes']));
-        }
     }
 }

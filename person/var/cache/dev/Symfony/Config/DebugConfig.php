@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class DebugConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInterface
 {
@@ -24,7 +26,7 @@ class DebugConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInte
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function maxItems($value): static
+    public function maxItems($value): self
     {
         $this->maxItems = $value;
     
@@ -37,7 +39,7 @@ class DebugConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInte
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function minDepth($value): static
+    public function minDepth($value): self
     {
         $this->minDepth = $value;
     
@@ -50,7 +52,7 @@ class DebugConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInte
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function maxStringLength($value): static
+    public function maxStringLength($value): self
     {
         $this->maxStringLength = $value;
     
@@ -64,7 +66,7 @@ class DebugConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInte
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function dumpDestination($value): static
+    public function dumpDestination($value): self
     {
         $this->dumpDestination = $value;
     
@@ -78,7 +80,7 @@ class DebugConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInte
      * @param ParamConfigurator|'dark'|'light' $value
      * @return $this
      */
-    public function theme($value): static
+    public function theme($value): self
     {
         $this->theme = $value;
     
@@ -89,6 +91,7 @@ class DebugConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInte
     {
         return 'debug';
     }
+            
     
     public function __construct(array $value = [])
     {
@@ -123,6 +126,7 @@ class DebugConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInte
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -144,5 +148,6 @@ class DebugConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInte
     
         return $output;
     }
+    
 
 }

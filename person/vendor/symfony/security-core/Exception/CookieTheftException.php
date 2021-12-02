@@ -23,7 +23,7 @@ class CookieTheftException extends AuthenticationException
     /**
      * {@inheritdoc}
      */
-    public function getMessageKey(): string
+    public function getMessageKey()
     {
         return 'Cookie has already been used by someone else.';
     }

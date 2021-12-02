@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class PublisherConfig 
 {
@@ -22,7 +24,7 @@ class PublisherConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function id($value): static
+    public function id($value): self
     {
         $this->id = $value;
     
@@ -34,7 +36,7 @@ class PublisherConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function hostname($value): static
+    public function hostname($value): self
     {
         $this->hostname = $value;
     
@@ -46,7 +48,7 @@ class PublisherConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function port($value): static
+    public function port($value): self
     {
         $this->port = $value;
     
@@ -58,7 +60,7 @@ class PublisherConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function chunkSize($value): static
+    public function chunkSize($value): self
     {
         $this->chunkSize = $value;
     
@@ -93,6 +95,7 @@ class PublisherConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -111,5 +114,6 @@ class PublisherConfig
     
         return $output;
     }
+    
 
 }

@@ -60,7 +60,7 @@ class ObjectNormalizer extends AbstractObjectNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function extractAttributes(object $object, string $format = null, array $context = []): array
+    protected function extractAttributes(object $object, string $format = null, array $context = [])
     {
         if (\stdClass::class === \get_class($object)) {
             return array_keys((array) $object);
@@ -108,8 +108,16 @@ class ObjectNormalizer extends AbstractObjectNormalizer
         }
 
         // properties
+        $propertyValues = !method_exists($object, '__get') ? (array) $object : null;
         foreach ($reflClass->getProperties() as $reflProperty) {
-            if (!$reflProperty->isPublic()) {
+            if (null !== $propertyValues && !\array_key_exists($reflProperty->name, $propertyValues)) {
+                if ($reflProperty->isPublic()
+                    || ($reflProperty->isProtected() && !\array_key_exists("\0*\0{$reflProperty->name}", $propertyValues))
+                    || ($reflProperty->isPrivate() && !\array_key_exists("\0{$reflProperty->class}\0{$reflProperty->name}", $propertyValues))
+                ) {
+                    unset($attributes[$reflProperty->name]);
+                }
+
                 continue;
             }
 
@@ -126,7 +134,7 @@ class ObjectNormalizer extends AbstractObjectNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeValue(object $object, string $attribute, string $format = null, array $context = []): mixed
+    protected function getAttributeValue(object $object, string $attribute, string $format = null, array $context = [])
     {
         $cacheKey = \get_class($object);
         if (!\array_key_exists($cacheKey, $this->discriminatorCache)) {
@@ -143,7 +151,7 @@ class ObjectNormalizer extends AbstractObjectNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function setAttributeValue(object $object, string $attribute, mixed $value, string $format = null, array $context = [])
+    protected function setAttributeValue(object $object, string $attribute, $value, string $format = null, array $context = [])
     {
         try {
             $this->propertyAccessor->setValue($object, $attribute, $value);
@@ -155,7 +163,7 @@ class ObjectNormalizer extends AbstractObjectNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function getAllowedAttributes(string|object $classOrObject, array $context, bool $attributesAsString = false): array|bool
+    protected function getAllowedAttributes($classOrObject, array $context, bool $attributesAsString = false)
     {
         if (false === $allowedAttributes = parent::getAllowedAttributes($classOrObject, $context, $attributesAsString)) {
             return false;
@@ -168,11 +176,9 @@ class ObjectNormalizer extends AbstractObjectNormalizer
             }
 
             if (null !== $discriminatorMapping = $this->classDiscriminatorResolver->getMappingForClass($class)) {
-                $attributes = [];
                 foreach ($discriminatorMapping->getTypesMapping() as $mappedClass) {
-                    $attributes[] = parent::getAllowedAttributes($mappedClass, $context, $attributesAsString);
+                    $allowedAttributes = array_merge($allowedAttributes, parent::getAllowedAttributes($mappedClass, $context, $attributesAsString));
                 }
-                $allowedAttributes = array_merge($allowedAttributes, ...$attributes);
             }
         }
 

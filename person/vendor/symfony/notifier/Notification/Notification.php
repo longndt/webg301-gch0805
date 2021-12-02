@@ -36,13 +36,13 @@ class Notification
     public const IMPORTANCE_MEDIUM = 'medium';
     public const IMPORTANCE_LOW = 'low';
 
-    private array $channels = [];
-    private string $subject = '';
-    private string $content = '';
-    private string $emoji = '';
-    private ?FlattenException $exception = null;
-    private string $exceptionAsString = '';
-    private string $importance = self::IMPORTANCE_HIGH;
+    private $channels = [];
+    private $subject = '';
+    private $content = '';
+    private $emoji = '';
+    private $exception;
+    private $exceptionAsString = '';
+    private $importance = self::IMPORTANCE_HIGH;
 
     public function __construct(string $subject = '', array $channels = [])
     {
@@ -66,7 +66,7 @@ class Notification
     /**
      * @return $this
      */
-    public function subject(string $subject): static
+    public function subject(string $subject): self
     {
         $this->subject = $subject;
 
@@ -81,7 +81,7 @@ class Notification
     /**
      * @return $this
      */
-    public function content(string $content): static
+    public function content(string $content): self
     {
         $this->content = $content;
 
@@ -96,7 +96,7 @@ class Notification
     /**
      * @return $this
      */
-    public function importance(string $importance): static
+    public function importance(string $importance): self
     {
         $this->importance = $importance;
 
@@ -113,7 +113,7 @@ class Notification
      *
      * @return $this
      */
-    public function importanceFromLogLevelName(string $level): static
+    public function importanceFromLogLevelName(string $level): self
     {
         $level = self::LEVELS[strtolower($level)];
         $this->importance = $level >= 500 ? self::IMPORTANCE_URGENT : ($level >= 400 ? self::IMPORTANCE_HIGH : self::IMPORTANCE_LOW);
@@ -124,7 +124,7 @@ class Notification
     /**
      * @return $this
      */
-    public function emoji(string $emoji): static
+    public function emoji(string $emoji): self
     {
         $this->emoji = $emoji;
 
@@ -149,7 +149,7 @@ class Notification
     /**
      * @return $this
      */
-    public function channels(array $channels): static
+    public function channels(array $channels): self
     {
         $this->channels = $channels;
 

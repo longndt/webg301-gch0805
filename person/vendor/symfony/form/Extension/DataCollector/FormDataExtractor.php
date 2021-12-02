@@ -25,7 +25,7 @@ class FormDataExtractor implements FormDataExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function extractConfiguration(FormInterface $form): array
+    public function extractConfiguration(FormInterface $form)
     {
         $data = [
             'id' => $this->buildId($form),
@@ -53,7 +53,7 @@ class FormDataExtractor implements FormDataExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function extractDefaultData(FormInterface $form): array
+    public function extractDefaultData(FormInterface $form)
     {
         $data = [
             'default_data' => [
@@ -76,7 +76,7 @@ class FormDataExtractor implements FormDataExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function extractSubmittedData(FormInterface $form): array
+    public function extractSubmittedData(FormInterface $form)
     {
         $data = [
             'submitted_data' => [
@@ -135,7 +135,7 @@ class FormDataExtractor implements FormDataExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function extractViewVariables(FormView $view): array
+    public function extractViewVariables(FormView $view)
     {
         $data = [
             'id' => $view->vars['id'] ?? null,

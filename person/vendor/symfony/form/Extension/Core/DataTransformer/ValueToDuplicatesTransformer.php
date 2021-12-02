@@ -19,7 +19,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  */
 class ValueToDuplicatesTransformer implements DataTransformerInterface
 {
-    private array $keys;
+    private $keys;
 
     public function __construct(array $keys)
     {
@@ -28,8 +28,12 @@ class ValueToDuplicatesTransformer implements DataTransformerInterface
 
     /**
      * Duplicates the given value through the array.
+     *
+     * @param mixed $value The value
+     *
+     * @return array The array
      */
-    public function transform(mixed $value): array
+    public function transform($value)
     {
         $result = [];
 
@@ -43,10 +47,12 @@ class ValueToDuplicatesTransformer implements DataTransformerInterface
     /**
      * Extracts the duplicated value from an array.
      *
+     * @return mixed The value
+     *
      * @throws TransformationFailedException if the given value is not an array or
-     *                                       if the given array cannot be transformed
+     *                                       if the given array can not be transformed
      */
-    public function reverseTransform(mixed $array): mixed
+    public function reverseTransform($array)
     {
         if (!\is_array($array)) {
             throw new TransformationFailedException('Expected an array.');

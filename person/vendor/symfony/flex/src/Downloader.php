@@ -11,7 +11,7 @@
 
 namespace Symfony\Flex;
 
-use Composer\Cache;
+use Composer\Cache as ComposerCache;
 use Composer\Composer;
 use Composer\DependencyResolver\Operation\OperationInterface;
 use Composer\DependencyResolver\Operation\UninstallOperation;
@@ -41,7 +41,8 @@ class Downloader
     private $sess;
     private $cache;
 
-    private HttpDownloader $rfs;
+    /** @var HttpDownloader|ParallelDownloader */
+    private $rfs;
     private $degradedMode = false;
     private $endpoints;
     private $index;
@@ -49,7 +50,7 @@ class Downloader
     private $caFile;
     private $enabled = true;
 
-    public function __construct(Composer $composer, IoInterface $io, HttpDownloader $rfs)
+    public function __construct(Composer $composer, IoInterface $io, $rfs)
     {
         if (getenv('SYMFONY_CAFILE')) {
             $this->caFile = getenv('SYMFONY_CAFILE');
@@ -88,13 +89,18 @@ class Downloader
         $this->io = $io;
         $config = $composer->getConfig();
         $this->rfs = $rfs;
-        $this->cache = new Cache($io, $config->get('cache-repo-dir').'/flex');
+        $this->cache = new ComposerCache($io, $config->get('cache-repo-dir').'/flex');
         $this->sess = bin2hex(random_bytes(16));
     }
 
     public function getSessionId(): string
     {
         return $this->sess;
+    }
+
+    public function setFlexId(string $id = null)
+    {
+        // No-op to support downgrading to v1.12.x
     }
 
     public function isEnabled()
@@ -288,19 +294,37 @@ class Downloader
             $options[$url] = $this->getOptions($headers);
         }
 
-        $loop = new Loop($this->rfs);
-        $jobs = [];
-        foreach ($urls as $url) {
-            $jobs[] = $this->rfs->add($url, $options[$url])->then(function (ComposerResponse $response) use ($url, &$responses) {
-                if (200 === $response->getStatusCode()) {
+        if ($this->rfs instanceof HttpDownloader) {
+            $loop = new Loop($this->rfs);
+            $jobs = [];
+            foreach ($urls as $url) {
+                $jobs[] = $this->rfs->add($url, $options[$url])->then(function (ComposerResponse $response) use ($url, &$responses) {
+                    if (200 === $response->getStatusCode()) {
+                        $cacheKey = self::generateCacheKey($url);
+                        $responses[$url] = $this->parseJson($response->getBody(), $url, $cacheKey, $response->getHeaders())->getBody();
+                    }
+                }, function (\Exception $e) use ($url, &$retries) {
+                    $retries[] = [$url, $e];
+                });
+            }
+            $loop->wait($jobs);
+        } else {
+            foreach ($urls as $i => $url) {
+                $urls[$i] = [$url];
+            }
+            $this->rfs->download($urls, function ($url) use ($options, &$responses, &$retries, &$error) {
+                try {
                     $cacheKey = self::generateCacheKey($url);
-                    $responses[$url] = $this->parseJson($response->getBody(), $url, $cacheKey, $response->getHeaders())->getBody();
+                    $origin = method_exists($this->rfs, 'getOrigin') ? $this->rfs::getOrigin($url) : parse_url($url, \PHP_URL_HOST);
+                    $json = $this->rfs->getContents($origin, $url, false, $options[$url]);
+                    if (200 === $this->rfs->findStatusCode($this->rfs->getLastHeaders())) {
+                        $responses[$url] = $this->parseJson($json, $url, $cacheKey, $this->rfs->getLastHeaders())->getBody();
+                    }
+                } catch (\Exception $e) {
+                    $retries[] = [$url, $e];
                 }
-            }, function (\Exception $e) use ($url, &$retries) {
-                $retries[] = [$url, $e];
             });
         }
-        $loop->wait($jobs);
 
         if (!$retries) {
             return $responses;

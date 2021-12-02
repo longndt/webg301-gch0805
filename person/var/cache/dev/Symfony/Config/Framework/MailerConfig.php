@@ -11,6 +11,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class MailerConfig 
 {
@@ -26,7 +28,7 @@ class MailerConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -39,7 +41,7 @@ class MailerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function messageBus($value): static
+    public function messageBus($value): self
     {
         $this->messageBus = $value;
     
@@ -51,7 +53,7 @@ class MailerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function dsn($value): static
+    public function dsn($value): self
     {
         $this->dsn = $value;
     
@@ -59,9 +61,10 @@ class MailerConfig
     }
     
     /**
+     * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function transport(string $name, mixed $value): static
+    public function transport(string $name, $value): self
     {
         $this->transports[$name] = $value;
     
@@ -129,6 +132,7 @@ class MailerConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -153,5 +157,6 @@ class MailerConfig
     
         return $output;
     }
+    
 
 }

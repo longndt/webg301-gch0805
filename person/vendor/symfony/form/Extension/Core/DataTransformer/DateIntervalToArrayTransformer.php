@@ -39,8 +39,8 @@ class DateIntervalToArrayTransformer implements DataTransformerInterface
         self::SECONDS => 's',
         self::INVERT => 'r',
     ];
-    private array $fields;
-    private bool $pad;
+    private $fields;
+    private $pad;
 
     /**
      * @param string[]|null $fields The date fields
@@ -57,9 +57,11 @@ class DateIntervalToArrayTransformer implements DataTransformerInterface
      *
      * @param \DateInterval $dateInterval Normalized date interval
      *
+     * @return array Interval array
+     *
      * @throws UnexpectedTypeException if the given value is not a \DateInterval instance
      */
-    public function transform(mixed $dateInterval): array
+    public function transform($dateInterval)
     {
         if (null === $dateInterval) {
             return array_intersect_key(
@@ -101,10 +103,12 @@ class DateIntervalToArrayTransformer implements DataTransformerInterface
      *
      * @param array $value Interval array
      *
+     * @return \DateInterval|null Normalized date interval
+     *
      * @throws UnexpectedTypeException       if the given value is not an array
      * @throws TransformationFailedException if the value could not be transformed
      */
-    public function reverseTransform(mixed $value): ?\DateInterval
+    public function reverseTransform($value)
     {
         if (null === $value) {
             return null;

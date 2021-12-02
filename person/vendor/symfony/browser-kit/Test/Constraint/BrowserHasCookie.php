@@ -16,9 +16,9 @@ use Symfony\Component\BrowserKit\AbstractBrowser;
 
 final class BrowserHasCookie extends Constraint
 {
-    private string $name;
-    private string $path;
-    private ?string $domain;
+    private $name;
+    private $path;
+    private $domain;
 
     public function __construct(string $name, string $path = '/', string $domain = null)
     {

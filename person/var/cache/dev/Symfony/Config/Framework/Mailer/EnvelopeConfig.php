@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class EnvelopeConfig 
 {
@@ -20,7 +22,7 @@ class EnvelopeConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function sender($value): static
+    public function sender($value): self
     {
         $this->sender = $value;
     
@@ -28,11 +30,10 @@ class EnvelopeConfig
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function recipients(ParamConfigurator|array $value): static
+    public function recipients($value): self
     {
         $this->recipients = $value;
     
@@ -57,6 +58,7 @@ class EnvelopeConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -69,5 +71,6 @@ class EnvelopeConfig
     
         return $output;
     }
+    
 
 }

@@ -11,10 +11,10 @@
 
 namespace Symfony\Component\Notifier\Transport;
 
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\Notifier\Event\FailedMessageEvent;
 use Symfony\Component\Notifier\Event\MessageEvent;
-use Symfony\Component\Notifier\Event\SentMessageEvent;
 use Symfony\Component\Notifier\Exception\LogicException;
 use Symfony\Component\Notifier\Message\MessageInterface;
 use Symfony\Component\Notifier\Message\SentMessage;
@@ -28,7 +28,7 @@ abstract class AbstractTransport implements TransportInterface
 {
     protected const HOST = 'localhost';
 
-    private ?EventDispatcherInterface $dispatcher;
+    private $dispatcher;
 
     protected $client;
     protected $host;
@@ -45,13 +45,13 @@ abstract class AbstractTransport implements TransportInterface
             $this->client = HttpClient::create();
         }
 
-        $this->dispatcher = $dispatcher;
+        $this->dispatcher = class_exists(Event::class) ? LegacyEventDispatcherProxy::decorate($dispatcher) : $dispatcher;
     }
 
     /**
      * @return $this
      */
-    public function setHost(?string $host): static
+    public function setHost(?string $host): self
     {
         $this->host = $host;
 
@@ -61,7 +61,7 @@ abstract class AbstractTransport implements TransportInterface
     /**
      * @return $this
      */
-    public function setPort(?int $port): static
+    public function setPort(?int $port): self
     {
         $this->port = $port;
 
@@ -70,23 +70,11 @@ abstract class AbstractTransport implements TransportInterface
 
     public function send(MessageInterface $message): SentMessage
     {
-        if (null === $this->dispatcher) {
-            return $this->doSend($message);
+        if (null !== $this->dispatcher) {
+            $this->dispatcher->dispatch(new MessageEvent($message));
         }
 
-        $this->dispatcher->dispatch(new MessageEvent($message));
-
-        try {
-            $sentMessage = $this->doSend($message);
-        } catch (\Throwable $error) {
-            $this->dispatcher->dispatch(new FailedMessageEvent($message, $error));
-
-            throw $error;
-        }
-
-        $this->dispatcher->dispatch(new SentMessageEvent($sentMessage));
-
-        return $sentMessage;
+        return $this->doSend($message);
     }
 
     abstract protected function doSend(MessageInterface $message): SentMessage;

@@ -368,33 +368,18 @@ class __TwigTemplate_6cdd8abb9e2455501af18e5972d81f62e656e3a6e80218efde5125ba82b
                         echo "                                                ";
                         // line 144
                         echo "                                                <div class=\"tab\">
-                                                    <h3 class=\"tab-title\">HTML preview</h3>
-                                                    <div class=\"tab-content\">
-                                                        <pre class=\"prewrap\" style=\"max-height: 600px\">
-                                                            <iframe
-                                                                src=\"data:text/html;base64;charset=utf-8,";
-                        // line 149
-                        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 149, $this->source); })()), "base64Encode", [0 => twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 149, $this->source); })()), "htmlBody", [], "method", false, false, false, 149)], "method", false, false, false, 149), "html", null, true);
-                        echo "\"
-                                                                style=\"height: 80vh;width: 100%;\"
-                                                            >
-                                                            </iframe>
-                                                        </pre>
-                                                    </div>
-                                                </div>
-                                                <div class=\"tab\">
                                                     <h3 class=\"tab-title\">HTML Content</h3>
                                                     <div class=\"tab-content\">
                                                         <pre class=\"prewrap\" style=\"max-height: 600px\">";
-                        // line 160
-                        if (twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 160, $this->source); })()), "htmlCharset", [], "method", false, false, false, 160)) {
-                            // line 161
-                            echo twig_escape_filter($this->env, twig_convert_encoding(twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 161, $this->source); })()), "htmlBody", [], "method", false, false, false, 161), "UTF-8", twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 161, $this->source); })()), "htmlCharset", [], "method", false, false, false, 161)), "html", null, true);
+                        // line 148
+                        if (twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 148, $this->source); })()), "htmlCharset", [], "method", false, false, false, 148)) {
+                            // line 149
+                            echo twig_escape_filter($this->env, twig_convert_encoding(twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 149, $this->source); })()), "htmlBody", [], "method", false, false, false, 149), "UTF-8", twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 149, $this->source); })()), "htmlCharset", [], "method", false, false, false, 149)), "html", null, true);
                         } else {
-                            // line 163
-                            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 163, $this->source); })()), "htmlBody", [], "method", false, false, false, 163), "html", null, true);
+                            // line 151
+                            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 151, $this->source); })()), "htmlBody", [], "method", false, false, false, 151), "html", null, true);
                         }
-                        // line 165
+                        // line 153
                         echo "</pre>
                                                     </div>
                                                 </div>
@@ -402,22 +387,22 @@ class __TwigTemplate_6cdd8abb9e2455501af18e5972d81f62e656e3a6e80218efde5125ba82b
                                                     <h3 class=\"tab-title\">Text Content</h3>
                                                     <div class=\"tab-content\">
                                                         <pre class=\"prewrap\" style=\"max-height: 600px\">";
-                        // line 172
-                        if (twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 172, $this->source); })()), "textCharset", [], "method", false, false, false, 172)) {
-                            // line 173
-                            echo twig_escape_filter($this->env, twig_convert_encoding(twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 173, $this->source); })()), "textBody", [], "method", false, false, false, 173), "UTF-8", twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 173, $this->source); })()), "textCharset", [], "method", false, false, false, 173)), "html", null, true);
+                        // line 160
+                        if (twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 160, $this->source); })()), "textCharset", [], "method", false, false, false, 160)) {
+                            // line 161
+                            echo twig_escape_filter($this->env, twig_convert_encoding(twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 161, $this->source); })()), "textBody", [], "method", false, false, false, 161), "UTF-8", twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 161, $this->source); })()), "textCharset", [], "method", false, false, false, 161)), "html", null, true);
                         } else {
-                            // line 175
-                            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 175, $this->source); })()), "textBody", [], "method", false, false, false, 175), "html", null, true);
+                            // line 163
+                            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 163, $this->source); })()), "textBody", [], "method", false, false, false, 163), "html", null, true);
                         }
-                        // line 177
+                        // line 165
                         echo "</pre>
                                                     </div>
                                                 </div>
                                                 ";
-                        // line 180
+                        // line 168
                         $context['_parent'] = $context;
-                        $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 180, $this->source); })()), "attachments", [], "any", false, false, false, 180));
+                        $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 168, $this->source); })()), "attachments", [], "any", false, false, false, 168));
                         $context['loop'] = [
                           'parent' => $context['_parent'],
                           'index0' => 0,
@@ -432,16 +417,16 @@ class __TwigTemplate_6cdd8abb9e2455501af18e5972d81f62e656e3a6e80218efde5125ba82b
                             $context['loop']['last'] = 1 === $length;
                         }
                         foreach ($context['_seq'] as $context["_key"] => $context["attachment"]) {
-                            // line 181
+                            // line 169
                             echo "                                                    <div class=\"tab\">
                                                         <h3 class=\"tab-title\">Attachment #";
-                            // line 182
-                            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 182), "html", null, true);
+                            // line 170
+                            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 170), "html", null, true);
                             echo "</h3>
                                                         <div class=\"tab-content\">
                                                             <pre class=\"prewrap\" style=\"max-height: 600px\">";
-                            // line 184
-                            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["attachment"], "toString", [], "method", false, false, false, 184), "html", null, true);
+                            // line 172
+                            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["attachment"], "toString", [], "method", false, false, false, 172), "html", null, true);
                             echo "</pre>
                                                         </div>
                                                     </div>
@@ -458,16 +443,16 @@ class __TwigTemplate_6cdd8abb9e2455501af18e5972d81f62e656e3a6e80218efde5125ba82b
                         $_parent = $context['_parent'];
                         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['attachment'], $context['_parent'], $context['loop']);
                         $context = array_intersect_key($context, $_parent) + $_parent;
-                        // line 188
+                        // line 176
                         echo "                                            ";
                     }
-                    // line 189
+                    // line 177
                     echo "                                            <div class=\"tab\">
                                                 <h3 class=\"tab-title\">Parts Hierarchy</h3>
                                                 <div class=\"tab-content\">
                                                     <pre class=\"prewrap\" style=\"max-height: 600px\">";
-                    // line 192
-                    echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 192, $this->source); })()), "body", [], "method", false, false, false, 192), "asDebugString", [], "method", false, false, false, 192), "html", null, true);
+                    // line 180
+                    echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 180, $this->source); })()), "body", [], "method", false, false, false, 180), "asDebugString", [], "method", false, false, false, 180), "html", null, true);
                     echo "</pre>
                                                 </div>
                                             </div>
@@ -475,8 +460,8 @@ class __TwigTemplate_6cdd8abb9e2455501af18e5972d81f62e656e3a6e80218efde5125ba82b
                                                 <h3 class=\"tab-title\">Raw</h3>
                                                 <div class=\"tab-content\">
                                                     <pre class=\"prewrap\" style=\"max-height: 600px\">";
-                    // line 198
-                    echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 198, $this->source); })()), "toString", [], "method", false, false, false, 198), "html", null, true);
+                    // line 186
+                    echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, (isset($context["message"]) || array_key_exists("message", $context) ? $context["message"] : (function () { throw new RuntimeError('Variable "message" does not exist.', 186, $this->source); })()), "toString", [], "method", false, false, false, 186), "html", null, true);
                     echo "</pre>
                                                 </div>
                                             </div>
@@ -484,7 +469,7 @@ class __TwigTemplate_6cdd8abb9e2455501af18e5972d81f62e656e3a6e80218efde5125ba82b
                                     </div>
                                 ";
                 }
-                // line 204
+                // line 192
                 echo "                            </div>
                         </div>
                     </div>
@@ -493,7 +478,7 @@ class __TwigTemplate_6cdd8abb9e2455501af18e5972d81f62e656e3a6e80218efde5125ba82b
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_iterated'], $context['_key'], $context['event'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 208
+            // line 196
             echo "            </div>
         </div>
     ";
@@ -521,7 +506,7 @@ class __TwigTemplate_6cdd8abb9e2455501af18e5972d81f62e656e3a6e80218efde5125ba82b
 
     public function getDebugInfo()
     {
-        return array (  497 => 208,  488 => 204,  479 => 198,  470 => 192,  465 => 189,  462 => 188,  444 => 184,  439 => 182,  436 => 181,  419 => 180,  414 => 177,  411 => 175,  408 => 173,  406 => 172,  398 => 165,  395 => 163,  392 => 161,  390 => 160,  377 => 149,  370 => 144,  368 => 143,  366 => 142,  359 => 137,  351 => 136,  347 => 135,  340 => 131,  334 => 128,  327 => 124,  319 => 118,  317 => 117,  311 => 114,  308 => 113,  306 => 112,  304 => 111,  298 => 108,  295 => 107,  292 => 106,  288 => 105,  284 => 103,  280 => 102,  272 => 97,  264 => 92,  259 => 89,  253 => 85,  251 => 84,  246 => 81,  243 => 80,  233 => 79,  222 => 76,  216 => 73,  213 => 72,  211 => 71,  205 => 68,  201 => 67,  198 => 66,  195 => 65,  185 => 64,  139 => 28,  129 => 27,  116 => 23,  113 => 22,  107 => 19,  100 => 15,  96 => 13,  94 => 12,  91 => 11,  85 => 9,  82 => 8,  79 => 7,  77 => 6,  74 => 5,  71 => 4,  61 => 3,  38 => 1,);
+        return array (  482 => 196,  473 => 192,  464 => 186,  455 => 180,  450 => 177,  447 => 176,  429 => 172,  424 => 170,  421 => 169,  404 => 168,  399 => 165,  396 => 163,  393 => 161,  391 => 160,  383 => 153,  380 => 151,  377 => 149,  375 => 148,  370 => 144,  368 => 143,  366 => 142,  359 => 137,  351 => 136,  347 => 135,  340 => 131,  334 => 128,  327 => 124,  319 => 118,  317 => 117,  311 => 114,  308 => 113,  306 => 112,  304 => 111,  298 => 108,  295 => 107,  292 => 106,  288 => 105,  284 => 103,  280 => 102,  272 => 97,  264 => 92,  259 => 89,  253 => 85,  251 => 84,  246 => 81,  243 => 80,  233 => 79,  222 => 76,  216 => 73,  213 => 72,  211 => 71,  205 => 68,  201 => 67,  198 => 66,  195 => 65,  185 => 64,  139 => 28,  129 => 27,  116 => 23,  113 => 22,  107 => 19,  100 => 15,  96 => 13,  94 => 12,  91 => 11,  85 => 9,  82 => 8,  79 => 7,  77 => 6,  74 => 5,  71 => 4,  61 => 3,  38 => 1,);
     }
 
     public function getSourceContext()
@@ -670,18 +655,6 @@ class __TwigTemplate_6cdd8abb9e2455501af18e5972d81f62e656e3a6e80218efde5125ba82b
                                             {% if message.htmlBody is defined %}
                                                 {# Email instance #}
                                                 <div class=\"tab\">
-                                                    <h3 class=\"tab-title\">HTML preview</h3>
-                                                    <div class=\"tab-content\">
-                                                        <pre class=\"prewrap\" style=\"max-height: 600px\">
-                                                            <iframe
-                                                                src=\"data:text/html;base64;charset=utf-8,{{ collector.base64Encode(message.htmlBody()) }}\"
-                                                                style=\"height: 80vh;width: 100%;\"
-                                                            >
-                                                            </iframe>
-                                                        </pre>
-                                                    </div>
-                                                </div>
-                                                <div class=\"tab\">
                                                     <h3 class=\"tab-title\">HTML Content</h3>
                                                     <div class=\"tab-content\">
                                                         <pre class=\"prewrap\" style=\"max-height: 600px\">
@@ -737,6 +710,6 @@ class __TwigTemplate_6cdd8abb9e2455501af18e5972d81f62e656e3a6e80218efde5125ba82b
         </div>
     {% endfor %}
 {% endblock %}
-", "@WebProfiler/Collector/mailer.html.twig", "C:\\workspace\\htdocs\\webg301-gch0805\\person\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Collector\\mailer.html.twig");
+", "@WebProfiler/Collector/mailer.html.twig", "C:\\htdocs\\GCH0805\\form\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Collector\\mailer.html.twig");
     }
 }

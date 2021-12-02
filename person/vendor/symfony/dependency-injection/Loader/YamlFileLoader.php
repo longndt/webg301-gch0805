@@ -13,6 +13,7 @@ namespace Symfony\Component\DependencyInjection\Loader;
 
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Argument\AbstractArgument;
+use Symfony\Component\DependencyInjection\Argument\ArgumentInterface;
 use Symfony\Component\DependencyInjection\Argument\BoundArgument;
 use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
@@ -106,17 +107,17 @@ class YamlFileLoader extends FileLoader
         'bind' => 'bind',
     ];
 
-    private YamlParser $yamlParser;
+    private $yamlParser;
 
-    private int $anonymousServicesCount;
-    private string $anonymousServicesSuffix;
+    private $anonymousServicesCount;
+    private $anonymousServicesSuffix;
 
     protected $autoRegisterAliasesForSinglyImplementedInterfaces = false;
 
     /**
      * {@inheritdoc}
      */
-    public function load(mixed $resource, string $type = null): mixed
+    public function load($resource, string $type = null)
     {
         $path = $this->locator->locate($resource);
 
@@ -126,7 +127,7 @@ class YamlFileLoader extends FileLoader
 
         // empty file
         if (null === $content) {
-            return null;
+            return;
         }
 
         $this->loadContent($content, $path);
@@ -145,8 +146,6 @@ class YamlFileLoader extends FileLoader
                 $this->env = $env;
             }
         }
-
-        return null;
     }
 
     private function loadContent(array $content, string $path)
@@ -183,7 +182,7 @@ class YamlFileLoader extends FileLoader
     /**
      * {@inheritdoc}
      */
-    public function supports(mixed $resource, string $type = null): bool
+    public function supports($resource, string $type = null)
     {
         if (!\is_string($resource)) {
             return false;
@@ -336,9 +335,13 @@ class YamlFileLoader extends FileLoader
     }
 
     /**
+     * Parses a definition.
+     *
+     * @param array|string|null $service
+     *
      * @throws InvalidArgumentException When tags are invalid
      */
-    private function parseDefinition(string $id, array|string|null $service, string $file, array $defaults, bool $return = false)
+    private function parseDefinition(string $id, $service, string $file, array $defaults, bool $return = false)
     {
         if (preg_match('/^_[a-zA-Z0-9_]*$/', $id)) {
             throw new InvalidArgumentException(sprintf('Service names that start with an underscore are reserved. Rename the "%s" service or define it in XML instead.', $id));
@@ -430,11 +433,11 @@ class YamlFileLoader extends FileLoader
                     $deprecation = \is_array($value) ? $value : ['message' => $value];
 
                     if (!isset($deprecation['package'])) {
-                        throw new InvalidArgumentException(sprintf('Missing attribute "package" of the "deprecated" option in "%s".', $file));
+                        trigger_deprecation('symfony/dependency-injection', '5.1', 'Not setting the attribute "package" of the "deprecated" option in "%s" is deprecated.', $file);
                     }
 
                     if (!isset($deprecation['version'])) {
-                        throw new InvalidArgumentException(sprintf('Missing attribute "version" of the "deprecated" option in "%s".', $file));
+                        trigger_deprecation('symfony/dependency-injection', '5.1', 'Not setting the attribute "version" of the "deprecated" option in "%s" is deprecated.', $file);
                     }
 
                     $alias->setDeprecated($deprecation['package'] ?? '', $deprecation['version'] ?? '', $deprecation['message'] ?? '');
@@ -501,11 +504,11 @@ class YamlFileLoader extends FileLoader
             $deprecation = \is_array($service['deprecated']) ? $service['deprecated'] : ['message' => $service['deprecated']];
 
             if (!isset($deprecation['package'])) {
-                throw new InvalidArgumentException(sprintf('Missing attribute "package" of the "deprecated" option in "%s".', $file));
+                trigger_deprecation('symfony/dependency-injection', '5.1', 'Not setting the attribute "package" of the "deprecated" option in "%s" is deprecated.', $file);
             }
 
             if (!isset($deprecation['version'])) {
-                throw new InvalidArgumentException(sprintf('Missing attribute "version" of the "deprecated" option in "%s".', $file));
+                trigger_deprecation('symfony/dependency-injection', '5.1', 'Not setting the attribute "version" of the "deprecated" option in "%s" is deprecated.', $file);
             }
 
             $definition->setDeprecated($deprecation['package'] ?? '', $deprecation['version'] ?? '', $deprecation['message'] ?? '');
@@ -699,9 +702,15 @@ class YamlFileLoader extends FileLoader
     }
 
     /**
+     * Parses a callable.
+     *
+     * @param string|array $callable A callable reference
+     *
      * @throws InvalidArgumentException When errors occur
+     *
+     * @return string|array|Reference A parsed callable
      */
-    private function parseCallable(mixed $callable, string $parameter, string $id, string $file): string|array|Reference
+    private function parseCallable($callable, string $parameter, string $id, string $file)
     {
         if (\is_string($callable)) {
             if ('' !== $callable && '@' === $callable[0]) {
@@ -733,9 +742,11 @@ class YamlFileLoader extends FileLoader
     /**
      * Loads a YAML file.
      *
+     * @return array The file content
+     *
      * @throws InvalidArgumentException when the given file is not a local file or when it does not exist
      */
-    protected function loadFile(string $file): ?array
+    protected function loadFile(string $file)
     {
         if (!class_exists(\Symfony\Component\Yaml\Parser::class)) {
             throw new RuntimeException('Unable to load YAML config files as the Symfony Yaml Component is not installed.');
@@ -749,7 +760,9 @@ class YamlFileLoader extends FileLoader
             throw new InvalidArgumentException(sprintf('The file "%s" does not exist.', $file));
         }
 
-        $this->yamlParser ??= new YamlParser();
+        if (null === $this->yamlParser) {
+            $this->yamlParser = new YamlParser();
+        }
 
         try {
             $configuration = $this->yamlParser->parseFile($file, Yaml::PARSE_CONSTANT | Yaml::PARSE_CUSTOM_TAGS);
@@ -765,7 +778,7 @@ class YamlFileLoader extends FileLoader
      *
      * @throws InvalidArgumentException When service file is not valid
      */
-    private function validate(mixed $content, string $file): ?array
+    private function validate($content, string $file): ?array
     {
         if (null === $content) {
             return $content;
@@ -789,7 +802,12 @@ class YamlFileLoader extends FileLoader
         return $content;
     }
 
-    private function resolveServices(mixed $value, string $file, bool $isParameter = false): mixed
+    /**
+     * Resolves services.
+     *
+     * @return array|string|Reference|ArgumentInterface
+     */
+    private function resolveServices($value, string $file, bool $isParameter = false)
     {
         if ($value instanceof TaggedValue) {
             $argument = $value->getValue();

@@ -22,7 +22,10 @@ namespace Symfony\Component\Config\Resource;
  */
 class FileResource implements SelfCheckingResourceInterface
 {
-    private string $resource;
+    /**
+     * @var string|false
+     */
+    private $resource;
 
     /**
      * @param string $resource The file path to the resource
@@ -31,13 +34,11 @@ class FileResource implements SelfCheckingResourceInterface
      */
     public function __construct(string $resource)
     {
-        $resolvedResource = realpath($resource) ?: (file_exists($resource) ? $resource : false);
+        $this->resource = realpath($resource) ?: (file_exists($resource) ? $resource : false);
 
-        if (false === $resolvedResource) {
+        if (false === $this->resource) {
             throw new \InvalidArgumentException(sprintf('The file "%s" does not exist.', $resource));
         }
-
-        $this->resource = $resolvedResource;
     }
 
     public function __toString(): string
@@ -46,7 +47,7 @@ class FileResource implements SelfCheckingResourceInterface
     }
 
     /**
-     * Returns the canonicalized, absolute path to the resource.
+     * @return string The canonicalized, absolute path to the resource
      */
     public function getResource(): string
     {

@@ -42,44 +42,36 @@ class __TwigTemplate_cde46b81efddddec1e3fbc1c4d26253561683f0fc3c6cde66eb7ea63c3d
         // line 1
         echo "<div id=\"sfwdt";
         echo twig_escape_filter($this->env, (isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new RuntimeError('Variable "token" does not exist.', 1, $this->source); })()), "html", null, true);
-        echo "\" class=\"sf-toolbar sf-display-none\" role=\"region\" aria-label=\"Symfony Web Debug Toolbar\">
-    ";
-        // line 2
-        $this->loadTemplate("@WebProfiler/Profiler/toolbar.html.twig", "@WebProfiler/Profiler/toolbar_js.html.twig", 2)->display(twig_array_merge($context, ["templates" => ["request" => "@WebProfiler/Profiler/cancel.html.twig"], "profile" => null, "profiler_url" => $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getUrl("_profiler", ["token" =>         // line 7
-(isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new RuntimeError('Variable "token" does not exist.', 7, $this->source); })())]), "profiler_markup_version" => 2]));
-        // line 10
-        echo "</div>
-
+        echo "\" class=\"sf-toolbar sf-display-none\" role=\"region\" aria-label=\"Symfony Web Debug Toolbar\"></div>
 ";
-        // line 12
+        // line 2
         echo twig_include($this->env, $context, "@WebProfiler/Profiler/base_js.html.twig");
         echo "
-
 <style";
-        // line 14
-        if ((isset($context["csp_style_nonce"]) || array_key_exists("csp_style_nonce", $context) ? $context["csp_style_nonce"] : (function () { throw new RuntimeError('Variable "csp_style_nonce" does not exist.', 14, $this->source); })())) {
+        // line 3
+        if ((isset($context["csp_style_nonce"]) || array_key_exists("csp_style_nonce", $context) ? $context["csp_style_nonce"] : (function () { throw new RuntimeError('Variable "csp_style_nonce" does not exist.', 3, $this->source); })())) {
             echo " nonce=\"";
-            echo twig_escape_filter($this->env, (isset($context["csp_style_nonce"]) || array_key_exists("csp_style_nonce", $context) ? $context["csp_style_nonce"] : (function () { throw new RuntimeError('Variable "csp_style_nonce" does not exist.', 14, $this->source); })()), "html", null, true);
+            echo twig_escape_filter($this->env, (isset($context["csp_style_nonce"]) || array_key_exists("csp_style_nonce", $context) ? $context["csp_style_nonce"] : (function () { throw new RuntimeError('Variable "csp_style_nonce" does not exist.', 3, $this->source); })()), "html", null, true);
             echo "\"";
         }
         echo ">
     ";
-        // line 15
+        // line 4
         echo twig_include($this->env, $context, "@WebProfiler/Profiler/toolbar.css.twig");
         echo "
 </style>
 <script";
-        // line 17
-        if ((isset($context["csp_script_nonce"]) || array_key_exists("csp_script_nonce", $context) ? $context["csp_script_nonce"] : (function () { throw new RuntimeError('Variable "csp_script_nonce" does not exist.', 17, $this->source); })())) {
+        // line 6
+        if ((isset($context["csp_script_nonce"]) || array_key_exists("csp_script_nonce", $context) ? $context["csp_script_nonce"] : (function () { throw new RuntimeError('Variable "csp_script_nonce" does not exist.', 6, $this->source); })())) {
             echo " nonce=\"";
-            echo twig_escape_filter($this->env, (isset($context["csp_script_nonce"]) || array_key_exists("csp_script_nonce", $context) ? $context["csp_script_nonce"] : (function () { throw new RuntimeError('Variable "csp_script_nonce" does not exist.', 17, $this->source); })()), "html", null, true);
+            echo twig_escape_filter($this->env, (isset($context["csp_script_nonce"]) || array_key_exists("csp_script_nonce", $context) ? $context["csp_script_nonce"] : (function () { throw new RuntimeError('Variable "csp_script_nonce" does not exist.', 6, $this->source); })()), "html", null, true);
             echo "\"";
         }
         echo ">/*<![CDATA[*/
     (function () {
         Sfjs.loadToolbar('";
-        // line 19
-        echo twig_escape_filter($this->env, (isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new RuntimeError('Variable "token" does not exist.', 19, $this->source); })()), "html", null, true);
+        // line 8
+        echo twig_escape_filter($this->env, (isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new RuntimeError('Variable "token" does not exist.', 8, $this->source); })()), "html", null, true);
         echo "');
     })();
 /*]]>*/</script>
@@ -104,24 +96,13 @@ class __TwigTemplate_cde46b81efddddec1e3fbc1c4d26253561683f0fc3c6cde66eb7ea63c3d
 
     public function getDebugInfo()
     {
-        return array (  82 => 19,  73 => 17,  68 => 15,  60 => 14,  55 => 12,  51 => 10,  49 => 7,  48 => 2,  43 => 1,);
+        return array (  74 => 8,  65 => 6,  60 => 4,  52 => 3,  48 => 2,  43 => 1,);
     }
 
     public function getSourceContext()
     {
-        return new Source("<div id=\"sfwdt{{ token }}\" class=\"sf-toolbar sf-display-none\" role=\"region\" aria-label=\"Symfony Web Debug Toolbar\">
-    {% include('@WebProfiler/Profiler/toolbar.html.twig') with {
-        templates: {
-            'request': '@WebProfiler/Profiler/cancel.html.twig'
-        },
-        profile: null,
-        profiler_url: url('_profiler', {token: token}),
-        profiler_markup_version: 2,
-    } %}
-</div>
-
+        return new Source("<div id=\"sfwdt{{ token }}\" class=\"sf-toolbar sf-display-none\" role=\"region\" aria-label=\"Symfony Web Debug Toolbar\"></div>
 {{ include('@WebProfiler/Profiler/base_js.html.twig') }}
-
 <style{% if csp_style_nonce %} nonce=\"{{ csp_style_nonce }}\"{% endif %}>
     {{ include('@WebProfiler/Profiler/toolbar.css.twig') }}
 </style>
@@ -130,6 +111,6 @@ class __TwigTemplate_cde46b81efddddec1e3fbc1c4d26253561683f0fc3c6cde66eb7ea63c3d
         Sfjs.loadToolbar('{{ token }}');
     })();
 /*]]>*/</script>
-", "@WebProfiler/Profiler/toolbar_js.html.twig", "C:\\workspace\\htdocs\\webg301-gch0805\\person\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Profiler\\toolbar_js.html.twig");
+", "@WebProfiler/Profiler/toolbar_js.html.twig", "C:\\htdocs\\GCH0805\\form\\vendor\\symfony\\web-profiler-bundle\\Resources\\views\\Profiler\\toolbar_js.html.twig");
     }
 }

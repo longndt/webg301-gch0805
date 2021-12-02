@@ -46,8 +46,10 @@ interface AttributeMetadataInterface
 
     /**
      * Gets the serialization max depth for this attribute.
+     *
+     * @return int|null
      */
-    public function getMaxDepth(): ?int;
+    public function getMaxDepth();
 
     /**
      * Sets the serialization name for this attribute.

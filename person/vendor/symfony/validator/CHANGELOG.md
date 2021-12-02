@@ -1,25 +1,8 @@
 CHANGELOG
 =========
 
-6.0
----
-
- * Remove the `allowEmptyString` option from the `Length` constraint
- * Remove the `NumberConstraintTrait` trait
- * `ValidatorBuilder::enableAnnotationMapping()` does not accept a Doctrine annotation reader anymore
- * `ValidatorBuilder::enableAnnotationMapping()` won't automatically setup a Doctrine annotation reader anymore
-
-5.4
----
-
- * Add a `Cidr` constraint to validate CIDR notations
- * Add a `CssColor` constraint to validate CSS colors
- * Add support for `ConstraintViolationList::createFromMessage()`
- * Add error's uid to `Count` and `Length` constraints with "exactly" option enabled
-
 5.3
 ---
-
  * Add the `normalizer` option to the `Unique` constraint
  * Add `Validation::createIsValidCallable()` that returns true/false instead of throwing exceptions
 

@@ -16,20 +16,20 @@ namespace Symfony\Bundle\SecurityBundle\Security;
  */
 final class FirewallConfig
 {
-    private string $name;
-    private string $userChecker;
-    private ?string $requestMatcher;
-    private bool $securityEnabled;
-    private bool $stateless;
-    private ?string $provider;
-    private ?string $context;
-    private ?string $entryPoint;
-    private ?string $accessDeniedHandler;
-    private ?string $accessDeniedUrl;
-    private array $authenticators;
-    private ?array $switchUser;
+    private $name;
+    private $userChecker;
+    private $requestMatcher;
+    private $securityEnabled;
+    private $stateless;
+    private $provider;
+    private $context;
+    private $entryPoint;
+    private $accessDeniedHandler;
+    private $accessDeniedUrl;
+    private $listeners;
+    private $switchUser;
 
-    public function __construct(string $name, string $userChecker, string $requestMatcher = null, bool $securityEnabled = true, bool $stateless = false, string $provider = null, string $context = null, string $entryPoint = null, string $accessDeniedHandler = null, string $accessDeniedUrl = null, array $authenticators = [], array $switchUser = null)
+    public function __construct(string $name, string $userChecker, string $requestMatcher = null, bool $securityEnabled = true, bool $stateless = false, string $provider = null, string $context = null, string $entryPoint = null, string $accessDeniedHandler = null, string $accessDeniedUrl = null, array $listeners = [], array $switchUser = null)
     {
         $this->name = $name;
         $this->userChecker = $userChecker;
@@ -41,7 +41,7 @@ final class FirewallConfig
         $this->entryPoint = $entryPoint;
         $this->accessDeniedHandler = $accessDeniedHandler;
         $this->accessDeniedUrl = $accessDeniedUrl;
-        $this->authenticators = $authenticators;
+        $this->listeners = $listeners;
         $this->switchUser = $switchUser;
     }
 
@@ -62,6 +62,11 @@ final class FirewallConfig
     public function isSecurityEnabled(): bool
     {
         return $this->securityEnabled;
+    }
+
+    public function allowsAnonymous(): bool
+    {
+        return \in_array('anonymous', $this->listeners, true);
     }
 
     public function isStateless(): bool
@@ -102,9 +107,9 @@ final class FirewallConfig
         return $this->accessDeniedUrl;
     }
 
-    public function getAuthenticators(): array
+    public function getListeners(): array
     {
-        return $this->authenticators;
+        return $this->listeners;
     }
 
     public function getSwitchUser(): ?array

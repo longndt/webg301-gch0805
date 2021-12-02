@@ -26,10 +26,9 @@ use Symfony\Component\Security\Http\EventListener\UserProviderListener;
  */
 class UserBadge implements BadgeInterface
 {
-    private string $userIdentifier;
-    /** @var callable|null */
+    private $userIdentifier;
     private $userLoader;
-    private UserInterface $user;
+    private $user;
 
     /**
      * Initializes the user badge.
@@ -60,17 +59,15 @@ class UserBadge implements BadgeInterface
      */
     public function getUser(): UserInterface
     {
-        if (!isset($this->user)) {
+        if (null === $this->user) {
             if (null === $this->userLoader) {
                 throw new \LogicException(sprintf('No user loader is configured, did you forget to register the "%s" listener?', UserProviderListener::class));
             }
 
-            $user = ($this->userLoader)($this->userIdentifier);
-            if (!$user instanceof UserInterface) {
+            $this->user = ($this->userLoader)($this->userIdentifier);
+            if (!$this->user instanceof UserInterface) {
                 throw new AuthenticationServiceException(sprintf('The user provider must return a UserInterface object, "%s" given.', get_debug_type($this->user)));
             }
-
-            $this->user = $user;
         }
 
         return $this->user;

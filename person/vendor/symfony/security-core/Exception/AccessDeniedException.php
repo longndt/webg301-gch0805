@@ -18,30 +18,42 @@ namespace Symfony\Component\Security\Core\Exception;
  */
 class AccessDeniedException extends RuntimeException
 {
-    private array $attributes = [];
-    private mixed $subject = null;
+    private $attributes = [];
+    private $subject;
 
     public function __construct(string $message = 'Access Denied.', \Throwable $previous = null)
     {
         parent::__construct($message, 403, $previous);
     }
 
-    public function getAttributes(): array
+    /**
+     * @return array
+     */
+    public function getAttributes()
     {
         return $this->attributes;
     }
 
-    public function setAttributes(array|string $attributes)
+    /**
+     * @param array|string $attributes
+     */
+    public function setAttributes($attributes)
     {
         $this->attributes = (array) $attributes;
     }
 
-    public function getSubject(): mixed
+    /**
+     * @return mixed
+     */
+    public function getSubject()
     {
         return $this->subject;
     }
 
-    public function setSubject(mixed $subject)
+    /**
+     * @param mixed $subject
+     */
+    public function setSubject($subject)
     {
         $this->subject = $subject;
     }

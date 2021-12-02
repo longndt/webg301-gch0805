@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class ViewConfig 
 {
@@ -19,7 +21,7 @@ class ViewConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function annotations($value): static
+    public function annotations($value): self
     {
         $this->annotations = $value;
     
@@ -39,6 +41,7 @@ class ViewConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -48,5 +51,6 @@ class ViewConfig
     
         return $output;
     }
+    
 
 }

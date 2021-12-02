@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class LoginThrottlingConfig 
 {
@@ -23,7 +25,7 @@ class LoginThrottlingConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function limiter($value): static
+    public function limiter($value): self
     {
         $this->limiter = $value;
     
@@ -35,7 +37,7 @@ class LoginThrottlingConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function maxAttempts($value): static
+    public function maxAttempts($value): self
     {
         $this->maxAttempts = $value;
     
@@ -47,7 +49,7 @@ class LoginThrottlingConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function interval($value): static
+    public function interval($value): self
     {
         $this->interval = $value;
     
@@ -60,7 +62,7 @@ class LoginThrottlingConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function lockFactory($value): static
+    public function lockFactory($value): self
     {
         $this->lockFactory = $value;
     
@@ -95,6 +97,7 @@ class LoginThrottlingConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -113,5 +116,6 @@ class LoginThrottlingConfig
     
         return $output;
     }
+    
 
 }

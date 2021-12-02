@@ -41,13 +41,18 @@ class Timezone extends Constraint
         self::TIMEZONE_IDENTIFIER_INTL_ERROR => 'TIMEZONE_IDENTIFIER_INTL_ERROR',
     ];
 
+    /**
+     * {@inheritdoc}
+     *
+     * @param int|array|null $zone A combination of {@see \DateTimeZone} class constants or a set of options
+     */
     public function __construct(
-        int|array $zone = null,
+        $zone = null,
         string $message = null,
         string $countryCode = null,
         bool $intlCompatible = null,
         array $groups = null,
-        mixed $payload = null,
+        $payload = null,
         array $options = []
     ) {
         if (\is_array($zone)) {
@@ -77,7 +82,7 @@ class Timezone extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOption(): ?string
+    public function getDefaultOption()
     {
         return 'zone';
     }

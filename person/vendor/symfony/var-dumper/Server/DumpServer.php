@@ -24,13 +24,9 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  */
 class DumpServer
 {
-    private string $host;
-    private ?LoggerInterface $logger;
-
-    /**
-     * @var resource|null
-     */
+    private $host;
     private $socket;
+    private $logger;
 
     public function __construct(string $host, LoggerInterface $logger = null)
     {

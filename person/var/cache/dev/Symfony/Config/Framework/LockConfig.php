@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class LockConfig 
 {
@@ -20,7 +22,7 @@ class LockConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -28,9 +30,10 @@ class LockConfig
     }
     
     /**
+     * @param ParamConfigurator|array $value
      * @return $this
      */
-    public function resource(string $name, ParamConfigurator|array $value): static
+    public function resource(string $name, $value): self
     {
         $this->resources[$name] = $value;
     
@@ -55,6 +58,7 @@ class LockConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -67,5 +71,6 @@ class LockConfig
     
         return $output;
     }
+    
 
 }

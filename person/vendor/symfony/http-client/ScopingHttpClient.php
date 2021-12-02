@@ -28,9 +28,9 @@ class ScopingHttpClient implements HttpClientInterface, ResetInterface, LoggerAw
 {
     use HttpClientTrait;
 
-    private HttpClientInterface $client;
-    private array $defaultOptionsByRegexp;
-    private ?string $defaultRegexp;
+    private $client;
+    private $defaultOptionsByRegexp;
+    private $defaultRegexp;
 
     public function __construct(HttpClientInterface $client, array $defaultOptionsByRegexp, string $defaultRegexp = null)
     {
@@ -96,7 +96,7 @@ class ScopingHttpClient implements HttpClientInterface, ResetInterface, LoggerAw
     /**
      * {@inheritdoc}
      */
-    public function stream(ResponseInterface|iterable $responses, float $timeout = null): ResponseStreamInterface
+    public function stream($responses, float $timeout = null): ResponseStreamInterface
     {
         return $this->client->stream($responses, $timeout);
     }
@@ -121,7 +121,7 @@ class ScopingHttpClient implements HttpClientInterface, ResetInterface, LoggerAw
     /**
      * {@inheritdoc}
      */
-    public function withOptions(array $options): static
+    public function withOptions(array $options): self
     {
         $clone = clone $this;
         $clone->client = $this->client->withOptions($options);

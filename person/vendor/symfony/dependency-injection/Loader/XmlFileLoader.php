@@ -43,7 +43,7 @@ class XmlFileLoader extends FileLoader
     /**
      * {@inheritdoc}
      */
-    public function load(mixed $resource, string $type = null): mixed
+    public function load($resource, string $type = null)
     {
         $path = $this->locator->locate($resource);
 
@@ -66,8 +66,6 @@ class XmlFileLoader extends FileLoader
                 }
             }
         }
-
-        return null;
     }
 
     private function loadXml(\DOMDocument $xml, string $path, \DOMNode $root = null): void
@@ -98,7 +96,7 @@ class XmlFileLoader extends FileLoader
     /**
      * {@inheritdoc}
      */
-    public function supports(mixed $resource, string $type = null): bool
+    public function supports($resource, string $type = null)
     {
         if (!\is_string($resource)) {
             return false;
@@ -214,7 +212,7 @@ class XmlFileLoader extends FileLoader
         if ($alias = $service->getAttribute('alias')) {
             $this->validateAlias($service, $file);
 
-            $this->container->setAlias($service->getAttribute('id'), $alias = new Alias($alias));
+            $this->container->setAlias((string) $service->getAttribute('id'), $alias = new Alias($alias));
             if ($publicAttr = $service->getAttribute('public')) {
                 $alias->setPublic(XmlUtils::phpize($publicAttr));
             } elseif ($defaults->getChanges()['public'] ?? false) {
@@ -227,11 +225,11 @@ class XmlFileLoader extends FileLoader
                 $version = $deprecated[0]->getAttribute('version') ?: '';
 
                 if (!$deprecated[0]->hasAttribute('package')) {
-                    throw new InvalidArgumentException(sprintf('Missing attribute "package" at node "deprecated" in "%s".', $file));
+                    trigger_deprecation('symfony/dependency-injection', '5.1', 'Not setting the attribute "package" of the node "deprecated" in "%s" is deprecated.', $file);
                 }
 
                 if (!$deprecated[0]->hasAttribute('version')) {
-                    throw new InvalidArgumentException(sprintf('Missing attribute "version" at node "deprecated" in "%s".', $file));
+                    trigger_deprecation('symfony/dependency-injection', '5.1', 'Not setting the attribute "version" of the node "deprecated" in "%s" is deprecated.', $file);
                 }
 
                 $alias->setDeprecated($package, $version, $message);
@@ -286,12 +284,12 @@ class XmlFileLoader extends FileLoader
             $package = $deprecated[0]->getAttribute('package') ?: '';
             $version = $deprecated[0]->getAttribute('version') ?: '';
 
-            if (!$deprecated[0]->hasAttribute('package')) {
-                throw new InvalidArgumentException(sprintf('Missing attribute "package" at node "deprecated" in "%s".', $file));
+            if ('' === $package) {
+                trigger_deprecation('symfony/dependency-injection', '5.1', 'Not setting the attribute "package" of the node "deprecated" in "%s" is deprecated.', $file);
             }
 
-            if (!$deprecated[0]->hasAttribute('version')) {
-                throw new InvalidArgumentException(sprintf('Missing attribute "version" at node "deprecated" in "%s".', $file));
+            if ('' === $version) {
+                trigger_deprecation('symfony/dependency-injection', '5.1', 'Not setting the attribute "version" of the node "deprecated" in "%s" is deprecated.', $file);
             }
 
             $definition->setDeprecated($package, $version, $message);
@@ -352,7 +350,7 @@ class XmlFileLoader extends FileLoader
             }
 
             if ('' === $tagName && '' === $tagName = $tag->getAttribute('name')) {
-                throw new InvalidArgumentException(sprintf('The tag name for service "%s" in "%s" must be a non-empty string.', $service->getAttribute('id'), $file));
+                throw new InvalidArgumentException(sprintf('The tag name for service "%s" in "%s" must be a non-empty string.', (string) $service->getAttribute('id'), $file));
             }
 
             $definition->addTag($tagName, $parameters);
@@ -382,7 +380,7 @@ class XmlFileLoader extends FileLoader
             } elseif ('null' === $decorationOnInvalid) {
                 $invalidBehavior = ContainerInterface::NULL_ON_INVALID_REFERENCE;
             } else {
-                throw new InvalidArgumentException(sprintf('Invalid value "%s" for attribute "decoration-on-invalid" on service "%s". Did you mean "exception", "ignore" or "null" in "%s"?', $decorationOnInvalid, $service->getAttribute('id'), $file));
+                throw new InvalidArgumentException(sprintf('Invalid value "%s" for attribute "decoration-on-invalid" on service "%s". Did you mean "exception", "ignore" or "null" in "%s"?', $decorationOnInvalid, (string) $service->getAttribute('id'), $file));
             }
 
             $renameId = $service->hasAttribute('decoration-inner-name') ? $service->getAttribute('decoration-inner-name') : null;
@@ -590,9 +588,11 @@ class XmlFileLoader extends FileLoader
     /**
      * Validates a documents XML schema.
      *
+     * @return bool
+     *
      * @throws RuntimeException When extension references a non-existent XSD file
      */
-    public function validateSchema(\DOMDocument $dom): bool
+    public function validateSchema(\DOMDocument $dom)
     {
         $schemaLocations = ['http://symfony.com/schema/dic/services' => str_replace('\\', '/', __DIR__.'/schema/dic/services/services-1.0.xsd')];
 
@@ -669,6 +669,11 @@ EOF
 
     private function shouldEnableEntityLoader(): bool
     {
+        // Version prior to 8.0 can be enabled without deprecation
+        if (\PHP_VERSION_ID < 80000) {
+            return true;
+        }
+
         static $dom, $schema;
         if (null === $dom) {
             $dom = new \DOMDocument();
@@ -765,8 +770,10 @@ EOF
      *  * The nested-tags are converted to keys (<foo><foo>bar</foo></foo>)
      *
      * @param \DOMElement $element A \DOMElement instance
+     *
+     * @return mixed
      */
-    public static function convertDomElementToArray(\DOMElement $element): mixed
+    public static function convertDomElementToArray(\DOMElement $element)
     {
         return XmlUtils::convertDomElementToArray($element);
     }

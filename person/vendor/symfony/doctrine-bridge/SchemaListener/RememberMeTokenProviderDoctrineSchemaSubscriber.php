@@ -25,10 +25,10 @@ use Symfony\Component\Security\Http\RememberMe\RememberMeHandlerInterface;
  */
 final class RememberMeTokenProviderDoctrineSchemaSubscriber implements EventSubscriber
 {
-    private iterable $rememberMeHandlers;
+    private $rememberMeHandlers;
 
     /**
-     * @param iterable<mixed, RememberMeHandlerInterface> $rememberMeHandlers
+     * @param iterable|RememberMeHandlerInterface[] $rememberMeHandlers
      */
     public function __construct(iterable $rememberMeHandlers)
     {

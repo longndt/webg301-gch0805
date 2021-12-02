@@ -93,7 +93,7 @@ class ArrayChoiceList implements ChoiceListInterface
     /**
      * {@inheritdoc}
      */
-    public function getChoices(): array
+    public function getChoices()
     {
         return $this->choices;
     }
@@ -101,7 +101,7 @@ class ArrayChoiceList implements ChoiceListInterface
     /**
      * {@inheritdoc}
      */
-    public function getValues(): array
+    public function getValues()
     {
         return array_map('strval', array_keys($this->choices));
     }
@@ -109,7 +109,7 @@ class ArrayChoiceList implements ChoiceListInterface
     /**
      * {@inheritdoc}
      */
-    public function getStructuredValues(): array
+    public function getStructuredValues()
     {
         return $this->structuredValues;
     }
@@ -117,7 +117,7 @@ class ArrayChoiceList implements ChoiceListInterface
     /**
      * {@inheritdoc}
      */
-    public function getOriginalKeys(): array
+    public function getOriginalKeys()
     {
         return $this->originalKeys;
     }
@@ -125,7 +125,7 @@ class ArrayChoiceList implements ChoiceListInterface
     /**
      * {@inheritdoc}
      */
-    public function getChoicesForValues(array $values): array
+    public function getChoicesForValues(array $values)
     {
         $choices = [];
 
@@ -141,7 +141,7 @@ class ArrayChoiceList implements ChoiceListInterface
     /**
      * {@inheritdoc}
      */
-    public function getValuesForChoices(array $choices): array
+    public function getValuesForChoices(array $choices)
     {
         $values = [];
 

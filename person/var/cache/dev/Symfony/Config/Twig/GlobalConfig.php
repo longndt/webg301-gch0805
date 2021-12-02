@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class GlobalConfig 
 {
@@ -21,7 +23,7 @@ class GlobalConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function id($value): static
+    public function id($value): self
     {
         $this->id = $value;
     
@@ -33,7 +35,7 @@ class GlobalConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function type($value): static
+    public function type($value): self
     {
         $this->type = $value;
     
@@ -43,10 +45,9 @@ class GlobalConfig
     /**
      * @default null
      * @param ParamConfigurator|mixed $value
-     *
      * @return $this
      */
-    public function value(mixed $value): static
+    public function value($value): self
     {
         $this->value = $value;
     
@@ -76,6 +77,7 @@ class GlobalConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -91,5 +93,6 @@ class GlobalConfig
     
         return $output;
     }
+    
 
 }

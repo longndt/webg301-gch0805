@@ -10,6 +10,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class LimiterConfig 
 {
@@ -27,7 +29,7 @@ class LimiterConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function lockFactory($value): static
+    public function lockFactory($value): self
     {
         $this->lockFactory = $value;
     
@@ -40,7 +42,7 @@ class LimiterConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function cachePool($value): static
+    public function cachePool($value): self
     {
         $this->cachePool = $value;
     
@@ -53,7 +55,7 @@ class LimiterConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function storageService($value): static
+    public function storageService($value): self
     {
         $this->storageService = $value;
     
@@ -66,7 +68,7 @@ class LimiterConfig
      * @param ParamConfigurator|'fixed_window'|'token_bucket'|'sliding_window'|'no_limit' $value
      * @return $this
      */
-    public function policy($value): static
+    public function policy($value): self
     {
         $this->policy = $value;
     
@@ -79,7 +81,7 @@ class LimiterConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function limit($value): static
+    public function limit($value): self
     {
         $this->limit = $value;
     
@@ -92,7 +94,7 @@ class LimiterConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function interval($value): static
+    public function interval($value): self
     {
         $this->interval = $value;
     
@@ -153,6 +155,7 @@ class LimiterConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -180,5 +183,6 @@ class LimiterConfig
     
         return $output;
     }
+    
 
 }

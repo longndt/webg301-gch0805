@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class SwitchUserConfig 
 {
@@ -21,7 +23,7 @@ class SwitchUserConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function provider($value): static
+    public function provider($value): self
     {
         $this->provider = $value;
     
@@ -33,7 +35,7 @@ class SwitchUserConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function parameter($value): static
+    public function parameter($value): self
     {
         $this->parameter = $value;
     
@@ -45,7 +47,7 @@ class SwitchUserConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function role($value): static
+    public function role($value): self
     {
         $this->role = $value;
     
@@ -75,6 +77,7 @@ class SwitchUserConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -90,5 +93,6 @@ class SwitchUserConfig
     
         return $output;
     }
+    
 
 }

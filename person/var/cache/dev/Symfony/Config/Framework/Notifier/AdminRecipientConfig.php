@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class AdminRecipientConfig 
 {
@@ -20,7 +22,7 @@ class AdminRecipientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function email($value): static
+    public function email($value): self
     {
         $this->email = $value;
     
@@ -31,7 +33,7 @@ class AdminRecipientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function phone($value): static
+    public function phone($value): self
     {
         $this->phone = $value;
     
@@ -56,6 +58,7 @@ class AdminRecipientConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -68,5 +71,6 @@ class AdminRecipientConfig
     
         return $output;
     }
+    
 
 }

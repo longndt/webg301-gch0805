@@ -24,10 +24,10 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
  */
 class ChainUserProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
-    private iterable $providers;
+    private $providers;
 
     /**
-     * @param iterable<array-key, UserProviderInterface> $providers
+     * @param iterable|UserProviderInterface[] $providers
      */
     public function __construct(iterable $providers)
     {
@@ -35,9 +35,9 @@ class ChainUserProvider implements UserProviderInterface, PasswordUpgraderInterf
     }
 
     /**
-     * @return UserProviderInterface[]
+     * @return array
      */
-    public function getProviders(): array
+    public function getProviders()
     {
         if ($this->providers instanceof \Traversable) {
             return iterator_to_array($this->providers);
@@ -47,32 +47,41 @@ class ChainUserProvider implements UserProviderInterface, PasswordUpgraderInterf
     }
 
     /**
-     * @internal for compatibility with Symfony 5.4
+     * {@inheritdoc}
      */
-    public function loadUserByUsername(string $username): UserInterface
+    public function loadUserByUsername(string $username)
     {
+        trigger_deprecation('symfony/security-core', '5.3', 'Method "%s()" is deprecated, use loadUserByIdentifier() instead.', __METHOD__);
+
         return $this->loadUserByIdentifier($username);
     }
 
-    public function loadUserByIdentifier(string $identifier): UserInterface
+    public function loadUserByIdentifier(string $userIdentifier): UserInterface
     {
         foreach ($this->providers as $provider) {
             try {
-                return $provider->loadUserByIdentifier($identifier);
+                // @deprecated since Symfony 5.3, change to $provider->loadUserByIdentifier() in 6.0
+                if (!method_exists($provider, 'loadUserByIdentifier')) {
+                    trigger_deprecation('symfony/security-core', '5.3', 'Not implementing method "loadUserByIdentifier()" in user provider "%s" is deprecated. This method will replace "loadUserByUsername()" in Symfony 6.0.', get_debug_type($provider));
+
+                    return $provider->loadUserByUsername($userIdentifier);
+                }
+
+                return $provider->loadUserByIdentifier($userIdentifier);
             } catch (UserNotFoundException $e) {
                 // try next one
             }
         }
 
-        $ex = new UserNotFoundException(sprintf('There is no user with identifier "%s".', $identifier));
-        $ex->setUserIdentifier($identifier);
+        $ex = new UserNotFoundException(sprintf('There is no user with identifier "%s".', $userIdentifier));
+        $ex->setUserIdentifier($userIdentifier);
         throw $ex;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function refreshUser(UserInterface $user): UserInterface
+    public function refreshUser(UserInterface $user)
     {
         $supportedUserFound = false;
 
@@ -92,7 +101,8 @@ class ChainUserProvider implements UserProviderInterface, PasswordUpgraderInterf
         }
 
         if ($supportedUserFound) {
-            $username = $user->getUserIdentifier();
+            // @deprecated since Symfony 5.3, change to $user->getUserIdentifier() in 6.0
+            $username = method_exists($user, 'getUserIdentifier') ? $user->getUserIdentifier() : $user->getUsername();
             $e = new UserNotFoundException(sprintf('There is no user with name "%s".', $username));
             $e->setUserIdentifier($username);
             throw $e;
@@ -104,7 +114,7 @@ class ChainUserProvider implements UserProviderInterface, PasswordUpgraderInterf
     /**
      * {@inheritdoc}
      */
-    public function supportsClass(string $class): bool
+    public function supportsClass(string $class)
     {
         foreach ($this->providers as $provider) {
             if ($provider->supportsClass($class)) {
@@ -116,10 +126,20 @@ class ChainUserProvider implements UserProviderInterface, PasswordUpgraderInterf
     }
 
     /**
+     * @param PasswordAuthenticatedUserInterface $user
+     *
      * {@inheritdoc}
      */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    public function upgradePassword($user, string $newHashedPassword): void
     {
+        if (!$user instanceof PasswordAuthenticatedUserInterface) {
+            trigger_deprecation('symfony/security-core', '5.3', 'The "%s::upgradePassword()" method expects an instance of "%s" as first argument, the "%s" class should implement it.', PasswordUpgraderInterface::class, PasswordAuthenticatedUserInterface::class, get_debug_type($user));
+
+            if (!$user instanceof UserInterface) {
+                throw new \TypeError(sprintf('The "%s::upgradePassword()" method expects an instance of "%s" as first argument, "%s" given.', static::class, PasswordAuthenticatedUserInterface::class, get_debug_type($user)));
+            }
+        }
+
         foreach ($this->providers as $provider) {
             if ($provider instanceof PasswordUpgraderInterface) {
                 try {

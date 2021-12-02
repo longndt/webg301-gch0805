@@ -10,6 +10,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class MonologConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInterface
 {
@@ -22,7 +24,7 @@ class MonologConfig implements \Symfony\Component\Config\Builder\ConfigBuilderIn
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function useMicroseconds($value): static
+    public function useMicroseconds($value): self
     {
         $this->useMicroseconds = $value;
     
@@ -30,11 +32,10 @@ class MonologConfig implements \Symfony\Component\Config\Builder\ConfigBuilderIn
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function channels(ParamConfigurator|array $value): static
+    public function channels($value): self
     {
         $this->channels = $value;
     
@@ -57,6 +58,7 @@ class MonologConfig implements \Symfony\Component\Config\Builder\ConfigBuilderIn
     {
         return 'monolog';
     }
+            
     
     public function __construct(array $value = [])
     {
@@ -81,6 +83,7 @@ class MonologConfig implements \Symfony\Component\Config\Builder\ConfigBuilderIn
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -96,5 +99,6 @@ class MonologConfig implements \Symfony\Component\Config\Builder\ConfigBuilderIn
     
         return $output;
     }
+    
 
 }

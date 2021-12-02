@@ -26,13 +26,13 @@ class ServicesConfigurator extends AbstractConfigurator
 {
     public const FACTORY = 'services';
 
-    private Definition $defaults;
-    private ContainerBuilder $container;
-    private PhpFileLoader $loader;
-    private array $instanceof;
-    private ?string $path;
-    private string $anonymousHash;
-    private int $anonymousCount;
+    private $defaults;
+    private $container;
+    private $loader;
+    private $instanceof;
+    private $path;
+    private $anonymousHash;
+    private $anonymousCount;
 
     public function __construct(ContainerBuilder $container, PhpFileLoader $loader, array &$instanceof, string $path = null, int &$anonymousCount = 0)
     {
@@ -98,10 +98,8 @@ class ServicesConfigurator extends AbstractConfigurator
 
     /**
      * Removes an already defined service definition or alias.
-     *
-     * @return $this
      */
-    final public function remove(string $id): static
+    final public function remove(string $id): self
     {
         $this->container->removeDefinition($id);
         $this->container->removeAlias($id);

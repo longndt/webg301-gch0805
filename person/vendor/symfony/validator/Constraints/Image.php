@@ -90,20 +90,25 @@ class Image extends File
 
     /**
      * {@inheritdoc}
+     *
+     * @param int|float $maxRatio
+     * @param int|float $minRatio
+     * @param int|float $minPixels
+     * @param int|float $maxPixels
      */
     public function __construct(
         array $options = null,
-        int|string $maxSize = null,
+        $maxSize = null,
         bool $binaryFormat = null,
         array $mimeTypes = null,
         int $minWidth = null,
         int $maxWidth = null,
         int $maxHeight = null,
         int $minHeight = null,
-        int|float $maxRatio = null,
-        int|float $minRatio = null,
-        int|float $minPixels = null,
-        int|float $maxPixels = null,
+        $maxRatio = null,
+        $minRatio = null,
+        $minPixels = null,
+        $maxPixels = null,
         bool $allowSquare = null,
         bool $allowLandscape = null,
         bool $allowPortrait = null,
@@ -135,7 +140,7 @@ class Image extends File
         string $allowPortraitMessage = null,
         string $corruptedMessage = null,
         array $groups = null,
-        mixed $payload = null
+        $payload = null
     ) {
         parent::__construct(
             $options,

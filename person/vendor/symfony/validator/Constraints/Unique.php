@@ -37,7 +37,7 @@ class Unique extends Constraint
         string $message = null,
         callable $normalizer = null,
         array $groups = null,
-        mixed $payload = null
+        $payload = null
     ) {
         parent::__construct($options, $groups, $payload);
 

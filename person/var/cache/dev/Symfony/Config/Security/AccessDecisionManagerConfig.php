@@ -9,12 +9,13 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class AccessDecisionManagerConfig 
 {
     private $strategy;
     private $service;
-    private $strategyService;
     private $allowIfAllAbstain;
     private $allowIfEqualGrantedDenied;
     
@@ -23,7 +24,7 @@ class AccessDecisionManagerConfig
      * @param ParamConfigurator|'affirmative'|'consensus'|'unanimous'|'priority' $value
      * @return $this
      */
-    public function strategy($value): static
+    public function strategy($value): self
     {
         $this->strategy = $value;
     
@@ -35,21 +36,9 @@ class AccessDecisionManagerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function service($value): static
+    public function service($value): self
     {
         $this->service = $value;
-    
-        return $this;
-    }
-    
-    /**
-     * @default null
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
-    public function strategyService($value): static
-    {
-        $this->strategyService = $value;
     
         return $this;
     }
@@ -59,7 +48,7 @@ class AccessDecisionManagerConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function allowIfAllAbstain($value): static
+    public function allowIfAllAbstain($value): self
     {
         $this->allowIfAllAbstain = $value;
     
@@ -71,7 +60,7 @@ class AccessDecisionManagerConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function allowIfEqualGrantedDenied($value): static
+    public function allowIfEqualGrantedDenied($value): self
     {
         $this->allowIfEqualGrantedDenied = $value;
     
@@ -91,11 +80,6 @@ class AccessDecisionManagerConfig
             unset($value['service']);
         }
     
-        if (isset($value['strategy_service'])) {
-            $this->strategyService = $value['strategy_service'];
-            unset($value['strategy_service']);
-        }
-    
         if (isset($value['allow_if_all_abstain'])) {
             $this->allowIfAllAbstain = $value['allow_if_all_abstain'];
             unset($value['allow_if_all_abstain']);
@@ -111,6 +95,7 @@ class AccessDecisionManagerConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -119,9 +104,6 @@ class AccessDecisionManagerConfig
         }
         if (null !== $this->service) {
             $output['service'] = $this->service;
-        }
-        if (null !== $this->strategyService) {
-            $output['strategy_service'] = $this->strategyService;
         }
         if (null !== $this->allowIfAllAbstain) {
             $output['allow_if_all_abstain'] = $this->allowIfAllAbstain;
@@ -132,5 +114,6 @@ class AccessDecisionManagerConfig
     
         return $output;
     }
+    
 
 }

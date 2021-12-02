@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class RouterConfig 
 {
@@ -26,7 +28,7 @@ class RouterConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -38,7 +40,7 @@ class RouterConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function resource($value): static
+    public function resource($value): self
     {
         $this->resource = $value;
     
@@ -50,7 +52,7 @@ class RouterConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function type($value): static
+    public function type($value): self
     {
         $this->type = $value;
     
@@ -63,7 +65,7 @@ class RouterConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function defaultUri($value): static
+    public function defaultUri($value): self
     {
         $this->defaultUri = $value;
     
@@ -75,7 +77,7 @@ class RouterConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function httpPort($value): static
+    public function httpPort($value): self
     {
         $this->httpPort = $value;
     
@@ -87,7 +89,7 @@ class RouterConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function httpsPort($value): static
+    public function httpsPort($value): self
     {
         $this->httpsPort = $value;
     
@@ -103,7 +105,7 @@ class RouterConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function strictRequirements($value): static
+    public function strictRequirements($value): self
     {
         $this->strictRequirements = $value;
     
@@ -111,11 +113,11 @@ class RouterConfig
     }
     
     /**
-     * @default true
+     * @default null
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function utf8($value): static
+    public function utf8($value): self
     {
         $this->utf8 = $value;
     
@@ -170,6 +172,7 @@ class RouterConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -200,5 +203,6 @@ class RouterConfig
     
         return $output;
     }
+    
 
 }

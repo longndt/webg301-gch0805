@@ -18,8 +18,8 @@ namespace Symfony\Component\Security\Csrf;
  */
 class CsrfToken
 {
-    private string $id;
-    private string $value;
+    private $id;
+    private $value;
 
     public function __construct(string $id, ?string $value)
     {
@@ -29,24 +29,30 @@ class CsrfToken
 
     /**
      * Returns the ID of the CSRF token.
+     *
+     * @return string The token ID
      */
-    public function getId(): string
+    public function getId()
     {
         return $this->id;
     }
 
     /**
      * Returns the value of the CSRF token.
+     *
+     * @return string The token value
      */
-    public function getValue(): string
+    public function getValue()
     {
         return $this->value;
     }
 
     /**
      * Returns the value of the CSRF token.
+     *
+     * @return string The token value
      */
-    public function __toString(): string
+    public function __toString()
     {
         return $this->value;
     }

@@ -11,8 +11,9 @@
 
 namespace Symfony\Component\Notifier\Transport;
 
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Notifier\Event\MessageEvent;
-use Symfony\Component\Notifier\Event\SentMessageEvent;
 use Symfony\Component\Notifier\Message\MessageInterface;
 use Symfony\Component\Notifier\Message\NullMessage;
 use Symfony\Component\Notifier\Message\SentMessage;
@@ -23,26 +24,22 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class NullTransport implements TransportInterface
 {
-    private ?EventDispatcherInterface $dispatcher;
+    private $dispatcher;
 
     public function __construct(EventDispatcherInterface $dispatcher = null)
     {
-        $this->dispatcher = $dispatcher;
+        $this->dispatcher = class_exists(Event::class) ? LegacyEventDispatcherProxy::decorate($dispatcher) : $dispatcher;
     }
 
     public function send(MessageInterface $message): SentMessage
     {
         $message = new NullMessage($message);
-        $sentMessage = new SentMessage($message, (string) $this);
 
-        if (null === $this->dispatcher) {
-            return $sentMessage;
+        if (null !== $this->dispatcher) {
+            $this->dispatcher->dispatch(new MessageEvent($message));
         }
 
-        $this->dispatcher->dispatch(new MessageEvent($message));
-        $this->dispatcher->dispatch(new SentMessageEvent($sentMessage));
-
-        return $sentMessage;
+        return new SentMessage($message, (string) $this);
     }
 
     public function __toString(): string

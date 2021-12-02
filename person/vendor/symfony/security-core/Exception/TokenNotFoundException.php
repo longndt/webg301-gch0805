@@ -22,7 +22,7 @@ class TokenNotFoundException extends AuthenticationException
     /**
      * {@inheritdoc}
      */
-    public function getMessageKey(): string
+    public function getMessageKey()
     {
         return 'No token could be found.';
     }

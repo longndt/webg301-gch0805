@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class StorageConfig 
 {
@@ -38,6 +40,7 @@ class StorageConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -47,5 +50,6 @@ class StorageConfig
     
         return $output;
     }
+    
 
 }

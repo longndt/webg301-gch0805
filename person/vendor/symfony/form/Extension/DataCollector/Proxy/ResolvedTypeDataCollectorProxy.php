@@ -15,10 +15,8 @@ use Symfony\Component\Form\Extension\DataCollector\FormDataCollectorInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Proxy that invokes a data collector when creating a form and its view.
@@ -27,8 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ResolvedTypeDataCollectorProxy implements ResolvedFormTypeInterface
 {
-    private ResolvedFormTypeInterface $proxiedType;
-    private FormDataCollectorInterface $dataCollector;
+    private $proxiedType;
+    private $dataCollector;
 
     public function __construct(ResolvedFormTypeInterface $proxiedType, FormDataCollectorInterface $dataCollector)
     {
@@ -39,7 +37,7 @@ class ResolvedTypeDataCollectorProxy implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix(): string
+    public function getBlockPrefix()
     {
         return $this->proxiedType->getBlockPrefix();
     }
@@ -47,7 +45,7 @@ class ResolvedTypeDataCollectorProxy implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getParent(): ?ResolvedFormTypeInterface
+    public function getParent()
     {
         return $this->proxiedType->getParent();
     }
@@ -55,7 +53,7 @@ class ResolvedTypeDataCollectorProxy implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getInnerType(): FormTypeInterface
+    public function getInnerType()
     {
         return $this->proxiedType->getInnerType();
     }
@@ -63,7 +61,7 @@ class ResolvedTypeDataCollectorProxy implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTypeExtensions(): array
+    public function getTypeExtensions()
     {
         return $this->proxiedType->getTypeExtensions();
     }
@@ -71,7 +69,7 @@ class ResolvedTypeDataCollectorProxy implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function createBuilder(FormFactoryInterface $factory, string $name, array $options = []): FormBuilderInterface
+    public function createBuilder(FormFactoryInterface $factory, string $name, array $options = [])
     {
         $builder = $this->proxiedType->createBuilder($factory, $name, $options);
 
@@ -84,7 +82,7 @@ class ResolvedTypeDataCollectorProxy implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function createView(FormInterface $form, FormView $parent = null): FormView
+    public function createView(FormInterface $form, FormView $parent = null)
     {
         return $this->proxiedType->createView($form, $parent);
     }
@@ -135,7 +133,7 @@ class ResolvedTypeDataCollectorProxy implements ResolvedFormTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptionsResolver(): OptionsResolver
+    public function getOptionsResolver()
     {
         return $this->proxiedType->getOptionsResolver();
     }

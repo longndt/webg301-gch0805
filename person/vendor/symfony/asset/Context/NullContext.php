@@ -21,7 +21,7 @@ class NullContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getBasePath(): string
+    public function getBasePath()
     {
         return '';
     }
@@ -29,7 +29,7 @@ class NullContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function isSecure(): bool
+    public function isSecure()
     {
         return false;
     }

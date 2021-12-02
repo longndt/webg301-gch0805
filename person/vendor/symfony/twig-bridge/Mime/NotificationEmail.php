@@ -28,8 +28,8 @@ class NotificationEmail extends TemplatedEmail
     public const IMPORTANCE_MEDIUM = 'medium';
     public const IMPORTANCE_LOW = 'low';
 
-    private string $theme = 'default';
-    private array $context = [
+    private $theme = 'default';
+    private $context = [
         'importance' => self::IMPORTANCE_LOW,
         'content' => '',
         'exception' => false,
@@ -69,10 +69,7 @@ class NotificationEmail extends TemplatedEmail
         return $email;
     }
 
-    /**
-     * @return $this
-     */
-    public function markAsPublic(): static
+    public function markAsPublic(): self
     {
         $this->context['importance'] = null;
         $this->context['footer_text'] = null;
@@ -83,7 +80,7 @@ class NotificationEmail extends TemplatedEmail
     /**
      * @return $this
      */
-    public function markdown(string $content): static
+    public function markdown(string $content)
     {
         if (!class_exists(MarkdownExtension::class)) {
             throw new \LogicException(sprintf('You cannot use "%s" if the Markdown Twig extension is not available; try running "composer require twig/markdown-extra".', __METHOD__));
@@ -97,7 +94,7 @@ class NotificationEmail extends TemplatedEmail
     /**
      * @return $this
      */
-    public function content(string $content, bool $raw = false): static
+    public function content(string $content, bool $raw = false)
     {
         $this->context['content'] = $content;
         $this->context['raw'] = $raw;
@@ -108,7 +105,7 @@ class NotificationEmail extends TemplatedEmail
     /**
      * @return $this
      */
-    public function action(string $text, string $url): static
+    public function action(string $text, string $url)
     {
         $this->context['action_text'] = $text;
         $this->context['action_url'] = $url;
@@ -119,7 +116,7 @@ class NotificationEmail extends TemplatedEmail
     /**
      * @return $this
      */
-    public function importance(string $importance): static
+    public function importance(string $importance)
     {
         $this->context['importance'] = $importance;
 
@@ -127,10 +124,16 @@ class NotificationEmail extends TemplatedEmail
     }
 
     /**
+     * @param \Throwable|FlattenException $exception
+     *
      * @return $this
      */
-    public function exception(\Throwable|FlattenException $exception): static
+    public function exception($exception)
     {
+        if (!$exception instanceof \Throwable && !$exception instanceof FlattenException) {
+            throw new \LogicException(sprintf('"%s" accepts "%s" or "%s" instances.', __METHOD__, \Throwable::class, FlattenException::class));
+        }
+
         $exceptionAsString = $this->getExceptionAsString($exception);
 
         $this->context['exception'] = true;
@@ -147,7 +150,7 @@ class NotificationEmail extends TemplatedEmail
     /**
      * @return $this
      */
-    public function theme(string $theme): static
+    public function theme(string $theme)
     {
         $this->theme = $theme;
 
@@ -205,7 +208,7 @@ class NotificationEmail extends TemplatedEmail
         }
     }
 
-    private function getExceptionAsString(\Throwable|FlattenException $exception): string
+    private function getExceptionAsString($exception): string
     {
         if (class_exists(FlattenException::class)) {
             $exception = $exception instanceof FlattenException ? $exception : FlattenException::createFromThrowable($exception);

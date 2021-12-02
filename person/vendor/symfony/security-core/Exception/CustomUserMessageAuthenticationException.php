@@ -22,8 +22,9 @@ namespace Symfony\Component\Security\Core\Exception;
  */
 class CustomUserMessageAuthenticationException extends AuthenticationException
 {
-    private string $messageKey;
-    private array $messageData = [];
+    private $messageKey;
+
+    private $messageData = [];
 
     public function __construct(string $message = '', array $messageData = [], int $code = 0, \Throwable $previous = null)
     {
@@ -44,12 +45,12 @@ class CustomUserMessageAuthenticationException extends AuthenticationException
         $this->messageData = $messageData;
     }
 
-    public function getMessageKey(): string
+    public function getMessageKey()
     {
         return $this->messageKey;
     }
 
-    public function getMessageData(): array
+    public function getMessageData()
     {
         return $this->messageData;
     }

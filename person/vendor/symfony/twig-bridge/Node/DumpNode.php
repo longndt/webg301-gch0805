@@ -19,7 +19,7 @@ use Twig\Node\Node;
  */
 final class DumpNode extends Node
 {
-    private string $varPrefix;
+    private $varPrefix;
 
     public function __construct(string $varPrefix, ?Node $values, int $lineno, string $tag = null)
     {

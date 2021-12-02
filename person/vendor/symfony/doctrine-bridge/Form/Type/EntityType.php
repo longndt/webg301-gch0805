@@ -32,7 +32,7 @@ class EntityType extends DoctrineType
                 $queryBuilder = $queryBuilder($options['em']->getRepository($options['class']));
 
                 if (null !== $queryBuilder && !$queryBuilder instanceof QueryBuilder) {
-                    throw new UnexpectedTypeException($queryBuilder, QueryBuilder::class);
+                    throw new UnexpectedTypeException($queryBuilder, 'Doctrine\ORM\QueryBuilder');
                 }
             }
 
@@ -40,15 +40,17 @@ class EntityType extends DoctrineType
         };
 
         $resolver->setNormalizer('query_builder', $queryBuilderNormalizer);
-        $resolver->setAllowedTypes('query_builder', ['null', 'callable', QueryBuilder::class]);
+        $resolver->setAllowedTypes('query_builder', ['null', 'callable', 'Doctrine\ORM\QueryBuilder']);
     }
 
     /**
      * Return the default loader object.
      *
      * @param QueryBuilder $queryBuilder
+     *
+     * @return ORMQueryBuilderLoader
      */
-    public function getLoader(ObjectManager $manager, object $queryBuilder, string $class): ORMQueryBuilderLoader
+    public function getLoader(ObjectManager $manager, object $queryBuilder, string $class)
     {
         if (!$queryBuilder instanceof QueryBuilder) {
             throw new \TypeError(sprintf('Expected an instance of "%s", but got "%s".', QueryBuilder::class, get_debug_type($queryBuilder)));
@@ -60,7 +62,7 @@ class EntityType extends DoctrineType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix(): string
+    public function getBlockPrefix()
     {
         return 'entity';
     }

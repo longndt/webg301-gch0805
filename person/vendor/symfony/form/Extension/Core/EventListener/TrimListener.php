@@ -34,7 +34,7 @@ class TrimListener implements EventSubscriberInterface
         $event->setData(StringUtil::trim($data));
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
         return [FormEvents::PRE_SUBMIT => 'preSubmit'];
     }

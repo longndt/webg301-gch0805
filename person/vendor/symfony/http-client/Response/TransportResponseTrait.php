@@ -11,13 +11,11 @@
 
 namespace Symfony\Component\HttpClient\Response;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpClient\Chunk\DataChunk;
 use Symfony\Component\HttpClient\Chunk\ErrorChunk;
 use Symfony\Component\HttpClient\Chunk\FirstChunk;
 use Symfony\Component\HttpClient\Chunk\LastChunk;
 use Symfony\Component\HttpClient\Exception\TransportException;
-use Symfony\Component\HttpClient\Internal\Canary;
 use Symfony\Component\HttpClient\Internal\ClientState;
 
 /**
@@ -29,8 +27,8 @@ use Symfony\Component\HttpClient\Internal\ClientState;
  */
 trait TransportResponseTrait
 {
-    private array $headers = [];
-    private array $info = [
+    private $headers = [];
+    private $info = [
         'response_headers' => [],
         'http_code' => 0,
         'error' => null,
@@ -39,12 +37,12 @@ trait TransportResponseTrait
 
     /** @var object|resource */
     private $handle;
-    private int|string $id;
-    private ?float $timeout = 0;
-    private \InflateContext|bool|null $inflate = null;
-    private ?array $finalInfo = null;
-    private Canary $canary;
-    private ?LoggerInterface $logger = null;
+    private $id;
+    private $timeout = 0;
+    private $inflate;
+    private $finalInfo;
+    private $canary;
+    private $logger;
 
     /**
      * {@inheritdoc}
@@ -147,8 +145,6 @@ trait TransportResponseTrait
 
     /**
      * Implements an event loop based on a buffer activity queue.
-     *
-     * @param iterable<array-key, self> $responses
      *
      * @internal
      */

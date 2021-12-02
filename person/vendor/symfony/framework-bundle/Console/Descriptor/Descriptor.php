@@ -38,7 +38,7 @@ abstract class Descriptor implements DescriptorInterface
     /**
      * {@inheritdoc}
      */
-    public function describe(OutputInterface $output, mixed $object, array $options = [])
+    public function describe(OutputInterface $output, $object, array $options = [])
     {
         $this->output = $output;
 
@@ -129,7 +129,7 @@ abstract class Descriptor implements DescriptorInterface
 
     abstract protected function describeContainerAlias(Alias $alias, array $options = [], ContainerBuilder $builder = null);
 
-    abstract protected function describeContainerParameter(mixed $parameter, array $options = []);
+    abstract protected function describeContainerParameter($parameter, array $options = []);
 
     abstract protected function describeContainerEnvVars(array $envs, array $options = []);
 
@@ -141,9 +141,19 @@ abstract class Descriptor implements DescriptorInterface
      */
     abstract protected function describeEventDispatcherListeners(EventDispatcherInterface $eventDispatcher, array $options = []);
 
-    abstract protected function describeCallable(mixed $callable, array $options = []);
+    /**
+     * Describes a callable.
+     *
+     * @param mixed $callable
+     */
+    abstract protected function describeCallable($callable, array $options = []);
 
-    protected function formatValue(mixed $value): string
+    /**
+     * Formats a value as string.
+     *
+     * @param mixed $value
+     */
+    protected function formatValue($value): string
     {
         if (\is_object($value)) {
             return sprintf('object(%s)', \get_class($value));
@@ -156,7 +166,12 @@ abstract class Descriptor implements DescriptorInterface
         return preg_replace("/\n\s*/s", '', var_export($value, true));
     }
 
-    protected function formatParameter(mixed $value): string
+    /**
+     * Formats a parameter.
+     *
+     * @param mixed $value
+     */
+    protected function formatParameter($value): string
     {
         if (\is_bool($value) || \is_array($value) || (null === $value)) {
             $jsonString = json_encode($value);
@@ -171,7 +186,10 @@ abstract class Descriptor implements DescriptorInterface
         return (string) $value;
     }
 
-    protected function resolveServiceDefinition(ContainerBuilder $builder, string $serviceId): mixed
+    /**
+     * @return mixed
+     */
+    protected function resolveServiceDefinition(ContainerBuilder $builder, string $serviceId)
     {
         if ($builder->hasDefinition($serviceId)) {
             return $builder->getDefinition($serviceId);

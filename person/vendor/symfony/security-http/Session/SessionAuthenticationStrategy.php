@@ -30,7 +30,7 @@ class SessionAuthenticationStrategy implements SessionAuthenticationStrategyInte
     public const MIGRATE = 'migrate';
     public const INVALIDATE = 'invalidate';
 
-    private string $strategy;
+    private $strategy;
 
     public function __construct(string $strategy)
     {

@@ -22,11 +22,14 @@ use Twig\TwigFilter;
  */
 final class CodeExtension extends AbstractExtension
 {
-    private string|FileLinkFormatter|array|false $fileLinkFormat;
-    private string $charset;
-    private string $projectDir;
+    private $fileLinkFormat;
+    private $charset;
+    private $projectDir;
 
-    public function __construct(string|FileLinkFormatter $fileLinkFormat, string $projectDir, string $charset)
+    /**
+     * @param string|FileLinkFormatter $fileLinkFormat The format for links to source files
+     */
+    public function __construct($fileLinkFormat, string $projectDir, string $charset)
     {
         $this->fileLinkFormat = $fileLinkFormat ?: ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
         $this->projectDir = str_replace('\\', '/', $projectDir).'/';
@@ -169,7 +172,12 @@ final class CodeExtension extends AbstractExtension
         return $text;
     }
 
-    public function getFileLink(string $file, int $line): string|false
+    /**
+     * Returns the link for a given file/line pair.
+     *
+     * @return string|false A link or false
+     */
+    public function getFileLink(string $file, int $line)
     {
         if ($fmt = $this->fileLinkFormat) {
             return \is_string($fmt) ? strtr($fmt, ['%f' => $file, '%l' => $line]) : $fmt->format($file, $line);

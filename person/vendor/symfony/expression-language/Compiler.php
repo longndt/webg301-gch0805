@@ -20,8 +20,8 @@ use Symfony\Contracts\Service\ResetInterface;
  */
 class Compiler implements ResetInterface
 {
-    private string $source = '';
-    private array $functions;
+    private $source;
+    private $functions;
 
     public function __construct(array $functions)
     {
@@ -35,16 +35,15 @@ class Compiler implements ResetInterface
 
     /**
      * Gets the current PHP code after compilation.
+     *
+     * @return string The PHP code
      */
-    public function getSource(): string
+    public function getSource()
     {
         return $this->source;
     }
 
-    /**
-     * @return $this
-     */
-    public function reset(): static
+    public function reset()
     {
         $this->source = '';
 
@@ -56,7 +55,7 @@ class Compiler implements ResetInterface
      *
      * @return $this
      */
-    public function compile(Node\Node $node): static
+    public function compile(Node\Node $node)
     {
         $node->compile($this);
 
@@ -81,7 +80,7 @@ class Compiler implements ResetInterface
      *
      * @return $this
      */
-    public function raw(string $string): static
+    public function raw(string $string)
     {
         $this->source .= $string;
 
@@ -93,7 +92,7 @@ class Compiler implements ResetInterface
      *
      * @return $this
      */
-    public function string(string $value): static
+    public function string(string $value)
     {
         $this->source .= sprintf('"%s"', addcslashes($value, "\0\t\"\$\\"));
 
@@ -103,9 +102,11 @@ class Compiler implements ResetInterface
     /**
      * Returns a PHP representation of a given value.
      *
+     * @param mixed $value The value to convert
+     *
      * @return $this
      */
-    public function repr(mixed $value): static
+    public function repr($value)
     {
         if (\is_int($value) || \is_float($value)) {
             if (false !== $locale = setlocale(\LC_NUMERIC, 0)) {

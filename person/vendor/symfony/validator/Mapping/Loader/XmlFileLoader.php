@@ -12,7 +12,6 @@
 namespace Symfony\Component\Validator\Mapping\Loader;
 
 use Symfony\Component\Config\Util\XmlUtils;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MappingException;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
@@ -33,7 +32,7 @@ class XmlFileLoader extends FileLoader
     /**
      * {@inheritdoc}
      */
-    public function loadClassMetadata(ClassMetadata $metadata): bool
+    public function loadClassMetadata(ClassMetadata $metadata)
     {
         if (null === $this->classes) {
             $this->loadClassesFromXml();
@@ -53,9 +52,9 @@ class XmlFileLoader extends FileLoader
     /**
      * Return the names of the classes mapped in this file.
      *
-     * @return string[]
+     * @return string[] The classes names
      */
-    public function getMappedClasses(): array
+    public function getMappedClasses()
     {
         if (null === $this->classes) {
             $this->loadClassesFromXml();
@@ -69,9 +68,9 @@ class XmlFileLoader extends FileLoader
      *
      * @param \SimpleXMLElement $nodes The XML nodes
      *
-     * @return Constraint[]
+     * @return array The Constraint instances
      */
-    protected function parseConstraints(\SimpleXMLElement $nodes): array
+    protected function parseConstraints(\SimpleXMLElement $nodes)
     {
         $constraints = [];
 
@@ -102,8 +101,10 @@ class XmlFileLoader extends FileLoader
      * Parses a collection of "value" XML nodes.
      *
      * @param \SimpleXMLElement $nodes The XML nodes
+     *
+     * @return array The values
      */
-    protected function parseValues(\SimpleXMLElement $nodes): array
+    protected function parseValues(\SimpleXMLElement $nodes)
     {
         $values = [];
 
@@ -134,8 +135,10 @@ class XmlFileLoader extends FileLoader
      * Parses a collection of "option" XML nodes.
      *
      * @param \SimpleXMLElement $nodes The XML nodes
+     *
+     * @return array The options
      */
-    protected function parseOptions(\SimpleXMLElement $nodes): array
+    protected function parseOptions(\SimpleXMLElement $nodes)
     {
         $options = [];
 
@@ -164,9 +167,11 @@ class XmlFileLoader extends FileLoader
     /**
      * Loads the XML class descriptions from the given file.
      *
+     * @return \SimpleXMLElement The class descriptions
+     *
      * @throws MappingException If the file could not be loaded
      */
-    protected function parseFile(string $path): \SimpleXMLElement
+    protected function parseFile(string $path)
     {
         try {
             $dom = XmlUtils::loadFile($path, __DIR__.'/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd');

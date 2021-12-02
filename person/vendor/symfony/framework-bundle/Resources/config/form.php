@@ -59,7 +59,9 @@ return static function (ContainerConfigurator $container) {
         ->alias(FormRegistryInterface::class, 'form.registry')
 
         ->set('form.factory', FormFactory::class)
+            ->public()
             ->args([service('form.registry')])
+            ->tag('container.private', ['package' => 'symfony/framework-bundle', 'version' => '5.2'])
 
         ->alias(FormFactoryInterface::class, 'form.factory')
 
@@ -102,8 +104,10 @@ return static function (ContainerConfigurator $container) {
             ->tag('form.type')
 
         ->set('form.type.file', FileType::class)
+            ->public()
             ->args([service('translator')->ignoreOnInvalid()])
             ->tag('form.type')
+            ->tag('container.private', ['package' => 'symfony/framework-bundle', 'version' => '5.2'])
 
         ->set('form.type.color', ColorType::class)
             ->args([service('translator')->ignoreOnInvalid()])
@@ -126,7 +130,7 @@ return static function (ContainerConfigurator $container) {
         ->set('form.type_extension.form.validator', FormTypeValidatorExtension::class)
             ->args([
                 service('validator'),
-                false,
+                true,
                 service('twig.form.renderer')->ignoreOnInvalid(),
                 service('translator')->ignoreOnInvalid(),
             ])

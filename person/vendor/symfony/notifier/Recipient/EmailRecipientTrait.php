@@ -16,7 +16,7 @@ namespace Symfony\Component\Notifier\Recipient;
  */
 trait EmailRecipientTrait
 {
-    private string $email;
+    private $email;
 
     public function getEmail(): string
     {

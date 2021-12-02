@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class TransitionConfig 
 {
@@ -23,7 +25,7 @@ class TransitionConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function name($value): static
+    public function name($value): self
     {
         $this->name = $value;
     
@@ -37,7 +39,7 @@ class TransitionConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function guard($value): static
+    public function guard($value): self
     {
         $this->guard = $value;
     
@@ -45,11 +47,10 @@ class TransitionConfig
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function from(ParamConfigurator|array $value): static
+    public function from($value): self
     {
         $this->from = $value;
     
@@ -57,11 +58,10 @@ class TransitionConfig
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function to(ParamConfigurator|array $value): static
+    public function to($value): self
     {
         $this->to = $value;
     
@@ -69,11 +69,10 @@ class TransitionConfig
     }
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function metadata(ParamConfigurator|array $value): static
+    public function metadata($value): self
     {
         $this->metadata = $value;
     
@@ -113,6 +112,7 @@ class TransitionConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -134,5 +134,6 @@ class TransitionConfig
     
         return $output;
     }
+    
 
 }

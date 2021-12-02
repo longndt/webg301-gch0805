@@ -37,7 +37,7 @@ class YamlFileLoader extends FileLoader
     /**
      * {@inheritdoc}
      */
-    public function loadClassMetadata(ClassMetadataInterface $classMetadata): bool
+    public function loadClassMetadata(ClassMetadataInterface $classMetadata)
     {
         if (null === $this->classes) {
             $this->classes = $this->getClassesFromYaml();
@@ -142,9 +142,9 @@ class YamlFileLoader extends FileLoader
     /**
      * Return the names of the classes mapped in this file.
      *
-     * @return string[]
+     * @return string[] The classes names
      */
-    public function getMappedClasses(): array
+    public function getMappedClasses()
     {
         if (null === $this->classes) {
             $this->classes = $this->getClassesFromYaml();

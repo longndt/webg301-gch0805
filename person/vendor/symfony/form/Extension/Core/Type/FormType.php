@@ -18,17 +18,17 @@ use Symfony\Component\Form\Extension\Core\DataAccessor\PropertyPathAccessor;
 use Symfony\Component\Form\Extension\Core\DataMapper\DataMapper;
 use Symfony\Component\Form\Extension\Core\EventListener\TrimListener;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormConfigBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\Translation\TranslatableMessage;
 
 class FormType extends BaseType
 {
-    private DataMapper $dataMapper;
+    private $dataMapper;
 
     public function __construct(PropertyAccessorInterface $propertyAccessor = null)
     {
@@ -64,6 +64,12 @@ class FormType extends BaseType
 
         if ($options['trim']) {
             $builder->addEventSubscriber(new TrimListener());
+        }
+
+        if (!method_exists($builder, 'setIsEmptyCallback')) {
+            trigger_deprecation('symfony/form', '5.1', 'Not implementing the "%s::setIsEmptyCallback()" method in "%s" is deprecated.', FormConfigBuilderInterface::class, get_debug_type($builder));
+
+            return;
         }
 
         $builder->setIsEmptyCallback($options['is_empty_callback']);
@@ -220,7 +226,7 @@ class FormType extends BaseType
         $resolver->setAllowedTypes('label_attr', 'array');
         $resolver->setAllowedTypes('action', 'string');
         $resolver->setAllowedTypes('upload_max_size_message', ['callable']);
-        $resolver->setAllowedTypes('help', ['string', 'null', TranslatableMessage::class]);
+        $resolver->setAllowedTypes('help', ['string', 'null']);
         $resolver->setAllowedTypes('help_attr', 'array');
         $resolver->setAllowedTypes('help_html', 'bool');
         $resolver->setAllowedTypes('is_empty_callback', ['null', 'callable']);
@@ -235,7 +241,7 @@ class FormType extends BaseType
     /**
      * {@inheritdoc}
      */
-    public function getParent(): ?string
+    public function getParent()
     {
         return null;
     }
@@ -243,7 +249,7 @@ class FormType extends BaseType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix(): string
+    public function getBlockPrefix()
     {
         return 'form';
     }

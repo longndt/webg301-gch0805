@@ -10,6 +10,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class BusConfig 
 {
@@ -21,7 +23,7 @@ class BusConfig
      * @param ParamConfigurator|true|false|'allow_no_handlers' $value
      * @return $this
      */
-    public function defaultMiddleware($value): static
+    public function defaultMiddleware($value): self
     {
         $this->defaultMiddleware = $value;
     
@@ -51,6 +53,7 @@ class BusConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -63,5 +66,6 @@ class BusConfig
     
         return $output;
     }
+    
 
 }

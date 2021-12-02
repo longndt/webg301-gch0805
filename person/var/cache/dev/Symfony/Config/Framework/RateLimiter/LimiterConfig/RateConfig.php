@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class RateConfig 
 {
@@ -21,7 +23,7 @@ class RateConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function interval($value): static
+    public function interval($value): self
     {
         $this->interval = $value;
     
@@ -34,7 +36,7 @@ class RateConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function amount($value): static
+    public function amount($value): self
     {
         $this->amount = $value;
     
@@ -59,6 +61,7 @@ class RateConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -71,5 +74,6 @@ class RateConfig
     
         return $output;
     }
+    
 
 }

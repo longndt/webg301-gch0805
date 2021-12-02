@@ -22,9 +22,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class CsrfExtension extends AbstractExtension
 {
-    private CsrfTokenManagerInterface $tokenManager;
-    private ?TranslatorInterface $translator;
-    private ?string $translationDomain;
+    private $tokenManager;
+    private $translator;
+    private $translationDomain;
 
     public function __construct(CsrfTokenManagerInterface $tokenManager, TranslatorInterface $translator = null, string $translationDomain = null)
     {
@@ -36,7 +36,7 @@ class CsrfExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    protected function loadTypeExtensions(): array
+    protected function loadTypeExtensions()
     {
         return [
             new Type\FormTypeCsrfExtension($this->tokenManager, true, '_token', $this->translator, $this->translationDomain),

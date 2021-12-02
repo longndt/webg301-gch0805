@@ -29,9 +29,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class Application extends BaseApplication
 {
-    private KernelInterface $kernel;
-    private bool $commandsRegistered = false;
-    private array $registrationErrors = [];
+    private $kernel;
+    private $commandsRegistered = false;
+    private $registrationErrors = [];
 
     public function __construct(KernelInterface $kernel)
     {
@@ -46,8 +46,10 @@ class Application extends BaseApplication
 
     /**
      * Gets the Kernel associated with this Console.
+     *
+     * @return KernelInterface A KernelInterface instance
      */
-    public function getKernel(): KernelInterface
+    public function getKernel()
     {
         return $this->kernel;
     }
@@ -67,7 +69,7 @@ class Application extends BaseApplication
      *
      * @return int 0 if everything went fine, or an error code
      */
-    public function doRun(InputInterface $input, OutputInterface $output): int
+    public function doRun(InputInterface $input, OutputInterface $output)
     {
         $this->registerCommands();
 
@@ -83,7 +85,7 @@ class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    protected function doRunCommand(Command $command, InputInterface $input, OutputInterface $output): int
+    protected function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)
     {
         if (!$command instanceof ListCommand) {
             if ($this->registrationErrors) {
@@ -107,7 +109,7 @@ class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    public function find(string $name): Command
+    public function find(string $name)
     {
         $this->registerCommands();
 
@@ -117,7 +119,7 @@ class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    public function get(string $name): Command
+    public function get(string $name)
     {
         $this->registerCommands();
 
@@ -133,7 +135,7 @@ class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    public function all(string $namespace = null): array
+    public function all(string $namespace = null)
     {
         $this->registerCommands();
 
@@ -143,12 +145,12 @@ class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    public function getLongVersion(): string
+    public function getLongVersion()
     {
         return parent::getLongVersion().sprintf(' (env: <comment>%s</>, debug: <comment>%s</>)', $this->kernel->getEnvironment(), $this->kernel->isDebug() ? 'true' : 'false');
     }
 
-    public function add(Command $command): ?Command
+    public function add(Command $command)
     {
         $this->registerCommands();
 

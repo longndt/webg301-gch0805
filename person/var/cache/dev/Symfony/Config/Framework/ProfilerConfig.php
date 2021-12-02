@@ -9,14 +9,16 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class ProfilerConfig 
 {
     private $enabled;
     private $collect;
-    private $collectParameter;
     private $onlyExceptions;
     private $onlyMainRequests;
+    private $onlyMasterRequests;
     private $dsn;
     
     /**
@@ -24,7 +26,7 @@ class ProfilerConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -36,22 +38,9 @@ class ProfilerConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function collect($value): static
+    public function collect($value): self
     {
         $this->collect = $value;
-    
-        return $this;
-    }
-    
-    /**
-     * The name of the parameter to use to enable or disable collection on a per request basis
-     * @default null
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
-    public function collectParameter($value): static
-    {
-        $this->collectParameter = $value;
     
         return $this;
     }
@@ -61,7 +50,7 @@ class ProfilerConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function onlyExceptions($value): static
+    public function onlyExceptions($value): self
     {
         $this->onlyExceptions = $value;
     
@@ -73,9 +62,22 @@ class ProfilerConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function onlyMainRequests($value): static
+    public function onlyMainRequests($value): self
     {
         $this->onlyMainRequests = $value;
+    
+        return $this;
+    }
+    
+    /**
+     * @default false
+     * @param ParamConfigurator|bool $value
+     * @deprecated Option "only_master_requests" at "profiler" is deprecated, use "only_main_requests" instead.
+     * @return $this
+     */
+    public function onlyMasterRequests($value): self
+    {
+        $this->onlyMasterRequests = $value;
     
         return $this;
     }
@@ -85,7 +87,7 @@ class ProfilerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function dsn($value): static
+    public function dsn($value): self
     {
         $this->dsn = $value;
     
@@ -105,11 +107,6 @@ class ProfilerConfig
             unset($value['collect']);
         }
     
-        if (isset($value['collect_parameter'])) {
-            $this->collectParameter = $value['collect_parameter'];
-            unset($value['collect_parameter']);
-        }
-    
         if (isset($value['only_exceptions'])) {
             $this->onlyExceptions = $value['only_exceptions'];
             unset($value['only_exceptions']);
@@ -118,6 +115,11 @@ class ProfilerConfig
         if (isset($value['only_main_requests'])) {
             $this->onlyMainRequests = $value['only_main_requests'];
             unset($value['only_main_requests']);
+        }
+    
+        if (isset($value['only_master_requests'])) {
+            $this->onlyMasterRequests = $value['only_master_requests'];
+            unset($value['only_master_requests']);
         }
     
         if (isset($value['dsn'])) {
@@ -130,6 +132,7 @@ class ProfilerConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -139,14 +142,14 @@ class ProfilerConfig
         if (null !== $this->collect) {
             $output['collect'] = $this->collect;
         }
-        if (null !== $this->collectParameter) {
-            $output['collect_parameter'] = $this->collectParameter;
-        }
         if (null !== $this->onlyExceptions) {
             $output['only_exceptions'] = $this->onlyExceptions;
         }
         if (null !== $this->onlyMainRequests) {
             $output['only_main_requests'] = $this->onlyMainRequests;
+        }
+        if (null !== $this->onlyMasterRequests) {
+            $output['only_master_requests'] = $this->onlyMasterRequests;
         }
         if (null !== $this->dsn) {
             $output['dsn'] = $this->dsn;
@@ -154,5 +157,6 @@ class ProfilerConfig
     
         return $output;
     }
+    
 
 }

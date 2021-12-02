@@ -28,7 +28,7 @@ class Security implements AuthorizationCheckerInterface
     public const LAST_USERNAME = '_security.last_username';
     public const MAX_USERNAME_LENGTH = 4096;
 
-    private ContainerInterface $container;
+    private $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -41,13 +41,25 @@ class Security implements AuthorizationCheckerInterface
             return null;
         }
 
-        return $token->getUser();
+        $user = $token->getUser();
+        if (!\is_object($user)) {
+            return null;
+        }
+
+        if (!$user instanceof UserInterface) {
+            return null;
+        }
+
+        return $user;
     }
 
     /**
      * Checks if the attributes are granted against the current authentication token and optionally supplied subject.
+     *
+     * @param mixed $attributes
+     * @param mixed $subject
      */
-    public function isGranted(mixed $attributes, mixed $subject = null): bool
+    public function isGranted($attributes, $subject = null): bool
     {
         return $this->container->get('security.authorization_checker')
             ->isGranted($attributes, $subject);

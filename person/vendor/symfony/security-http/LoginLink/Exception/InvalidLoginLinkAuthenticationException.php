@@ -23,7 +23,7 @@ class InvalidLoginLinkAuthenticationException extends AuthenticationException
     /**
      * {@inheritdoc}
      */
-    public function getMessageKey(): string
+    public function getMessageKey()
     {
         return 'Invalid or expired login link.';
     }

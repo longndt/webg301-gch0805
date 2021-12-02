@@ -24,7 +24,7 @@ abstract class Compound extends Composite
     /** @var Constraint[] */
     public $constraints = [];
 
-    public function __construct(mixed $options = null)
+    public function __construct($options = null)
     {
         if (isset($options[$this->getCompositeOption()])) {
             throw new ConstraintDefinitionException(sprintf('You can\'t redefine the "%s" option. Use the "%s::getConstraints()" method instead.', $this->getCompositeOption(), __CLASS__));
@@ -35,12 +35,12 @@ abstract class Compound extends Composite
         parent::__construct($options);
     }
 
-    final protected function getCompositeOption(): string
+    final protected function getCompositeOption()
     {
         return 'constraints';
     }
 
-    final public function validatedBy(): string
+    final public function validatedBy()
     {
         return CompoundValidator::class;
     }

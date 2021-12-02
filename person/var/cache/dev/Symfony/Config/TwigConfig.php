@@ -12,6 +12,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInterface
 {
@@ -33,11 +35,10 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
     private $numberFormat;
     
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
+     * @param ParamConfigurator|list<mixed|ParamConfigurator> $value
      * @return $this
      */
-    public function formThemes(ParamConfigurator|array $value): static
+    public function formThemes($value): self
     {
         $this->formThemes = $value;
     
@@ -59,10 +60,9 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
     /**
      * @default 'name'
      * @param ParamConfigurator|mixed $value
-     *
      * @return $this
      */
-    public function autoescape(mixed $value = 'name'): static
+    public function autoescape($value = 'name'): self
     {
         $this->autoescape = $value;
     
@@ -74,7 +74,7 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function autoescapeService($value): static
+    public function autoescapeService($value): self
     {
         $this->autoescapeService = $value;
     
@@ -86,7 +86,7 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function autoescapeServiceMethod($value): static
+    public function autoescapeServiceMethod($value): self
     {
         $this->autoescapeServiceMethod = $value;
     
@@ -99,7 +99,7 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function baseTemplateClass($value): static
+    public function baseTemplateClass($value): self
     {
         $this->baseTemplateClass = $value;
     
@@ -111,7 +111,7 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function cache($value): static
+    public function cache($value): self
     {
         $this->cache = $value;
     
@@ -123,7 +123,7 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function charset($value): static
+    public function charset($value): self
     {
         $this->charset = $value;
     
@@ -135,7 +135,7 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function debug($value): static
+    public function debug($value): self
     {
         $this->debug = $value;
     
@@ -147,7 +147,7 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function strictVariables($value): static
+    public function strictVariables($value): self
     {
         $this->strictVariables = $value;
     
@@ -159,7 +159,7 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function autoReload($value): static
+    public function autoReload($value): self
     {
         $this->autoReload = $value;
     
@@ -171,7 +171,7 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function optimizations($value): static
+    public function optimizations($value): self
     {
         $this->optimizations = $value;
     
@@ -184,7 +184,7 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function defaultPath($value): static
+    public function defaultPath($value): self
     {
         $this->defaultPath = $value;
     
@@ -192,9 +192,10 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
     }
     
     /**
+     * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function path(string $paths, mixed $value): static
+    public function path(string $paths, $value): self
     {
         $this->paths[$paths] = $value;
     
@@ -227,6 +228,7 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
     {
         return 'twig';
     }
+            
     
     public function __construct(array $value = [])
     {
@@ -316,6 +318,7 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -370,5 +373,6 @@ class TwigConfig implements \Symfony\Component\Config\Builder\ConfigBuilderInter
     
         return $output;
     }
+    
 
 }

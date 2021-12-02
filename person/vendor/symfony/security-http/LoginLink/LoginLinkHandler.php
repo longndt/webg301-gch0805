@@ -28,10 +28,10 @@ use Symfony\Component\Security\Http\LoginLink\Exception\InvalidLoginLinkExceptio
  */
 final class LoginLinkHandler implements LoginLinkHandlerInterface
 {
-    private UrlGeneratorInterface $urlGenerator;
-    private UserProviderInterface $userProvider;
-    private array $options;
-    private SignatureHasher $signatureHashUtil;
+    private $urlGenerator;
+    private $userProvider;
+    private $options;
+    private $signatureHashUtil;
 
     public function __construct(UrlGeneratorInterface $urlGenerator, UserProviderInterface $userProvider, SignatureHasher $signatureHashUtil, array $options)
     {
@@ -50,7 +50,8 @@ final class LoginLinkHandler implements LoginLinkHandlerInterface
 
         $expires = $expiresAt->format('U');
         $parameters = [
-            'user' => $user->getUserIdentifier(),
+            // @deprecated since Symfony 5.3, change to $user->getUserIdentifier() in 6.0
+            'user' => method_exists($user, 'getUserIdentifier') ? $user->getUserIdentifier() : $user->getUsername(),
             'expires' => $expires,
             'hash' => $this->signatureHashUtil->computeSignatureHash($user, $expires),
         ];
@@ -84,7 +85,14 @@ final class LoginLinkHandler implements LoginLinkHandlerInterface
         $userIdentifier = $request->get('user');
 
         try {
-            $user = $this->userProvider->loadUserByIdentifier($userIdentifier);
+            // @deprecated since Symfony 5.3, change to $this->userProvider->loadUserByIdentifier() in 6.0
+            if (method_exists($this->userProvider, 'loadUserByIdentifier')) {
+                $user = $this->userProvider->loadUserByIdentifier($userIdentifier);
+            } else {
+                trigger_deprecation('symfony/security-core', '5.3', 'Not implementing method "loadUserByIdentifier()" in user provider "%s" is deprecated. This method will replace "loadUserByUsername()" in Symfony 6.0.', get_debug_type($this->userProvider));
+
+                $user = $this->userProvider->loadUserByUsername($userIdentifier);
+            }
         } catch (UserNotFoundException $exception) {
             throw new InvalidLoginLinkException('User not found.', 0, $exception);
         }

@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class RetryStrategyConfig 
 {
@@ -24,7 +26,7 @@ class RetryStrategyConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function service($value): static
+    public function service($value): self
     {
         $this->service = $value;
     
@@ -36,7 +38,7 @@ class RetryStrategyConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function maxRetries($value): static
+    public function maxRetries($value): self
     {
         $this->maxRetries = $value;
     
@@ -49,7 +51,7 @@ class RetryStrategyConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function delay($value): static
+    public function delay($value): self
     {
         $this->delay = $value;
     
@@ -62,7 +64,7 @@ class RetryStrategyConfig
      * @param ParamConfigurator|float $value
      * @return $this
      */
-    public function multiplier($value): static
+    public function multiplier($value): self
     {
         $this->multiplier = $value;
     
@@ -75,7 +77,7 @@ class RetryStrategyConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function maxDelay($value): static
+    public function maxDelay($value): self
     {
         $this->maxDelay = $value;
     
@@ -115,6 +117,7 @@ class RetryStrategyConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -136,5 +139,6 @@ class RetryStrategyConfig
     
         return $output;
     }
+    
 
 }

@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class RedisConfig 
 {
@@ -24,7 +26,7 @@ class RedisConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function id($value): static
+    public function id($value): self
     {
         $this->id = $value;
     
@@ -36,7 +38,7 @@ class RedisConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function host($value): static
+    public function host($value): self
     {
         $this->host = $value;
     
@@ -48,7 +50,7 @@ class RedisConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function password($value): static
+    public function password($value): self
     {
         $this->password = $value;
     
@@ -60,7 +62,7 @@ class RedisConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function port($value): static
+    public function port($value): self
     {
         $this->port = $value;
     
@@ -72,7 +74,7 @@ class RedisConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function database($value): static
+    public function database($value): self
     {
         $this->database = $value;
     
@@ -84,7 +86,7 @@ class RedisConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function keyName($value): static
+    public function keyName($value): self
     {
         $this->keyName = $value;
     
@@ -129,6 +131,7 @@ class RedisConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -153,5 +156,6 @@ class RedisConfig
     
         return $output;
     }
+    
 
 }

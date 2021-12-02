@@ -23,7 +23,7 @@ class AuthenticationCredentialsNotFoundException extends AuthenticationException
     /**
      * {@inheritdoc}
      */
-    public function getMessageKey(): string
+    public function getMessageKey()
     {
         return 'Authentication credentials could not be found.';
     }

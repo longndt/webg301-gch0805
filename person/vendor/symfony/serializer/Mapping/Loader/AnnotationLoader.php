@@ -51,7 +51,7 @@ class AnnotationLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadClassMetadata(ClassMetadataInterface $classMetadata): bool
+    public function loadClassMetadata(ClassMetadataInterface $classMetadata)
     {
         $reflectionClass = $classMetadata->getReflectionClass();
         $className = $reflectionClass->name;
@@ -155,9 +155,11 @@ class AnnotationLoader implements LoaderInterface
      */
     public function loadAnnotations(object $reflector): iterable
     {
-        foreach ($reflector->getAttributes() as $attribute) {
-            if ($this->isKnownAttribute($attribute->getName())) {
-                yield $attribute->newInstance();
+        if (\PHP_VERSION_ID >= 80000) {
+            foreach ($reflector->getAttributes() as $attribute) {
+                if ($this->isKnownAttribute($attribute->getName())) {
+                    yield $attribute->newInstance();
+                }
             }
         }
 

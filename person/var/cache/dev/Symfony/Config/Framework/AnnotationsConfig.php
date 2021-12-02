@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class AnnotationsConfig 
 {
@@ -22,7 +24,7 @@ class AnnotationsConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -31,10 +33,10 @@ class AnnotationsConfig
     
     /**
      * @default 'php_array'
-     * @param ParamConfigurator|'none'|'php_array'|'file' $value
+     * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function cache($value): static
+    public function cache($value): self
     {
         $this->cache = $value;
     
@@ -46,7 +48,7 @@ class AnnotationsConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function fileCacheDir($value): static
+    public function fileCacheDir($value): self
     {
         $this->fileCacheDir = $value;
     
@@ -58,7 +60,7 @@ class AnnotationsConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function debug($value): static
+    public function debug($value): self
     {
         $this->debug = $value;
     
@@ -93,6 +95,7 @@ class AnnotationsConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -111,5 +114,6 @@ class AnnotationsConfig
     
         return $output;
     }
+    
 
 }

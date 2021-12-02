@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class EntityConfig 
 {
@@ -22,7 +24,7 @@ class EntityConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function class($value): static
+    public function class($value): self
     {
         $this->class = $value;
     
@@ -34,7 +36,7 @@ class EntityConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function property($value): static
+    public function property($value): self
     {
         $this->property = $value;
     
@@ -46,7 +48,7 @@ class EntityConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function managerName($value): static
+    public function managerName($value): self
     {
         $this->managerName = $value;
     
@@ -76,6 +78,7 @@ class EntityConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -91,5 +94,6 @@ class EntityConfig
     
         return $output;
     }
+    
 
 }

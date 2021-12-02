@@ -15,16 +15,14 @@ use Psr\Container\ContainerInterface;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserChain;
-use Symfony\Component\Form\FormTypeGuesserInterface;
-use Symfony\Component\Form\FormTypeInterface;
 
 class DependencyInjectionExtension implements FormExtensionInterface
 {
-    private ?FormTypeGuesserChain $guesser = null;
-    private bool $guesserLoaded = false;
-    private ContainerInterface $typeContainer;
-    private array $typeExtensionServices;
-    private iterable $guesserServices;
+    private $guesser;
+    private $guesserLoaded = false;
+    private $typeContainer;
+    private $typeExtensionServices;
+    private $guesserServices;
 
     /**
      * @param iterable[] $typeExtensionServices
@@ -39,7 +37,7 @@ class DependencyInjectionExtension implements FormExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getType(string $name): FormTypeInterface
+    public function getType(string $name)
     {
         if (!$this->typeContainer->has($name)) {
             throw new InvalidArgumentException(sprintf('The field type "%s" is not registered in the service container.', $name));
@@ -51,7 +49,7 @@ class DependencyInjectionExtension implements FormExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasType(string $name): bool
+    public function hasType(string $name)
     {
         return $this->typeContainer->has($name);
     }
@@ -59,7 +57,7 @@ class DependencyInjectionExtension implements FormExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getTypeExtensions(string $name): array
+    public function getTypeExtensions(string $name)
     {
         $extensions = [];
 
@@ -85,7 +83,7 @@ class DependencyInjectionExtension implements FormExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasTypeExtensions(string $name): bool
+    public function hasTypeExtensions(string $name)
     {
         return isset($this->typeExtensionServices[$name]);
     }
@@ -93,7 +91,7 @@ class DependencyInjectionExtension implements FormExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getTypeGuesser(): ?FormTypeGuesserInterface
+    public function getTypeGuesser()
     {
         if (!$this->guesserLoaded) {
             $this->guesserLoaded = true;

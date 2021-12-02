@@ -24,15 +24,12 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class FormValidator extends ConstraintValidator
 {
-    /**
-     * @var \SplObjectStorage<FormInterface, array<int, string|string[]|GroupSequence>>
-     */
-    private \SplObjectStorage $resolvedGroups;
+    private $resolvedGroups;
 
     /**
      * {@inheritdoc}
      */
-    public function validate(mixed $form, Constraint $formConstraint)
+    public function validate($form, Constraint $formConstraint)
     {
         if (!$formConstraint instanceof Form) {
             throw new UnexpectedTypeException($formConstraint, Form::class);
@@ -206,9 +203,9 @@ class FormValidator extends ConstraintValidator
     /**
      * Returns the validation groups of the given form.
      *
-     * @return string|GroupSequence|array<string|GroupSequence>
+     * @return string|GroupSequence|array<string|GroupSequence> The validation groups
      */
-    private function getValidationGroups(FormInterface $form): string|GroupSequence|array
+    private function getValidationGroups(FormInterface $form)
     {
         // Determine the clicked button of the complete form tree
         $clickedButton = null;
@@ -247,9 +244,9 @@ class FormValidator extends ConstraintValidator
      *
      * @param string|GroupSequence|array<string|GroupSequence>|callable $groups The validation groups
      *
-     * @return GroupSequence|array<string|GroupSequence>
+     * @return GroupSequence|array<string|GroupSequence> The validation groups
      */
-    private static function resolveValidationGroups(string|GroupSequence|array|callable $groups, FormInterface $form): GroupSequence|array
+    private static function resolveValidationGroups($groups, FormInterface $form)
     {
         if (!\is_string($groups) && \is_callable($groups)) {
             $groups = $groups($form);
@@ -262,7 +259,7 @@ class FormValidator extends ConstraintValidator
         return (array) $groups;
     }
 
-    private static function getConstraintsInGroups(array $constraints, string|array $group): array
+    private static function getConstraintsInGroups($constraints, $group)
     {
         $groups = (array) $group;
 

@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class DoctrineConfig 
 {
@@ -20,7 +22,7 @@ class DoctrineConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function enabled($value): static
+    public function enabled($value): self
     {
         $this->enabled = $value;
     
@@ -32,7 +34,7 @@ class DoctrineConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function connection($value): static
+    public function connection($value): self
     {
         $this->connection = $value;
     
@@ -57,6 +59,7 @@ class DoctrineConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -69,5 +72,6 @@ class DoctrineConfig
     
         return $output;
     }
+    
 
 }

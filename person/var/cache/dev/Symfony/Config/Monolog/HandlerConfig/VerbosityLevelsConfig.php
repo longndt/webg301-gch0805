@@ -9,6 +9,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class VerbosityLevelsConfig 
 {
@@ -23,7 +25,7 @@ class VerbosityLevelsConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function vERBOSITYQUIET($value): static
+    public function vERBOSITYQUIET($value): self
     {
         $this->vERBOSITYQUIET = $value;
     
@@ -35,7 +37,7 @@ class VerbosityLevelsConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function vERBOSITYNORMAL($value): static
+    public function vERBOSITYNORMAL($value): self
     {
         $this->vERBOSITYNORMAL = $value;
     
@@ -47,7 +49,7 @@ class VerbosityLevelsConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function vERBOSITYVERBOSE($value): static
+    public function vERBOSITYVERBOSE($value): self
     {
         $this->vERBOSITYVERBOSE = $value;
     
@@ -59,7 +61,7 @@ class VerbosityLevelsConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function vERBOSITYVERYVERBOSE($value): static
+    public function vERBOSITYVERYVERBOSE($value): self
     {
         $this->vERBOSITYVERYVERBOSE = $value;
     
@@ -71,7 +73,7 @@ class VerbosityLevelsConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function vERBOSITYDEBUG($value): static
+    public function vERBOSITYDEBUG($value): self
     {
         $this->vERBOSITYDEBUG = $value;
     
@@ -111,6 +113,7 @@ class VerbosityLevelsConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -132,5 +135,6 @@ class VerbosityLevelsConfig
     
         return $output;
     }
+    
 
 }

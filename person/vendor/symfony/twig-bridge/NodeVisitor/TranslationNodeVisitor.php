@@ -29,8 +29,8 @@ final class TranslationNodeVisitor extends AbstractNodeVisitor
 {
     public const UNDEFINED_DOMAIN = '_undefined';
 
-    private bool $enabled = false;
-    private array $messages = [];
+    private $enabled = false;
+    private $messages = [];
 
     public function enable(): void
     {

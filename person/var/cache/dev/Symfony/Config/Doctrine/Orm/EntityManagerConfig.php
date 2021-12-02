@@ -17,6 +17,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class EntityManagerConfig 
 {
@@ -87,7 +89,7 @@ class EntityManagerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function connection($value): static
+    public function connection($value): self
     {
         $this->connection = $value;
     
@@ -99,7 +101,7 @@ class EntityManagerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function classMetadataFactoryName($value): static
+    public function classMetadataFactoryName($value): self
     {
         $this->classMetadataFactoryName = $value;
     
@@ -111,7 +113,7 @@ class EntityManagerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function defaultRepositoryClass($value): static
+    public function defaultRepositoryClass($value): self
     {
         $this->defaultRepositoryClass = $value;
     
@@ -123,7 +125,7 @@ class EntityManagerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function autoMapping($value): static
+    public function autoMapping($value): self
     {
         $this->autoMapping = $value;
     
@@ -135,7 +137,7 @@ class EntityManagerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function namingStrategy($value): static
+    public function namingStrategy($value): self
     {
         $this->namingStrategy = $value;
     
@@ -147,7 +149,7 @@ class EntityManagerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function quoteStrategy($value): static
+    public function quoteStrategy($value): self
     {
         $this->quoteStrategy = $value;
     
@@ -159,7 +161,7 @@ class EntityManagerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function entityListenerResolver($value): static
+    public function entityListenerResolver($value): self
     {
         $this->entityListenerResolver = $value;
     
@@ -171,7 +173,7 @@ class EntityManagerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function repositoryFactory($value): static
+    public function repositoryFactory($value): self
     {
         $this->repositoryFactory = $value;
     
@@ -190,9 +192,10 @@ class EntityManagerConfig
     }
     
     /**
+     * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function hydrator(string $name, mixed $value): static
+    public function hydrator(string $name, $value): self
     {
         $this->hydrators[$name] = $value;
     
@@ -327,6 +330,7 @@ class EntityManagerConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -384,5 +388,6 @@ class EntityManagerConfig
     
         return $output;
     }
+    
 
 }

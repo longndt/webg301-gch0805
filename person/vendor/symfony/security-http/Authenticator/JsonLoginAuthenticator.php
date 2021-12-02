@@ -31,6 +31,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\PasswordUpgrade
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -45,13 +46,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class JsonLoginAuthenticator implements InteractiveAuthenticatorInterface
 {
-    private array $options;
-    private HttpUtils $httpUtils;
-    private UserProviderInterface $userProvider;
-    private PropertyAccessorInterface $propertyAccessor;
-    private ?AuthenticationSuccessHandlerInterface $successHandler;
-    private ?AuthenticationFailureHandlerInterface $failureHandler;
-    private ?TranslatorInterface $translator = null;
+    private $options;
+    private $httpUtils;
+    private $userProvider;
+    private $propertyAccessor;
+    private $successHandler;
+    private $failureHandler;
+
+    /**
+     * @var TranslatorInterface|null
+     */
+    private $translator;
 
     public function __construct(HttpUtils $httpUtils, UserProviderInterface $userProvider, AuthenticationSuccessHandlerInterface $successHandler = null, AuthenticationFailureHandlerInterface $failureHandler = null, array $options = [], PropertyAccessorInterface $propertyAccessor = null)
     {
@@ -76,7 +81,7 @@ class JsonLoginAuthenticator implements InteractiveAuthenticatorInterface
         return true;
     }
 
-    public function authenticate(Request $request): Passport
+    public function authenticate(Request $request): PassportInterface
     {
         try {
             $credentials = $this->getCredentials($request);
@@ -86,8 +91,16 @@ class JsonLoginAuthenticator implements InteractiveAuthenticatorInterface
             throw $e;
         }
 
+        // @deprecated since Symfony 5.3, change to $this->userProvider->loadUserByIdentifier() in 6.0
+        $method = 'loadUserByIdentifier';
+        if (!method_exists($this->userProvider, 'loadUserByIdentifier')) {
+            trigger_deprecation('symfony/security-core', '5.3', 'Not implementing method "loadUserByIdentifier()" in user provider "%s" is deprecated. This method will replace "loadUserByUsername()" in Symfony 6.0.', get_debug_type($this->userProvider));
+
+            $method = 'loadUserByUsername';
+        }
+
         $passport = new Passport(
-            new UserBadge($credentials['username'], [$this->userProvider, 'loadUserByIdentifier']),
+            new UserBadge($credentials['username'], [$this->userProvider, $method]),
             new PasswordCredentials($credentials['password'])
         );
         if ($this->userProvider instanceof PasswordUpgraderInterface) {
@@ -97,9 +110,9 @@ class JsonLoginAuthenticator implements InteractiveAuthenticatorInterface
         return $passport;
     }
 
-    public function createToken(Passport $passport, string $firewallName): TokenInterface
+    public function createAuthenticatedToken(PassportInterface $passport, string $firewallName): TokenInterface
     {
-        return new UsernamePasswordToken($passport->getUser(), $firewallName, $passport->getUser()->getRoles());
+        return new UsernamePasswordToken($passport->getUser(), null, $firewallName, $passport->getUser()->getRoles());
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response

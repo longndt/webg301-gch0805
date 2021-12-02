@@ -30,13 +30,13 @@ class ContainerConfigurator extends AbstractConfigurator
 {
     public const FACTORY = 'container';
 
-    private ContainerBuilder $container;
-    private PhpFileLoader $loader;
-    private array $instanceof;
-    private string $path;
-    private string $file;
-    private int $anonymousCount = 0;
-    private ?string $env;
+    private $container;
+    private $loader;
+    private $instanceof;
+    private $path;
+    private $file;
+    private $anonymousCount = 0;
+    private $env;
 
     public function __construct(ContainerBuilder $container, PhpFileLoader $loader, array &$instanceof, string $path, string $file, string $env = null)
     {
@@ -58,7 +58,7 @@ class ContainerConfigurator extends AbstractConfigurator
         $this->container->loadFromExtension($namespace, static::processValue($config));
     }
 
-    final public function import(string $resource, string $type = null, bool|string $ignoreErrors = false)
+    final public function import(string $resource, string $type = null, $ignoreErrors = false)
     {
         $this->loader->setCurrentDir(\dirname($this->path));
         $this->loader->import($resource, $type, $ignoreErrors, $this->file);
@@ -82,7 +82,10 @@ class ContainerConfigurator extends AbstractConfigurator
         return $this->env;
     }
 
-    final public function withPath(string $path): static
+    /**
+     * @return static
+     */
+    final public function withPath(string $path): self
     {
         $clone = clone $this;
         $clone->path = $clone->file = $path;
@@ -101,11 +104,35 @@ function param(string $name): ParamConfigurator
 }
 
 /**
+ * Creates a service reference.
+ *
+ * @deprecated since Symfony 5.1, use service() instead.
+ */
+function ref(string $id): ReferenceConfigurator
+{
+    trigger_deprecation('symfony/dependency-injection', '5.1', '"%s()" is deprecated, use "service()" instead.', __FUNCTION__);
+
+    return new ReferenceConfigurator($id);
+}
+
+/**
  * Creates a reference to a service.
  */
 function service(string $serviceId): ReferenceConfigurator
 {
     return new ReferenceConfigurator($serviceId);
+}
+
+/**
+ * Creates an inline service.
+ *
+ * @deprecated since Symfony 5.1, use inline_service() instead.
+ */
+function inline(string $class = null): InlineServiceConfigurator
+{
+    trigger_deprecation('symfony/dependency-injection', '5.1', '"%s()" is deprecated, use "inline_service()" instead.', __FUNCTION__);
+
+    return new InlineServiceConfigurator(new Definition($class));
 }
 
 /**
@@ -147,9 +174,9 @@ function tagged_iterator(string $tag, string $indexAttribute = null, string $def
 /**
  * Creates a service locator by tag name.
  */
-function tagged_locator(string $tag, string $indexAttribute = null, string $defaultIndexMethod = null, string $defaultPriorityMethod = null): ServiceLocatorArgument
+function tagged_locator(string $tag, string $indexAttribute = null, string $defaultIndexMethod = null): ServiceLocatorArgument
 {
-    return new ServiceLocatorArgument(new TaggedIteratorArgument($tag, $indexAttribute, $defaultIndexMethod, true, $defaultPriorityMethod));
+    return new ServiceLocatorArgument(new TaggedIteratorArgument($tag, $indexAttribute, $defaultIndexMethod, true));
 }
 
 /**
@@ -174,12 +201,4 @@ function abstract_arg(string $description): AbstractArgument
 function env(string $name): EnvConfigurator
 {
     return new EnvConfigurator($name);
-}
-
-/**
- * Creates a closure service reference.
- */
-function service_closure(string $serviceId): ClosureReferenceConfigurator
-{
-    return new ClosureReferenceConfigurator($serviceId);
 }

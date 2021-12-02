@@ -11,6 +11,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class is automatically generated to help creating config.
+ *
+ * @experimental in 5.3
  */
 class ScopedClientConfig 
 {
@@ -46,7 +48,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function scope($value): static
+    public function scope($value): self
     {
         $this->scope = $value;
     
@@ -59,7 +61,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function baseUri($value): static
+    public function baseUri($value): self
     {
         $this->baseUri = $value;
     
@@ -72,7 +74,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function authBasic($value): static
+    public function authBasic($value): self
     {
         $this->authBasic = $value;
     
@@ -85,7 +87,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function authBearer($value): static
+    public function authBearer($value): self
     {
         $this->authBearer = $value;
     
@@ -98,7 +100,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function authNtlm($value): static
+    public function authNtlm($value): self
     {
         $this->authNtlm = $value;
     
@@ -106,9 +108,10 @@ class ScopedClientConfig
     }
     
     /**
+     * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function query(string $key, mixed $value): static
+    public function query(string $key, $value): self
     {
         $this->query[$key] = $value;
     
@@ -116,9 +119,10 @@ class ScopedClientConfig
     }
     
     /**
+     * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function header(string $name, mixed $value): static
+    public function header(string $name, $value): self
     {
         $this->headers[$name] = $value;
     
@@ -131,7 +135,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|int $value
      * @return $this
      */
-    public function maxRedirects($value): static
+    public function maxRedirects($value): self
     {
         $this->maxRedirects = $value;
     
@@ -144,7 +148,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function httpVersion($value): static
+    public function httpVersion($value): self
     {
         $this->httpVersion = $value;
     
@@ -152,9 +156,10 @@ class ScopedClientConfig
     }
     
     /**
+     * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function resolve(string $host, mixed $value): static
+    public function resolve(string $host, $value): self
     {
         $this->resolve[$host] = $value;
     
@@ -167,7 +172,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function proxy($value): static
+    public function proxy($value): self
     {
         $this->proxy = $value;
     
@@ -180,7 +185,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function noProxy($value): static
+    public function noProxy($value): self
     {
         $this->noProxy = $value;
     
@@ -193,7 +198,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|float $value
      * @return $this
      */
-    public function timeout($value): static
+    public function timeout($value): self
     {
         $this->timeout = $value;
     
@@ -206,7 +211,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|float $value
      * @return $this
      */
-    public function maxDuration($value): static
+    public function maxDuration($value): self
     {
         $this->maxDuration = $value;
     
@@ -219,7 +224,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function bindto($value): static
+    public function bindto($value): self
     {
         $this->bindto = $value;
     
@@ -232,7 +237,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function verifyPeer($value): static
+    public function verifyPeer($value): self
     {
         $this->verifyPeer = $value;
     
@@ -245,7 +250,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|bool $value
      * @return $this
      */
-    public function verifyHost($value): static
+    public function verifyHost($value): self
     {
         $this->verifyHost = $value;
     
@@ -258,7 +263,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function cafile($value): static
+    public function cafile($value): self
     {
         $this->cafile = $value;
     
@@ -271,7 +276,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function capath($value): static
+    public function capath($value): self
     {
         $this->capath = $value;
     
@@ -284,7 +289,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function localCert($value): static
+    public function localCert($value): self
     {
         $this->localCert = $value;
     
@@ -297,7 +302,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function localPk($value): static
+    public function localPk($value): self
     {
         $this->localPk = $value;
     
@@ -310,7 +315,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function passphrase($value): static
+    public function passphrase($value): self
     {
         $this->passphrase = $value;
     
@@ -323,7 +328,7 @@ class ScopedClientConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function ciphers($value): static
+    public function ciphers($value): self
     {
         $this->ciphers = $value;
     
@@ -485,6 +490,7 @@ class ScopedClientConfig
         }
     }
     
+    
     public function toArray(): array
     {
         $output = [];
@@ -566,5 +572,6 @@ class ScopedClientConfig
     
         return $output;
     }
+    
 
 }
