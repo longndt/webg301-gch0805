@@ -14,9 +14,11 @@ return [
     '_profiler_router' => [['token'], ['_controller' => 'web_profiler.controller.router::panelAction'], [], [['text', '/router'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], []],
     '_profiler_exception' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::body'], [], [['text', '/exception'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], []],
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::stylesheet'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], []],
-    'car' => [[], ['_controller' => 'App\\Controller\\CarController::index'], [], [['text', '/car']], [], []],
+    'car_index' => [[], ['_controller' => 'App\\Controller\\CarController::carIndex'], [], [['text', '/car']], [], []],
+    'car_detail' => [['id'], ['_controller' => 'App\\Controller\\CarController::carDetail'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/car/detail']], [], []],
+    'car_delete' => [['id'], ['_controller' => 'App\\Controller\\CarController::carDelete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/car/delete']], [], []],
     'person_index' => [[], ['_controller' => 'App\\Controller\\PersonController::personIndex'], [], [['text', '/person']], [], []],
-    'person_detail' => [['id'], ['_controller' => 'App\\Controller\\PersonController::personDetail'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/person/view']], [], []],
+    'person_detail' => [['id'], ['_controller' => 'App\\Controller\\PersonController::personDetail'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/person/detail']], [], []],
     'person_delete' => [['id'], ['_controller' => 'App\\Controller\\PersonController::personDelete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/person/delete']], [], []],
     '_preview_error' => [['code', '_format'], ['_controller' => 'error_controller::preview', '_format' => 'html'], ['code' => '\\d+'], [['variable', '.', '[^/]++', '_format', true], ['variable', '/', '\\d+', 'code', true], ['text', '/_error']], [], []],
 ];

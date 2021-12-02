@@ -14,8 +14,10 @@ class PersonFixtures extends Fixture
             $person = new Person();
             $person->setName("Person $i");
             $manager->persist($person);
+            
         }
 
         $manager->flush();
+      
     }
 }
