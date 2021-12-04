@@ -12,6 +12,7 @@
          <tr>
             <th>Car ID</th>
             <th>Car Name</th>
+            <th>Car Plate</th>
             <th>Menu</th>
          </tr>
       </thead>
@@ -19,7 +20,8 @@
       {% for c in car %}
           <tr>
             <td>{{ c.id }}</td>
-            <td>{{ c.name}} </td>
+            <td>{{ c.brand }} {{ c.name }}</td>
+            <td>{{ c.plate }}</td>
             <td>
                <a class="btn btn-info" 
                   href="{{ path ("car_detail", {'id' : c.id })}}">

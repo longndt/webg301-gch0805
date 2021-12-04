@@ -2,8 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Job;
 use App\Entity\Person;
+use App\Entity\PersonDetail;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,8 +17,17 @@ class PersonType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('detail')
-            ->add('job')
+            ->add('job', EntityType::class,
+            [
+                'label' => 'Job Title',
+                'required' => true,
+                'class' => Job::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true
+            ])
+            ->add('detail', PersonDetailType::class)
+            ->add('Save', SubmitType::class)
         ;
     }
 

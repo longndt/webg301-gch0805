@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Person;
+use App\Form\PersonType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,13 +54,37 @@ class PersonController extends AbstractController
      * @Route("/person/add", name = "person_add")
      */
     public function personAdd (Request $request) {
-
+        $person = new Person;
+        $personForm = $this->createForm(PersonType::class,$person);
+        $personForm->handleRequest($request);
+        if ($personForm->isSubmitted() && $personForm->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($person);
+            $manager->flush();
+            return $this->redirectToRoute("person_index");
+        }
+        return $this->renderForm("person\add.html.twig",
+        [
+            'personForm' => $personForm
+        ]);
     } 
 
     /**
      * @Route("/person/edit/{id}", name = "person_edit")
      */
     public function personEdit (Request $request, $id) {
-        
+        $person = $this->getDoctrine()->getRepository(Person::class)->find($id);
+        $personForm = $this->createForm(PersonType::class,$person);
+        $personForm->handleRequest($request);
+        if ($personForm->isSubmitted() && $personForm->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($person);
+            $manager->flush();
+            return $this->redirectToRoute("person_index");
+        }
+        return $this->renderForm("person\edit.html.twig",
+        [
+            'personForm' => $personForm
+        ]);
     }
 }

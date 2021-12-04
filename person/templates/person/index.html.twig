@@ -12,6 +12,7 @@
          <tr>
             <th>Person ID</th>
             <th>Person Name</th>
+            <th>Person Code</th>
             <th>Menu</th>
          </tr>
       </thead>
@@ -19,7 +20,10 @@
       {% for p in person %}
           <tr>
             <td>{{ p.id }}</td>
-            <td>{{ p.name}} </td>
+            <td>{{ p.name }} </td>
+            <td>
+               
+            </td>
             <td>
                <a class="btn btn-info" 
                   href="{{ path ("person_detail", {'id' : p.id })}}">

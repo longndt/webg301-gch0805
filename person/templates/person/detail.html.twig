@@ -6,6 +6,7 @@
       <thead>
          <tr>
             <th>Name</th>
+            <th>Code</th>
             <th>Nationality</th>
             <th>Address</th>
             <th>Mobile</th>
@@ -18,6 +19,11 @@
       <tbody>
           <tr>
             <td>{{ person.name }} </td>
+            <td>
+               {% if person.detail != null %}
+                  {{ person.detail.code }}
+               {% endif %}
+            </td>
             <td> 
                {% if person.detail != null %}
                   {{ person.detail.nationality }}

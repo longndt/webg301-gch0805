@@ -9,6 +9,7 @@
             <th>Car Brand</th>
             <th>Car Model</th>
             <th>Car Price</th>
+            <th>Car Plate</th>
             <th>Car Owner</th>
             <th>Menu</th>
          </tr>
@@ -18,7 +19,8 @@
             <td>{{ car.name }} </td>
             <td>{{ car.brand }} </td>
             <td>{{ car.model }} </td>
-            <td>{{ car.price }} </td>
+            <td>{{ car.price }} $ </td>
+            <td>{{ car.plate }} </td>
             <td>
                {% if car.person != null %}
                   <a href="{{ path ("person_detail", {'id' : car.person.id })}}">
