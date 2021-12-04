@@ -23,7 +23,7 @@ class Car
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=25)
      */
     private $brand;
 

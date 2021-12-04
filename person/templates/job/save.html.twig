@@ -1,0 +1,14 @@
+{% form_theme jobForm 'bootstrap_5_layout.html.twig' %}
+{% extends "base.html.twig" %}
+
+{% block body %}
+   <div class="container text-center">
+   {% if save == 'add' %}
+      <h3 class="text-primary text-uppercase">Add new job</h3>
+      {% else %}
+      <h3 class="text-primary text-uppercase">Edit job</h3>
+   {% endif %}
+      {{ form_start (jobForm) }}
+      {{ form_end (jobForm) }}
+   </div>
+{% endblock %}

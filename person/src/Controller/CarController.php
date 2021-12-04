@@ -3,10 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Car;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\CarType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CarController extends AbstractController
 {
@@ -46,11 +47,35 @@ class CarController extends AbstractController
 
     #[Route('/car/add', name : 'car_add')]
     public function carAdd (Request $request) {
-
+        $car = new Car;
+        $carForm = $this->createForm(CarType::class,$car);
+        $carForm->handleRequest($request);
+        if ($carForm->isSubmitted() && $carForm->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($car);
+            $manager->flush();
+            return $this->redirectToRoute("car_index");
+        }
+        return $this->renderForm("car/add.html.twig",
+        [
+            'carForm' => $carForm
+        ]);
     }
 
     #[Route('/car/edit/{id}', name : 'car_edit')]
     public function carEdit (Request $request, $id) {
-        
+        $car = $this->getDoctrine()->getRepository(Car::class)->find($id);
+        $carForm = $this->createForm(CarType::class,$car);
+        $carForm->handleRequest($request);
+        if ($carForm->isSubmitted() && $carForm->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($car);
+            $manager->flush();
+            return $this->redirectToRoute("car_index");
+        }
+        return $this->renderForm("car/edit.html.twig",
+        [
+            'carForm' => $carForm
+        ]);
     }
 }

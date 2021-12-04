@@ -19,6 +19,7 @@ return [
     'car_delete' => [['id'], ['_controller' => 'App\\Controller\\CarController::carDelete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/car/delete']], [], []],
     'car_add' => [[], ['_controller' => 'App\\Controller\\CarController::carAdd'], [], [['text', '/car/add']], [], []],
     'car_edit' => [['id'], ['_controller' => 'App\\Controller\\CarController::carEdit'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/car/edit']], [], []],
+    'home' => [[], ['_controller' => 'App\\Controller\\HomeController::index'], [], [['text', '/']], [], []],
     'job_index' => [[], ['_controller' => 'App\\Controller\\JobController::jobIndex'], [], [['text', '/job']], [], []],
     'job_detail' => [['id'], ['_controller' => 'App\\Controller\\JobController::jobDetail'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/job/detail']], [], []],
     'job_delete' => [['id'], ['_controller' => 'App\\Controller\\JobController::jobDelete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/job/delete']], [], []],

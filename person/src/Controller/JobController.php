@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Job;
+use App\Form\JobType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,11 +47,39 @@ class JobController extends AbstractController
 
     #[Route('/job/add', name : 'job_add')]
     public function jobAdd (Request $request) {
-
+        $job = new Job;
+        $jobForm = $this->createForm(JobType::class,$job);
+        $jobForm->handleRequest($request);
+        $save = "add";
+        if ($jobForm->isSubmitted() && $jobForm->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($job);
+            $manager->flush();
+            return $this->redirectToRoute("job_index");
+        }
+        return $this->render("job/save.html.twig",
+        [
+            'jobForm' => $jobForm->createView(),
+            'save' => $save
+        ]);
     }
 
     #[Route('/job/edit/{id}', name : 'job_edit')]
     public function jobEdit (Request $request, $id) {
-        
+        $job = $this->getDoctrine()->getRepository(Job::class)->find($id);
+        $jobForm = $this->createForm(JobType::class,$job);
+        $jobForm->handleRequest($request);
+        $save = "edit";
+        if ($jobForm->isSubmitted() && $jobForm->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($job);
+            $manager->flush();
+            return $this->redirectToRoute("job_index");
+        }
+        return $this->render("job/save.html.twig",
+        [
+            'jobForm' => $jobForm->createView(),
+            'save' => $save
+        ]);
     }
 }

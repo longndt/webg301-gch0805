@@ -15,6 +15,7 @@ return [
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
         '/car' => [[['_route' => 'car_index', '_controller' => 'App\\Controller\\CarController::carIndex'], null, null, null, false, false, null]],
         '/car/add' => [[['_route' => 'car_add', '_controller' => 'App\\Controller\\CarController::carAdd'], null, null, null, false, false, null]],
+        '/' => [[['_route' => 'home', '_controller' => 'App\\Controller\\HomeController::index'], null, null, null, false, false, null]],
         '/job' => [[['_route' => 'job_index', '_controller' => 'App\\Controller\\JobController::jobIndex'], null, null, null, false, false, null]],
         '/job/add' => [[['_route' => 'job_add', '_controller' => 'App\\Controller\\JobController::jobAdd'], null, null, null, false, false, null]],
         '/person' => [[['_route' => 'person_index', '_controller' => 'App\\Controller\\PersonController::personIndex'], null, null, null, false, false, null]],
