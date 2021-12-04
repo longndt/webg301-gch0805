@@ -2,9 +2,11 @@
 
 {% block body %}
 <div class="container">
-    <h4 class="text text-primary text-capitalize">
-         <a href="{{ path("car_add") }}">Add new Car</a>
-    </h4>
+    <div class="text-center">
+         <a href="{{ path("car_add") }}">
+            <img src="{{ asset("images/add.png") }}" width="50" height="50">
+         </a>
+    </div>
    <table class="table table-primary text-center">
       <thead>
          <tr>
