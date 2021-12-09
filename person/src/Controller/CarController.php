@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Car;
 use App\Form\CarType;
+use App\Repository\CarRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -76,6 +77,24 @@ class CarController extends AbstractController
         return $this->renderForm("car/edit.html.twig",
         [
             'carForm' => $carForm
+        ]);
+    }
+
+    #[Route('/car/price/asc', name : 'sort_car_price_asc')]
+    public function sortCarPriceAsc (CarRepository $carRepository) {
+        $result = $carRepository->sortPriceAsc();
+        return $this->render("car/index.html.twig",
+        [
+            'car' => $result
+        ]);
+    }
+
+    #[Route('/car/price/desc', name : 'sort_car_price_desc')]
+    public function sortCarPriceDesc (CarRepository $carRepository) {
+        $result = $carRepository->sortPriceDesc();
+        return $this->render("car/index.html.twig",
+        [
+            'car' => $result
         ]);
     }
 }

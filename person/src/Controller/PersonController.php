@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Person;
 use App\Form\PersonType;
+use App\Repository\PersonRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,6 +86,45 @@ class PersonController extends AbstractController
         return $this->renderForm("person\edit.html.twig",
         [
             'personForm' => $personForm
+        ]);
+    }
+
+    /**
+     * @Route("/person/sort/id/desc", name = "sort_person_id_desc")
+     */
+    public function sortPersonByIdDesc() {
+        $manager = $this->getDoctrine()->getManager();
+        $query = $manager->createQuery(
+            "SELECT p
+            FROM App\Entity\Person p
+            ORDER BY p.id DESC"
+        );
+        $result = $query->getResult();
+        return $this->render("person/index.html.twig",
+        [
+            'person' => $result
+        ]);
+    }
+
+    /**
+     * @Route("/person/name/asc", name="sort_person_name_asc")
+     */
+    public function sortPersonNameAsc (PersonRepository $personRepository) {
+        $result = $personRepository->sortNameAsc();
+        return $this->render("person/index.html.twig",
+        [
+            'person' => $result
+        ]);
+    }
+
+     /**
+     * @Route("/person/name/desc", name="sort_person_name_desc")
+     */
+    public function sortPersonNameDesc (PersonRepository $personRepository) {
+        $result = $personRepository->sortNameDesc();
+        return $this->render("person/index.html.twig",
+        [
+            'person' => $result
         ]);
     }
 }

@@ -19,32 +19,29 @@ class PersonRepository extends ServiceEntityRepository
         parent::__construct($registry, Person::class);
     }
 
-    // /**
-    //  * @return Person[] Returns an array of Person objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+    /**
+     * @return Person[]
+     */
+    public function sortNameAsc () {
+        return $this->getEntityManager()
+                    ->createQuery(
+                        'SELECT p
+                        FROM App\Entity\Person p
+                        ORDER BY p.name ASC')
+                    ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Person
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+     /**
+     * @return Person[]
+     */
+    public function sortNameDesc () {
+        return $this->getEntityManager()
+                    ->createQuery(
+                        'SELECT p
+                        FROM App\Entity\Person p
+                        ORDER BY p.name DESC')
+                    ->getResult()
         ;
     }
-    */
 }

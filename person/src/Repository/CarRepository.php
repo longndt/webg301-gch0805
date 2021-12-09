@@ -19,32 +19,25 @@ class CarRepository extends ServiceEntityRepository
         parent::__construct($registry, Car::class);
     }
 
-    // /**
-    //  * @return Car[] Returns an array of Car objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
+    /**
+     * @return Car[]
+     */ 
+    public function sortPriceAsc() {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+                    ->orderBy('c.price', 'ASC')
+                    ->getQuery()
+                    ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Car
-    {
+    /**
+     * @return Car[]
+     */ 
+    public function sortPriceDesc() {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+                    ->orderBy('c.price', 'DESC')
+                    ->getQuery()
+                    ->getResult()
         ;
     }
-    */
 }

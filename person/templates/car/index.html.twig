@@ -12,7 +12,14 @@
          <tr>
             <th>Car ID</th>
             <th>Car Name</th>
-            <th>Car Plate</th>
+            <th>Car Price
+             <a href="{{ path("sort_car_price_asc") }}">
+               <img src="{{ asset("images/up.png") }}" width="15" height="15">
+            </a>
+            <a href="{{ path("sort_car_price_desc") }}">
+               <img src="{{ asset("images/down.png") }}" width="15" height="15">
+            </a>             
+            </th>
             <th>Menu</th>
          </tr>
       </thead>
@@ -21,7 +28,7 @@
           <tr>
             <td>{{ c.id }}</td>
             <td>{{ c.brand }} {{ c.name }}</td>
-            <td>{{ c.plate }}</td>
+            <td>{{ c.price }} $ </td>
             <td>
                <a class="btn btn-info" 
                   href="{{ path ("car_detail", {'id' : c.id })}}">

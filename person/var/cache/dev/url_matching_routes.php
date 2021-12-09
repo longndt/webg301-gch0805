@@ -15,11 +15,16 @@ return [
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
         '/car' => [[['_route' => 'car_index', '_controller' => 'App\\Controller\\CarController::carIndex'], null, null, null, false, false, null]],
         '/car/add' => [[['_route' => 'car_add', '_controller' => 'App\\Controller\\CarController::carAdd'], null, null, null, false, false, null]],
+        '/car/price/asc' => [[['_route' => 'sort_car_price_asc', '_controller' => 'App\\Controller\\CarController::sortCarPriceAsc'], null, null, null, false, false, null]],
+        '/car/price/desc' => [[['_route' => 'sort_car_price_desc', '_controller' => 'App\\Controller\\CarController::sortCarPriceDesc'], null, null, null, false, false, null]],
         '/' => [[['_route' => 'home', '_controller' => 'App\\Controller\\HomeController::index'], null, null, null, false, false, null]],
         '/job' => [[['_route' => 'job_index', '_controller' => 'App\\Controller\\JobController::jobIndex'], null, null, null, false, false, null]],
         '/job/add' => [[['_route' => 'job_add', '_controller' => 'App\\Controller\\JobController::jobAdd'], null, null, null, false, false, null]],
         '/person' => [[['_route' => 'person_index', '_controller' => 'App\\Controller\\PersonController::personIndex'], null, null, null, false, false, null]],
         '/person/add' => [[['_route' => 'person_add', '_controller' => 'App\\Controller\\PersonController::personAdd'], null, null, null, false, false, null]],
+        '/person/sort/id/desc' => [[['_route' => 'sort_person_id_desc', '_controller' => 'App\\Controller\\PersonController::sortPersonByIdDesc'], null, null, null, false, false, null]],
+        '/person/name/asc' => [[['_route' => 'sort_person_name_asc', '_controller' => 'App\\Controller\\PersonController::sortPersonNameAsc'], null, null, null, false, false, null]],
+        '/person/name/desc' => [[['_route' => 'sort_person_name_desc', '_controller' => 'App\\Controller\\PersonController::sortPersonNameDesc'], null, null, null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'

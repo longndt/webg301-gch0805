@@ -19,6 +19,8 @@ return [
     'car_delete' => [['id'], ['_controller' => 'App\\Controller\\CarController::carDelete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/car/delete']], [], []],
     'car_add' => [[], ['_controller' => 'App\\Controller\\CarController::carAdd'], [], [['text', '/car/add']], [], []],
     'car_edit' => [['id'], ['_controller' => 'App\\Controller\\CarController::carEdit'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/car/edit']], [], []],
+    'sort_car_price_asc' => [[], ['_controller' => 'App\\Controller\\CarController::sortCarPriceAsc'], [], [['text', '/car/price/asc']], [], []],
+    'sort_car_price_desc' => [[], ['_controller' => 'App\\Controller\\CarController::sortCarPriceDesc'], [], [['text', '/car/price/desc']], [], []],
     'home' => [[], ['_controller' => 'App\\Controller\\HomeController::index'], [], [['text', '/']], [], []],
     'job_index' => [[], ['_controller' => 'App\\Controller\\JobController::jobIndex'], [], [['text', '/job']], [], []],
     'job_detail' => [['id'], ['_controller' => 'App\\Controller\\JobController::jobDetail'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/job/detail']], [], []],
@@ -30,5 +32,8 @@ return [
     'person_delete' => [['id'], ['_controller' => 'App\\Controller\\PersonController::personDelete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/person/delete']], [], []],
     'person_add' => [[], ['_controller' => 'App\\Controller\\PersonController::personAdd'], [], [['text', '/person/add']], [], []],
     'person_edit' => [['id'], ['_controller' => 'App\\Controller\\PersonController::personEdit'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/person/edit']], [], []],
+    'sort_person_id_desc' => [[], ['_controller' => 'App\\Controller\\PersonController::sortPersonByIdDesc'], [], [['text', '/person/sort/id/desc']], [], []],
+    'sort_person_name_asc' => [[], ['_controller' => 'App\\Controller\\PersonController::sortPersonNameAsc'], [], [['text', '/person/name/asc']], [], []],
+    'sort_person_name_desc' => [[], ['_controller' => 'App\\Controller\\PersonController::sortPersonNameDesc'], [], [['text', '/person/name/desc']], [], []],
     '_preview_error' => [['code', '_format'], ['_controller' => 'error_controller::preview', '_format' => 'html'], ['code' => '\\d+'], [['variable', '.', '[^/]++', '_format', true], ['variable', '/', '\\d+', 'code', true], ['text', '/_error']], [], []],
 ];

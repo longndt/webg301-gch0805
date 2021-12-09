@@ -11,8 +11,16 @@
       <thead>
          <tr>
             <th>Person ID</th>
-            <th>Person Name</th>
-            <th>Person Code</th>
+            <th>
+            Person Name            
+            <a href="{{ path("sort_person_name_asc") }}">
+               <img src="{{ asset("images/up.png") }}" width="15" height="15">
+            </a>
+            <a href="{{ path("sort_person_name_desc") }}">
+               <img src="{{ asset("images/down.png") }}" width="15" height="15">
+            </a>      
+            </th>
+            <th>Person Birthday</th>
             <th>Menu</th>
          </tr>
       </thead>
@@ -22,7 +30,11 @@
             <td>{{ p.id }}</td>
             <td>{{ p.name }} </td>
             <td>
-               
+               {% if p.detail != null %}
+                   {{ p.detail.birthday | date('d/m/Y') }}
+               {% else %}
+                   N/A
+               {% endif %}       
             </td>
             <td>
                <a class="btn btn-info" 
