@@ -2,12 +2,27 @@
 
 {% block body %}
 <div class="container">
+   <div class="container-sm mt-4">
+      <form action="{{path("search_car")}}" method="GET">
+         <input type="search" required name="keyword" placeholder="Enter name or brand">
+      </form>
+      <br><br>
+      <form action="{{path("filter_car")}}">
+         <input type="number" placeholder="Min price" name="min" required min="1000" max="999999">
+         <input type="number" placeholder="Max price" name="max" required min="1001" max="1000000">
+         <input type="submit" value="Search">
+      </form>
+   </div>
+   {% if car == null %}
+      <h3 class="text-center text-danger"> No car found ! </h3>
+   {% else %}
     <div class="text-center mt-3 mb-3">
          <a href="{{ path("car_add") }}">
             <img src="{{ asset("images/add.png") }}" width="50" height="50">
          </a>
     </div>
-   <table class="table table-primary text-center">
+  
+   <table class="table table-primary text-center mt-3">
       <thead>
          <tr>
             <th>Car ID</th>
@@ -46,6 +61,10 @@
          </tr>
       {% endfor %}
       </tbody>
-   </table>
+   </table>  
+
+   {% endif %}
+
+    
 </div>
 {% endblock %}

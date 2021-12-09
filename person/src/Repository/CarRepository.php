@@ -40,4 +40,34 @@ class CarRepository extends ServiceEntityRepository
                     ->getResult()
         ;
     }
+
+    /**
+     * @return Car[]
+     */
+    public function searchCar($keyword) {
+        return $this->createQueryBuilder('c')
+                    ->andWhere('c.name LIKE :keyword')
+                    ->orWhere('c.brand LIKE :keyword')
+                    ->setParameter('keyword','%' . $keyword . '%')
+                    ->orderBy('c.price', 'DESC')
+                    ->setMaxResults(3)
+                    ->getQuery()
+                    ->getResult()
+                    ;
+    }
+
+    /**
+     * @return Car[]
+     */
+    public function filterCar($min, $max) {
+        return $this->createQueryBuilder('c')
+                    ->andWhere('c.price >= :start')
+                    ->andWhere('c.price <= :end')
+                    ->setParameters(['start' => $min, 
+                                     'end' => $max])
+                    ->orderBy('c.price', 'ASC')
+                    ->setMaxResults(5)
+                    ->getQuery()
+                    ->getResult();
+    }
 }

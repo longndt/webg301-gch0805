@@ -17,6 +17,8 @@ return [
         '/car/add' => [[['_route' => 'car_add', '_controller' => 'App\\Controller\\CarController::carAdd'], null, null, null, false, false, null]],
         '/car/price/asc' => [[['_route' => 'sort_car_price_asc', '_controller' => 'App\\Controller\\CarController::sortCarPriceAsc'], null, null, null, false, false, null]],
         '/car/price/desc' => [[['_route' => 'sort_car_price_desc', '_controller' => 'App\\Controller\\CarController::sortCarPriceDesc'], null, null, null, false, false, null]],
+        '/car/search' => [[['_route' => 'search_car', '_controller' => 'App\\Controller\\CarController::searchCar'], null, null, null, false, false, null]],
+        '/car/filter' => [[['_route' => 'filter_car', '_controller' => 'App\\Controller\\CarController::filterCar'], null, null, null, false, false, null]],
         '/' => [[['_route' => 'home', '_controller' => 'App\\Controller\\HomeController::index'], null, null, null, false, false, null]],
         '/job' => [[['_route' => 'job_index', '_controller' => 'App\\Controller\\JobController::jobIndex'], null, null, null, false, false, null]],
         '/job/add' => [[['_route' => 'job_add', '_controller' => 'App\\Controller\\JobController::jobAdd'], null, null, null, false, false, null]],

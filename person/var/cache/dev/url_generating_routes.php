@@ -21,6 +21,8 @@ return [
     'car_edit' => [['id'], ['_controller' => 'App\\Controller\\CarController::carEdit'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/car/edit']], [], []],
     'sort_car_price_asc' => [[], ['_controller' => 'App\\Controller\\CarController::sortCarPriceAsc'], [], [['text', '/car/price/asc']], [], []],
     'sort_car_price_desc' => [[], ['_controller' => 'App\\Controller\\CarController::sortCarPriceDesc'], [], [['text', '/car/price/desc']], [], []],
+    'search_car' => [[], ['_controller' => 'App\\Controller\\CarController::searchCar'], [], [['text', '/car/search']], [], []],
+    'filter_car' => [[], ['_controller' => 'App\\Controller\\CarController::filterCar'], [], [['text', '/car/filter']], [], []],
     'home' => [[], ['_controller' => 'App\\Controller\\HomeController::index'], [], [['text', '/']], [], []],
     'job_index' => [[], ['_controller' => 'App\\Controller\\JobController::jobIndex'], [], [['text', '/job']], [], []],
     'job_detail' => [['id'], ['_controller' => 'App\\Controller\\JobController::jobDetail'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/job/detail']], [], []],

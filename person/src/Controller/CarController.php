@@ -97,4 +97,26 @@ class CarController extends AbstractController
             'car' => $result
         ]);
     }
+
+    #[Route('/car/search', name : 'search_car')]
+    public function searchCar (CarRepository $carRepository, Request $request) {
+        $keyword = $request->get("keyword");
+        $result = $carRepository->searchCar($keyword);
+        return $this->render("car/index.html.twig",
+        [
+            'car' => $result
+        ]);
+    }
+
+    #[Route('/car/filter', name : 'filter_car')]
+    public function filterCar(CarRepository $carRepository, Request $request)
+    {
+        $min = $request->get("min");
+        $max = $request->get("max");
+        $result = $carRepository->filterCar($min, $max);
+        return $this->render("car/index.html.twig",
+        [
+            'car' => $result
+        ]);
+    }
 }
