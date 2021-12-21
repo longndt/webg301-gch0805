@@ -22,7 +22,7 @@ class AuthorController extends AbstractController
     }
 
     /**
-     * @Route("/author/{id}", name="author_detail")
+     * @Route("/author/detail/{id}", name="author_detail")
      */
     public function authorDetail($id) {
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);

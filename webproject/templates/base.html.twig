@@ -20,16 +20,6 @@
 		{% endblock %}
 	</head>
 	<body>
-	   {% block flash %}
-			<div class="container col-md-8 mt-3">
-				{% for flash in app.flashes("Error") %}
-					<p class="alert alert-danger"> {{ flash }} </p>
-				{% endfor %}
-				{% for flash in app.flashes("Success") %}
-					<p class="alert alert-success"> {{ flash }} </p>
-				{% endfor %}
-			</div>
-		{% endblock %}
 		{% block nav %}
 		<nav class="navbar navbar-expand navbar-light bg-light">
 			 <ul class="nav navbar-nav">
@@ -47,6 +37,16 @@
 				  </li>
 			 </ul>
 		</nav>
+		{% endblock %}
+		   {% block flash %}
+			<div class="container col-md-8 mt-3">
+				{% for flash in app.flashes("Error") %}
+					<p class="alert alert-danger"> {{ flash }} </p>
+				{% endfor %}
+				{% for flash in app.flashes("Success") %}
+					<p class="alert alert-success"> {{ flash }} </p>
+				{% endfor %}
+			</div>
 		{% endblock %}
 		{% block body %} {% endblock %}
 		{% block copyright %}

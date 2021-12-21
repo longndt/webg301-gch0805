@@ -22,7 +22,7 @@ class GenreController extends AbstractController
     }
 
     /**
-     * @Route("/genre/{id}", name="genre_detail")
+     * @Route("/genre/detail/{id}", name="genre_detail")
      */
     public function genreDetail($id) {
         $genre = $this->getDoctrine()->getRepository(Genre::class)->find($id);
