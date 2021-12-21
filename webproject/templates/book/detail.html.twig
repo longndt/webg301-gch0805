@@ -23,8 +23,23 @@
                   </td>
                   <td>{{ book.price }} $</td>
                   <td>{{ book.year }}</td>
-                  <td> </td>
-                  <td> </td>
+                  <td>
+                    {% if (book.genre != null)  %}
+                       <a class="text-decoration-none" href="{{ path('genre_detail', {'id' : book.genre.id }) }}">
+                          {{ book.genre.name }}
+                        </a> 
+                    {% endif %}
+                  </td>
+                  <td> 
+                    {% if (book.authors != null) %}
+                         {% for author in book.authors %}
+                          <a class="text-decoration-none" href="{{ path('author_detail', {'id' : author.id }) }}">
+                          {{ author.name }}
+                          </a>
+                          <br>
+                      {% endfor %}
+                    {% endif %}
+                  </td>
                   <td>
                     <a class="btn btn-warning" href="{{ path('book_edit', {'id' : book.id })}}">
                     Edit

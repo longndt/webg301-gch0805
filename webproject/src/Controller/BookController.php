@@ -12,16 +12,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class BookController extends AbstractController
 {
     /**
-     * @Route("/book/api", methods={"GET"}, name="book_api")
+     * @Route("/books/api", methods={"GET"}, name="book_api")
      */
     public function bookAPI() : JsonResponse {
         $books = $this->getDoctrine()->getRepository(Book::class)->findAll();
-        return $this->json(
-            ['books' => $books ],
-            200 //HTTP: OK
-        );
+        return $this->json(['books' => $books], 200);
     }
-
     /**
      * @Route("/books", name="book_index")
      */
