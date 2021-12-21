@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Author;
 use App\Entity\Book;
+use App\Entity\Genre;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -43,13 +44,14 @@ class BookType extends AbstractType
                 ]
             ])
             // ->add('cover')
-            ->add('genre', ChoiceType::class,
+            ->add('genre', EntityType::class,
             [
-                'label' => 'Book genre',
-                'choices' => [
-                    'Male' => 'Male',
-                    'Female' => 'Female'
-                ]
+                'label' => 'Genre',
+                'required' => true,
+                'class' => Genre::class,
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => true
             ])
             ->add('authors', EntityType::class,
             [
@@ -58,7 +60,7 @@ class BookType extends AbstractType
                 'class' => Author::class,
                 'choice_label' => 'name',
                 'multiple' => true,
-                'expanded' => false
+                'expanded' => true
             ])
         ;
     }

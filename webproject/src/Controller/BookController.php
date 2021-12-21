@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Book;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Form\BookType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BookController extends AbstractController
 {
@@ -58,17 +59,47 @@ class BookController extends AbstractController
         return $this->redirectToRoute("book_index");
     }
 
-    /**
+   /**
      * @Route("/book/add", name="book_add")
      */
     public function bookAdd(Request $request) {
-        return $this->render("book/add.html.twig");
+        $book = new Book();
+        $form = $this->createForm(BookType::class,$book);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($book);
+            $manager->flush();
+            $this->addFlash("Success","Add book succeed !");
+            return $this->redirectToRoute("book_index");
+        }
+
+        return $this->renderForm("book/add.html.twig",
+        [
+            'form' => $form
+        ]);
     }
 
     /**
      * @Route("/book/edit/{id}", name="book_edit")
      */
     public function bookEdit(Request $request, $id) {
+        $book = $this->getDoctrine()->getRepository(Book::class)->find($id);
+        $form = $this->createForm(BookType::class,$book);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($book);
+            $manager->flush();
+            $this->addFlash("Success","Edit book succeed !");
+            return $this->redirectToRoute("book_index");
+        }
+
+        return $this->renderForm("book/edit.html.twig",
+        [
+            'form' => $form
+        ]);
     }
 }
