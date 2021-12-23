@@ -6,13 +6,14 @@ use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use Symfony\Component\HttpFoundation\Request;
+use function PHPUnit\Framework\throwException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-
-use function PHPUnit\Framework\throwException;
 
 class BookController extends AbstractController
 {
@@ -48,6 +49,7 @@ class BookController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/book/delete/{id}", name="book_delete")
      */
     public function bookDelete($id) {
@@ -64,6 +66,7 @@ class BookController extends AbstractController
     }
 
    /**
+    * @IsGranted("ROLE_ADMIN")
      * @Route("/book/add", name="book_add")
      */
     public function bookAdd(Request $request) {
@@ -113,6 +116,7 @@ class BookController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/book/edit/{id}", name="book_edit")
      */
     public function bookEdit(Request $request, $id) {
