@@ -8,6 +8,7 @@ use App\Entity\Genre;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -43,7 +44,12 @@ class BookType extends AbstractType
                     'max' => 2021
                 ]
             ])
-            // ->add('cover')
+            ->add('cover', FileType::class,
+            [
+                'label' => 'Cover',
+                'data_class' => null,
+                'required' => is_null ($builder->getData()->getCover())         
+            ])
             ->add('genre', EntityType::class,
             [
                 'label' => 'Genre',

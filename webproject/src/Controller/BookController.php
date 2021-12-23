@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+
+use function PHPUnit\Framework\throwException;
 
 class BookController extends AbstractController
 {
@@ -68,9 +71,36 @@ class BookController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //code upload và xử lý tên ảnh
+            //B1: lấy tên ảnh từ file upload
+            $image = $book->getCover();
+            /*B2: đặt tên mới cho file ảnh 
+            => đảm bảo tên ảnh là duy nhất */
+            $imgName = uniqid(); //unique id
+            //B3: lấy đuôi ảnh (image extension)
+            $imgExtension = $image->guessExtension();
+            //Note: cần sửa lại code getter/setter của Book Entity
+            //B4: nối tên mới và đuôi thành tên file ảnh hoàn thiện
+            $imageName = $imgName . "." . $imgExtension;
+            //B5: copy ảnh vào thư mục chỉ định
+            try {
+              $image->move(
+                  $this->getParameter('book_cover'), $imageName
+                  /* Note: cần khai báo đường dẫn thư mục chứa ảnh
+                  ở file config/services.yaml */
+              ); 
+            } catch (FileException $e) {
+                throwException($e);
+            }
+            //B6: lưu tên ảnh vào DB
+            $book->setCover($imageName);
+
+            //add dữ liệu vào DB
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($book);
             $manager->flush();
+
+            //hiển thị thông báo và redirect về book index
             $this->addFlash("Success","Add book succeed !");
             return $this->redirectToRoute("book_index");
         }
@@ -90,6 +120,35 @@ class BookController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //code upload và xử lý tên ảnh
+            //B1: lấy dữ liệu ảnh từ form
+            $file = $form['cover']->getData(); 
+            //B2: check xem dữ liệu ảnh có null không
+            if ($file != null) { //người dùng bấm select file để update ảnh mới
+                //B3: lấy tên ảnh từ file upload
+                $image = $book->getCover();
+                /*B4: đặt tên mới cho file ảnh 
+                => đảm bảo tên ảnh là duy nhất */
+                $imgName = uniqid(); //unique id
+                //B5: lấy đuôi ảnh (image extension)
+                $imgExtension = $image->guessExtension();
+                //Note: cần sửa lại code getter/setter của Book Entity
+                //B6: nối tên mới và đuôi thành tên file ảnh hoàn thiện
+                $imageName = $imgName . "." . $imgExtension;
+                //B7: copy ảnh vào thư mục chỉ định
+                try {
+                $image->move(
+                    $this->getParameter('book_cover'), $imageName
+                    /* Note: cần khai báo đường dẫn thư mục chứa ảnh
+                    ở file config/services.yaml */
+                ); 
+                } catch (FileException $e) {
+                    throwException($e);
+                }
+                //B8: lưu tên ảnh vào DB
+                $book->setCover($imageName);
+            }
+            
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($book);
             $manager->flush();
