@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Book;
 use App\Form\BookType;
+use App\Repository\BookRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -159,6 +160,40 @@ class BookController extends AbstractController
         return $this->renderForm("book/edit.html.twig",
         [
             'form' => $form
+        ]);
+    }
+
+    /**
+     * @Route("/book/sort/asc", name="sort_book_id_asc")
+     */
+    public function sortBookByIdAsc (BookRepository $repository) {
+        $books = $repository->sortIdAsc();
+        return $this->render("book/index.html.twig",
+        [
+            'books' => $books
+        ]);
+    }
+
+     /**
+     * @Route("/book/sort/desc", name="sort_book_id_desc")
+     */
+    public function sortBookByIdDesc (BookRepository $repository) {
+        $books = $repository->sortIdDesc();
+        return $this->render("book/index.html.twig",
+        [
+            'books' => $books
+        ]);
+    }
+
+    /**
+     * @Route("/book/search", name="search_book_title")
+     */
+    public function searchBookByTitle (BookRepository $repository, Request $request) {
+        $title = $request->get("title");
+        $books = $repository->searchBook($title);
+        return $this->render("book/index.html.twig",
+        [
+            'books' => $books
         ]);
     }
 }

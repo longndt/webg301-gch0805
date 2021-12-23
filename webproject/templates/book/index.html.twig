@@ -1,15 +1,31 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
- <div class="container-md col-md-8 text-center">
+ <div class="container-md col-md-8">
    <a class="btn btn-primary mt-4 mb-4" href="{{ path('book_add')}}">
       Add new book
    </a>
-  <table class="table table-striped|sm|bordered|hover|inverse table-inverse table-responsive">
+   <div class="form-group col-md-4 mb-3">
+      <form action="{{path('search_book_title')}}" method="POST">
+         <input class="form-control" type="search" name="title" required placeholder="Search by book title">
+      </form>
+   </div>
+  {% if books == null %}
+    <h4 class="text text-danger">No book found</h4>
+  {% else %}
+    <table class="table table-striped|sm|bordered|hover|inverse table-inverse table-responsive">
       <thead class="thead-inverse|thead-default">
           <tr>
-              <th>Book ID</th>
-              <th>Book Title</th>
+              <th>Book ID
+              <a class="text-decoration-none" href="{{path('sort_book_id_asc') }}">
+                <img src="{{asset('images/up.png')}}" width=20 height=20>
+              </a>
+              <a class="text-decoration-none" href="{{path('sort_book_id_desc') }}">
+                <img src="{{asset('images/down.png')}}" width=20 height=20>
+              </a>
+              </th>
+              <th>Book Title
+              </th>
               <th>Book Cover</th>
               <th>Actions</th>
           </tr>
@@ -17,7 +33,8 @@
           <tbody>
           {% for book in books %}
                <tr>
-                  <td scope="row">{{ book.id }}</td>
+                  <td scope="row"> {{ book.id }}
+                  </td>
                   <td>{{ book.title }}</td>
                   <td>
                     <a href="{{ path('book_detail', {'id' : book.id })}}">
@@ -34,9 +51,9 @@
                     </a>
                   </td>
               </tr> 
-          {% endfor %}
-             
-          </tbody>
+          {% endfor %}      
+    </tbody>
   </table>
+  {% endif %}
 </div>
 {% endblock %}
